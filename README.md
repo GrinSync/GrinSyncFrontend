@@ -1,4 +1,4 @@
-# flutter_test_app
+# GrinSync
 
 A new Flutter project.
 
