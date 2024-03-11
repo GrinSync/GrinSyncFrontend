@@ -17,25 +17,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GrinSync',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
-        useMaterial3: true,
-        fontFamily: 'Raleway' // using Futura as default font
-      ),
+          // This is the theme of your application.
+          //
+          // TRY THIS: Try running your application with "flutter run". You'll see
+          // the application has a purple toolbar. Then, without quitting the app,
+          // try changing the seedColor in the colorScheme below to Colors.green
+          // and then invoke "hot reload" (save your changes or press the "hot
+          // reload" button in a Flutter-supported IDE, or press "r" if you used
+          // the command line to start the app).
+          //
+          // Notice that the counter didn't reset back to zero; the application
+          // state is not lost during the reload. To reset the state, use hot
+          // restart instead.
+          //
+          // This works for code too, not just values: Most code changes can be
+          // tested with just a hot reload.
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
+          useMaterial3: true,
+          fontFamily: 'Raleway' // using Futura as default font
+          ),
       home: const MyHomePage(title: 'Upcoming Events'),
     );
   }
@@ -83,15 +84,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255), // white text color
+        foregroundColor:
+            const Color.fromARGB(255, 255, 255, 255), // white text color
         backgroundColor: Theme.of(context).colorScheme.primary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.w800)),
+        title:
+            Text(widget.title, style: TextStyle(fontWeight: FontWeight.w800)),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -112,39 +114,35 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-                Expanded(child: Placeholder()),
-                SafeArea(
-                  child: NavigationBar(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    indicatorColor: Color.fromARGB(255, 129, 49, 47),
-                    shadowColor: Colors.white,
-                    destinations: const [
-                      NavigationDestination(
-                        icon: Icon(Icons.home),
-                        label: 'Home',
-
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.search),
-                        label: 'Search',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.add),
-                        label: 'Create',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.calendar_month),
-                        label: 'My Agenda'
-                        ),
-                      NavigationDestination(
-                        icon: Icon(Icons.person),
-                        label: 'Profile',
-                      ),
-                    ],
+            Expanded(child: Placeholder()),
+            SafeArea(
+              child: NavigationBar(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                indicatorColor: Color.fromARGB(255, 129, 49, 47),
+                shadowColor: Colors.white,
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
                   ),
-                )
+                  NavigationDestination(
+                    icon: Icon(Icons.search),
+                    label: 'Search',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.add),
+                    label: 'Create',
+                  ),
+                  NavigationDestination(
+                      icon: Icon(Icons.calendar_month), label: 'My Agenda'),
+                  NavigationDestination(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                  ),
+                ],
+              ),
+            )
           ],
-
         ),
       ),
       floatingActionButton: FloatingActionButton(
