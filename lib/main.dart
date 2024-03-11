@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'GrinSync',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -32,10 +32,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
         useMaterial3: true,
+        fontFamily: 'Raleway' // using Futura as default font
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Upcoming Events'),
     );
   }
 }
@@ -82,13 +83,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255), // white text color
+        backgroundColor: Theme.of(context).colorScheme.primary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.w800)),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -108,15 +111,40 @@ class _MyHomePageState extends State<MyHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+          children: [
+                Expanded(child: Placeholder()),
+                SafeArea(
+                  child: NavigationBar(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    indicatorColor: Color.fromARGB(255, 129, 49, 47),
+                    shadowColor: Colors.white,
+                    destinations: const [
+                      NavigationDestination(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.search),
+                        label: 'Search',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.add),
+                        label: 'Create',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.calendar_month),
+                        label: 'My Agenda'
+                        ),
+                      NavigationDestination(
+                        icon: Icon(Icons.person),
+                        label: 'Profile',
+                      ),
+                    ],
+                  ),
+                )
           ],
+
         ),
       ),
       floatingActionButton: FloatingActionButton(
