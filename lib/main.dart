@@ -116,10 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Expanded(child: Placeholder()),
             SafeArea(
+              bottom: false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
               child: NavigationBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                indicatorColor: Color.fromARGB(255, 129, 49, 47),
+                indicatorColor: Colors.white,
                 shadowColor: Colors.white,
+                elevation: 0,
                 destinations: const [
                   NavigationDestination(
                     icon: Icon(Icons.home),
@@ -134,7 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Create',
                   ),
                   NavigationDestination(
-                      icon: Icon(Icons.calendar_month), label: 'My Agenda'),
+                      icon: Icon(Icons.calendar_month), 
+                      label: 'My Agenda'),
                   NavigationDestination(
                     icon: Icon(Icons.person),
                     label: 'Profile',
