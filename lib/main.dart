@@ -153,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SafeArea(
               bottom: false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
               child: NavigationBar(
+                animationDuration: const Duration(milliseconds: 300),
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 indicatorColor: Colors.white,
                 shadowColor: Colors.white,
