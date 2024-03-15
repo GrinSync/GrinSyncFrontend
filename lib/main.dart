@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/pages/registration_page.dart';
+import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const RegistrationPage()),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         },
         tooltip: 'Increment',

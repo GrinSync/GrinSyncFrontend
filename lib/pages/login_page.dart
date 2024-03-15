@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -48,11 +49,16 @@ class _LoginPage extends State<LoginPage> {
         ),
         TextButton(
             onPressed: () async {
-              await userAuthentication(_email.text, _password.text);
+              var auth = await userAuthentication(_email.text, _password.text);
+              if (auth.runtimeType == String){
+                print("These Login credentials are invalid");
+              }
+              else{
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const MyApp()),
           );
+              }
             },
             child: const Text('Register')),
       ]),
