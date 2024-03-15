@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Welcome to GrinSync!'),
-              const Text('You are currently in guest mode.'),
+              const Text('You are currently a guest user.'),
               TextButton(
                 onPressed: () {
                   Navigator.push(
