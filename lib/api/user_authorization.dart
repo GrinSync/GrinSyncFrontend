@@ -9,7 +9,7 @@ Future userAuthentication(String email, String password) async {
     email: email,
     password: password,
   };
-  var url = Uri.parse('grinsync.com');
+  var url = Uri.parse('grinsync.com/api/validate');
   var result = await http.post(url, body: body);
   print(result.body);
 

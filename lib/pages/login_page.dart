@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,7 +29,7 @@ class _LoginPage extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GrinSync Registration'),
+        title: const Text('GrinSync Login'),
       ),
       body: Column(children: [
         TextField(
@@ -47,8 +48,11 @@ class _LoginPage extends State<LoginPage> {
         ),
         TextButton(
             onPressed: () async {
-              // await userAuthentication(_email.text, _password.text);
-              http.get(Uri.parse('http://3.16.235.156/api/validate'));
+              await userAuthentication(_email.text, _password.text);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+          );
             },
             child: const Text('Register')),
       ]),
