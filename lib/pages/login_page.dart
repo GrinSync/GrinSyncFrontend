@@ -60,7 +60,7 @@ class _LoginPage extends State<LoginPage> {
           );
               }
             },
-            child: const Text('Register')),
+            child: const Text('Log in')),
       ]),
     );
   }
