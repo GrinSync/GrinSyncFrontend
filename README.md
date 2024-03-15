@@ -1,16 +1,15 @@
 # GrinSync
+This the repository for the front-end of the GrinSync app
 
-A new Flutter project.
+## How to build and run our project
 
-## Getting Started
+To run the app, you will first need to install Flutter: https://docs.flutter.dev/get-started/install
+Follow the installation for mobile development.
+You will also need to follow the Android Studio installation to use an emulator, even if you are working in VSCode.
+This can be done here: https://docs.flutter.dev/get-started/install/windows/mobile#configure-android-development
 
-This project is a starting point for a Flutter application.
+Once you have Flutter and Android Studio installed, you can run the command 'flutter doctor, or if you are in VSCode, you can go to View -> Command Palette and select Flutter: Run Flutter Doctor.
+This will confirm you have everything set up correctly. If you are missing any required packages or steps, follow the steps provided to resolve the issues.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Once you have everything installed on your computer, you download this repository locally onto your computer.
+Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator
