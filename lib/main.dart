@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GrinSync',
+      title: 'GrinSync App',
       theme: ThemeData(
           // This is the theme of your application.
           //
@@ -35,9 +36,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
-          fontFamily: 'Raleway' // using Futura as default font
+          fontFamily: 'Futura' // using Futura as default font
           ),
-      home: const MyHomePage(title: 'Upcoming Events'),
+      home: const MyHomePage(title: 'GrinSync'),
     );
   }
 }
@@ -62,6 +63,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var selectedIndexOnHomePage = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -78,7 +80,37 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
-    //
+
+
+  Widget current_page;
+  String page_label;
+  // this switch statement will determine which page to display based on the navigation bar item selected
+  // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
+  switch (selectedIndexOnHomePage) {
+    case 0: // this is the home page where where user can discover events
+      current_page = Placeholder();
+      page_label = 'Home';
+      break;
+    case 1: // this is the search page where user can search for events
+      current_page = Placeholder();
+      page_label = 'Search';
+      break;
+    case 2: // this is the event creation page where user can create their own events
+      current_page = Placeholder();
+      page_label = 'Create';
+      break;
+    case 3: // this is the user's agenda (calendar view: month view, week view, day view) 
+      current_page = Placeholder();
+      page_label = 'My Agenda';
+      break;
+    case 4: // this is user's profile page
+      current_page = Placeholder(); 
+      page_label = 'Profile';
+      break;
+    default:
+      throw UnimplementedError('no widget for $selectedIndexOnHomePage');
+  }
+
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
@@ -114,14 +146,16 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: Placeholder()),
+            Text('You are currently on page: $page_label'), // only as a temporary indicator to the developers (will be removed after pages are implemented)
+            Expanded(child: Container(
+              child: current_page, //one of the five pages depending on the navigation bar item selected
+            ),),
             SafeArea(
               bottom: false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
               child: NavigationBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 indicatorColor: Colors.white,
                 shadowColor: Colors.white,
-                elevation: 0,
                 destinations: const [
                   NavigationDestination(
                     icon: Icon(Icons.home),
@@ -143,21 +177,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Profile',
                   ),
                 ],
+                selectedIndex: selectedIndexOnHomePage,
+                onDestinationSelected: (value) {
+                    setState(() {
+                    selectedIndexOnHomePage = value;
+                    });
+                }
               ),
             )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       CupertinoPageRoute(builder: (context) => const LoginPage()),
+      //     );
+      //   },
+      //   tooltip: 'Log in',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
