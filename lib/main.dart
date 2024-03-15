@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
+import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -9,9 +10,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -36,15 +42,15 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
-          fontFamily: 'Futura' // using Futura as default font
+          fontFamily: 'Futura' // Futura as the default font, the font used on Grinnell College's website
           ),
-      home: const MyHomePage(title: 'GrinSync'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -55,7 +61,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  //final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -64,6 +70,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   var selectedIndexOnHomePage = 0;
+  final List<String> _titles = ['Upcoming Events', 'Search', 'Create an Event', 'My Agenda', 'My Profile'];
 
   void _incrementCounter() {
     setState(() {
@@ -82,30 +89,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // by the _incrementCounter method above.
 
 
-  Widget current_page;
-  String page_label;
+  Widget currentPage;
   // this switch statement will determine which page to display based on the navigation bar item selected
   // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
   switch (selectedIndexOnHomePage) {
     case 0: // this is the home page where where user can discover events
-      current_page = Placeholder();
-      page_label = 'Home';
+      currentPage = Placeholder();
       break;
     case 1: // this is the search page where user can search for events
-      current_page = Placeholder();
-      page_label = 'Search';
+      currentPage = Placeholder();
       break;
     case 2: // this is the event creation page where user can create their own events
-      current_page = Placeholder();
-      page_label = 'Create';
+      currentPage = Placeholder();
       break;
     case 3: // this is the user's agenda (calendar view: month view, week view, day view) 
-      current_page = Placeholder();
-      page_label = 'My Agenda';
+      currentPage = Placeholder();
       break;
     case 4: // this is user's profile page
-      current_page = Placeholder(); 
-      page_label = 'Profile';
+      currentPage = ProfilePage(); 
       break;
     default:
       throw UnimplementedError('no widget for $selectedIndexOnHomePage');
@@ -125,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title:
-            Text(widget.title, style: TextStyle(fontWeight: FontWeight.w800)),
+            Text(_titles[selectedIndexOnHomePage], style: TextStyle(fontWeight: FontWeight.w800)),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -146,9 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('You are currently on page: $page_label'), // only as a temporary indicator to the developers (will be removed after pages are implemented)
             Expanded(child: Container(
-              child: current_page, //one of the five pages depending on the navigation bar item selected
+              child: currentPage, //one of the five pages depending on the navigation bar item selected
             ),),
             SafeArea(
               bottom: false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   NavigationDestination(
                       icon: Icon(Icons.calendar_month), 
-                      label: 'My Agenda'),
+                      label: 'Agenda'),
                   NavigationDestination(
                     icon: Icon(Icons.person),
                     label: 'Profile',
