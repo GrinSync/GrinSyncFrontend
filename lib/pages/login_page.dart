@@ -32,22 +32,52 @@ class _LoginPage extends State<LoginPage> {
       appBar: AppBar(
         title: const Text('GrinSync Login'),
       ),
-      body: Column(children: [
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
         TextField(
           controller: _email,
           keyboardType: TextInputType.emailAddress,
           autocorrect: false,
           enableSuggestions: false,
-          decoration: const InputDecoration(hintText: 'Enter your email'),
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.person_outline_outlined),
+            labelText: 'Email',
+            hintText: 'Enter your email',
+            border: OutlineInputBorder()
+            ),
         ),
+        const SizedBox(height: 10),
         TextField(
           controller: _password,
           autocorrect: false,
           obscureText: true,
           enableSuggestions: false,
-          decoration: const InputDecoration(hintText: 'Enter your password'),
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.fingerprint),
+            labelText: 'Password',
+            hintText: 'Enter your password',
+            border: OutlineInputBorder(),
+            // suffixIcon: IconButton(
+            //   onPressed: null,
+            //   icon: Icon(Icons.remove_red_eye_sharp)
+            // )
+          ),
         ),
-        TextButton(
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: (){},
+            child: const Text('Forgot Password?')
+          )
+        ),
+        Align(
+          alignment: Alignment.center,
+        child: ElevatedButton(
             onPressed: () async {
               var auth = await userAuthentication(_email.text, _password.text);
               if (auth.runtimeType == String){
@@ -61,7 +91,10 @@ class _LoginPage extends State<LoginPage> {
               }
             },
             child: const Text('Log in')),
+        )
       ]),
+      )
+      )
     );
   }
 }
