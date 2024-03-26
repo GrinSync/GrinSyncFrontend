@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
+import 'package:flutter_test_app/pages/event_creation_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -100,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
       currentPage = Placeholder();
       break;
     case 2: // this is the event creation page where user can create their own events
-      currentPage = Placeholder();
+      currentPage = EventCreationPage();
       break;
     case 3: // this is the user's agenda (calendar view: month view, week view, day view) 
       currentPage = Placeholder();

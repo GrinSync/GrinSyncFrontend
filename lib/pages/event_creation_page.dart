@@ -42,9 +42,6 @@ class _EventCreationPageState extends State<EventCreationPage> {
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Create an Event'),
-        ),
 
         body: SingleChildScrollView(
             child: Container(
