@@ -45,88 +45,44 @@ class _EventCreationPageState extends State<EventCreationPage> {
         appBar: AppBar(
           title: const Text('Create an Event'),
         ),
+
         body: SingleChildScrollView(
             child: Container(
           padding: const EdgeInsets.all(8.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
+              controller: _title,
               autocorrect: false,
               enableSuggestions: false,
               decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person_outline_outlined),
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
+                  labelText: 'Event Title',
+                  hintText: 'Enter the title of your event',
                   border: OutlineInputBorder()),
             ),
             const SizedBox(height: 10),
             TextField(
-              controller: _password,
+              controller: _date,
               autocorrect: false,
-              obscureText: true,
               enableSuggestions: false,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.fingerprint),
-                labelText: 'Password',
-                hintText: 'Enter your password',
+                labelText: 'Date',
+                hintText: 'Enter the date of your event',
                 border: OutlineInputBorder(),
-                // suffixIcon: IconButton(
-                //   onPressed: null,
-                //   icon: Icon(Icons.remove_red_eye_sharp)
-                // )
               ),
             ),
             const SizedBox(height: 10),
-            Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                    onPressed: () {}, child: const Text('Forgot Password?'))),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                  onPressed: () async {
-                    var auth =
-                        await userAuthentication(_email.text, _password.text);
-                    if (auth.runtimeType == String) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Login Failed'),
-                            content: const SingleChildScrollView(
-                              child: ListBody(
-                                children: <Widget>[
-                                  Text(
-                                      'The Lgin credentials provided do not match a user.'),
-                                  Text(
-                                      'Please re-enter your credentials and try again.'),
-                                ],
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Okay'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                      );
-                    }
-                  },
-                  child: const Text('Log in')),
-            )
+            TextField(
+              controller: _location,
+              autocorrect: false,
+              enableSuggestions: false,
+              decoration: const InputDecoration(
+                labelText: 'Location',
+                hintText: 'Enter the location of your event',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
           ]),
         )));
   }
