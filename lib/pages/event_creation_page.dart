@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/new_event_info.dart';
+import 'package:flutter_test_app/main.dart';
 
 class EventCreationPage extends StatefulWidget {
   const EventCreationPage({super.key});
@@ -52,34 +54,106 @@ class _EventCreationPageState extends State<EventCreationPage> {
               controller: _title,
               autocorrect: false,
               enableSuggestions: false,
+              maxLines: null,
               decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.create),
                   labelText: 'Event Title',
                   hintText: 'Enter the title of your event',
                   border: OutlineInputBorder()),
             ),
+
             const SizedBox(height: 10),
+
             TextField(
               controller: _date,
               autocorrect: false,
               enableSuggestions: false,
               decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.calendar_month),
                 labelText: 'Date',
                 hintText: 'Enter the date of your event',
                 border: OutlineInputBorder(),
               ),
             ),
+
             const SizedBox(height: 10),
+
             TextField(
               controller: _location,
               autocorrect: false,
               enableSuggestions: false,
+              maxLines: null,
               decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.location_on_outlined),
                 labelText: 'Location',
                 hintText: 'Enter the location of your event',
                 border: OutlineInputBorder(),
               ),
             ),
+
             const SizedBox(height: 10),
+
+            TextField(
+              controller: _description,
+              autocorrect: false,
+              enableSuggestions: false,
+              maxLines: null,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.summarize_outlined),
+                labelText: 'Description',
+                hintText: 'Enter a description of your event',
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+          // TODO 
+          SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                  onPressed: () async {
+                    var auth =
+                        await eventInfo(_title.text, _description.text, _date.text, _location.text);
+                    if (auth.runtimeType == String) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Login Failed'),
+                            content: const SingleChildScrollView(
+                              child: ListBody(
+                                children: <Widget>[
+                                  Text(
+                                      'The Lgin credentials provided do not match a user.'),
+                                  Text(
+                                      'Please re-enter your credentials and try again.'),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Okay'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MyApp()),
+                      );
+                    }
+                  },
+                  child: const Text('Create Event')),
+            )
+
           ]),
         )));
   }
