@@ -13,6 +13,8 @@ class _EventCreationPageState extends State<EventCreationPage> {
   late final TextEditingController _title;
   late final TextEditingController _description;
   late final TextEditingController _date;
+  late final TextEditingController _start_date;
+  late final TextEditingController _end_date;
   late final TextEditingController _location;
   late final TextEditingController _students_only;
   late final TextEditingController _tags;
@@ -23,6 +25,8 @@ class _EventCreationPageState extends State<EventCreationPage> {
     _title = TextEditingController();
     _description = TextEditingController();
     _date = TextEditingController();
+    _start_date = TextEditingController();
+    _end_date = TextEditingController();
     _location = TextEditingController();
     _students_only = TextEditingController();
     _tags = TextEditingController();
@@ -35,10 +39,40 @@ class _EventCreationPageState extends State<EventCreationPage> {
     _title.dispose();
     _description.dispose();
     _date.dispose();
+    _start_date.dispose();
+    _end_date.dispose();
     _location.dispose();
     _students_only.dispose();
     _tags.dispose();
     super.dispose();
+  }
+
+  // To pick date and time from user
+  Future <void> _selectDateTime(BuildContext context, TextEditingController c) async {
+    final DateTime? _userDate = await showDatePicker(
+      context: context, 
+      firstDate: DateTime.now(), 
+      lastDate: DateTime(2100));
+
+    if (_userDate != null) {
+      final TimeOfDay? _userTime = await showTimePicker(
+        context: context, 
+        initialTime: TimeOfDay.now());
+
+      if (_userTime != null) {
+        final DateTime _userDateTime = DateTime(
+          _userDate.year,
+          _userDate.month,
+          _userDate.day,
+          _userTime.hour,
+          _userTime.minute);
+        
+        // save to controller as a string
+        setState(() {
+          c.text = _userDateTime.toString();
+        });
+      }
+    }
   }
 
 @override
@@ -65,20 +99,6 @@ class _EventCreationPageState extends State<EventCreationPage> {
             const SizedBox(height: 10),
 
             TextField(
-              controller: _date,
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.calendar_month),
-                labelText: 'Date',
-                hintText: 'Enter the date of your event',
-                border: OutlineInputBorder(),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            TextField(
               controller: _location,
               autocorrect: false,
               enableSuggestions: false,
@@ -88,6 +108,38 @@ class _EventCreationPageState extends State<EventCreationPage> {
                 labelText: 'Location',
                 hintText: 'Enter the location of your event',
                 border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            TextField(
+              controller: _start_date,
+              readOnly: true,
+              onTap: () => _selectDateTime(context, _start_date),
+              
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.access_time_filled),
+                labelText: 'Starts',
+                hintText: 'Pick the starting date & time of your event',
+                border: OutlineInputBorder(),
+                
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            TextField(
+              controller: _end_date,
+              readOnly: true,
+              onTap: () => _selectDateTime(context, _end_date),
+              
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.access_time),
+                labelText: 'Ends',
+                hintText: 'Pick the ending date & time of your event',
+                border: OutlineInputBorder(),
+                
               ),
             ),
 
