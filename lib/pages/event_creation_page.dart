@@ -2,211 +2,238 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/main.dart';
 
+// TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
+
+// Define a stateful widget that is mutable and its corresponding state class
 class EventCreationPage extends StatefulWidget {
   const EventCreationPage({super.key});
   @override
-  State<EventCreationPage> createState() => _EventCreationPageState();
+  State<EventCreationPage> createState() => EventCreationPageState();
 }
 
-class _EventCreationPageState extends State<EventCreationPage> {
-  late final TextEditingController _org_id;
+// Define the state class to manage mutable state data and the widget's lifecycle
+class EventCreationPageState extends State<EventCreationPage> {
+
+  // late = initialization occurs later in the code
+  // final = variable can only be assigned to a value once
+  // TextEditingController = class that allows for the manipulation of text input
+  // late final TextEditingController _orgId; TODO: Uncomment when we implement student orgs
   late final TextEditingController _title;
-  late final TextEditingController _description;
-  late final TextEditingController _date;
-  late final TextEditingController _start_date;
-  late final TextEditingController _end_date;
   late final TextEditingController _location;
-  late final TextEditingController _students_only;
+  late final TextEditingController _startDate;
+  late final TextEditingController _endDate;
+  late final TextEditingController _description;
+  late final TextEditingController _studentsOnly;
   late final TextEditingController _tags;
 
+  // initState function to initialize all of the late final variables from above 
   @override
   void initState() {
-    _org_id = TextEditingController();
+    // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs
     _title = TextEditingController();
-    _description = TextEditingController();
-    _date = TextEditingController();
-    _start_date = TextEditingController();
-    _end_date = TextEditingController();
     _location = TextEditingController();
-    _students_only = TextEditingController();
+    _startDate = TextEditingController();
+    _endDate = TextEditingController();
+    _description = TextEditingController();
+    _studentsOnly = TextEditingController();
     _tags = TextEditingController();
     super.initState();
-  }
+  } // initState
 
+  // dispose function for cleanup tasks
   @override
   void dispose() {
-    _org_id.dispose();
+    // _orgId.dispose(); TODO: Uncomment when we implement student orgs
     _title.dispose();
-    _description.dispose();
-    _date.dispose();
-    _start_date.dispose();
-    _end_date.dispose();
     _location.dispose();
-    _students_only.dispose();
+    _description.dispose();
+    _startDate.dispose();
+    _endDate.dispose();
+    _studentsOnly.dispose();
     _tags.dispose();
     super.dispose();
-  }
+  } // dispose
 
-  // To pick date and time from user
-  Future <void> _selectDateTime(BuildContext context, TextEditingController c) async {
-    final DateTime? _userDate = await showDatePicker(
+  // selectDateTime function to allow users to select date and time for their events 
+  // in the built-in date and time widgets of Flutter
+  Future <void> selectDateTime(BuildContext context, TextEditingController control) async {
+    
+    // Show date picker to user with limited range
+    final DateTime? userDate = await showDatePicker(
       context: context, 
-      firstDate: DateTime.now(), 
-      lastDate: DateTime(2100));
+      firstDate: DateTime.now(), // Earliest allowed date is the current date
+      lastDate: DateTime(2500) // Latest allowed date is the year of 2500
+    ); // userDate
 
-    if (_userDate != null) {
-      final TimeOfDay? _userTime = await showTimePicker(
+    // If the user inputted a date, do this:
+    if (userDate != null) {
+
+      // Show time picker to user with limited range
+      final TimeOfDay? userTime = await showTimePicker(
         context: context, 
-        initialTime: TimeOfDay.now());
+        initialTime: TimeOfDay.now() // Initial time will be the current time
+      ); // userTime
 
-      if (_userTime != null) {
-        final DateTime _userDateTime = DateTime(
-          _userDate.year,
-          _userDate.month,
-          _userDate.day,
-          _userTime.hour,
-          _userTime.minute);
+      // If the user inputted a time, do this: 
+      if (userTime != null) {
+
+        // Create full date-time format
+        final DateTime userDateTime = DateTime(
+          userDate.year,
+          userDate.month,
+          userDate.day,
+          userTime.hour,
+          userTime.minute
+        ); // userDateTime
         
-        // save to controller as a string
+        // Save date-time to the controller's text as a string
         setState(() {
-          c.text = _userDateTime.toString();
+          control.text = userDateTime.toString();
         });
       }
     }
-  }
+  } // selectDateTime
 
+// Build UI of widget
+// Everything is wrapped in a container with child content being scrollable
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-        body: SingleChildScrollView(
-            child: Container(
+      body: SingleChildScrollView(
+        child: Container(
           padding: const EdgeInsets.all(8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            TextField(
-              controller: _title,
-              autocorrect: false,
-              enableSuggestions: false,
-              maxLines: null,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.create),
+          child: Column( // Arrange children vertically
+            crossAxisAlignment: CrossAxisAlignment.start, 
+            children: [
+
+              // EVENT TITLE BOX
+              TextField(
+                controller: _title,
+                autocorrect: false,
+                enableSuggestions: false,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.create),
                   labelText: 'Event Title',
                   hintText: 'Enter the title of your event',
-                  border: OutlineInputBorder()),
-            ),
-
-            const SizedBox(height: 10),
-
-            TextField(
-              controller: _location,
-              autocorrect: false,
-              enableSuggestions: false,
-              maxLines: null,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.location_on_outlined),
-                labelText: 'Location',
-                hintText: 'Enter the location of your event',
-                border: OutlineInputBorder(),
+                  border: OutlineInputBorder()
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10), // Gap in between text fields
 
-            TextField(
-              controller: _start_date,
-              readOnly: true,
-              onTap: () => _selectDateTime(context, _start_date),
-              
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.access_time_filled),
-                labelText: 'Starts',
-                hintText: 'Pick the starting date & time of your event',
-                border: OutlineInputBorder(),
-                
+              // EVENT LOCATION BOX
+              TextField(
+                controller: _location,
+                autocorrect: false,
+                enableSuggestions: false,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.location_on_outlined),
+                  labelText: 'Location',
+                  hintText: 'Enter the location of your event',
+                  border: OutlineInputBorder()
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            TextField(
-              controller: _end_date,
-              readOnly: true,
-              onTap: () => _selectDateTime(context, _end_date),
-              
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.access_time),
-                labelText: 'Ends',
-                hintText: 'Pick the ending date & time of your event',
-                border: OutlineInputBorder(),
-                
+              // EVENT START TIME BOX
+              TextField(
+                controller: _startDate,
+                readOnly: true, // Don't ask for text keyboard input
+                onTap: () => selectDateTime(context, _startDate),
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.access_time_filled),
+                  labelText: 'Event Starts...',
+                  hintText: 'Pick the starting date & time of your event',
+                  border: OutlineInputBorder()
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-            TextField(
-              controller: _description,
-              autocorrect: false,
-              enableSuggestions: false,
-              maxLines: null,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.summarize_outlined),
-                labelText: 'Description',
-                hintText: 'Enter a description of your event',
-                border: OutlineInputBorder(),
+              // EVENT END TIME BOX
+              TextField(
+                controller: _endDate,
+                readOnly: true,
+                onTap: () => selectDateTime(context, _endDate),
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.access_time),
+                  labelText: 'Event Ends...',
+                  hintText: 'Pick the ending date & time of your event',
+                  border: OutlineInputBorder()
+                ),
               ),
-            ),
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
-          // TODO 
-          SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
+              // EVENT DESCRIPTION BOX
+              TextField(
+                controller: _description,
+                autocorrect: false,
+                enableSuggestions: false,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  hintText: 'Enter a description of your event',
+                  border: OutlineInputBorder(),
+                  alignLabelWithHint: true,
+                  icon: Icon(Icons.summarize_outlined)
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // CREATE EVENT BUTTON - SEND INFO TO BACKEND
+              SizedBox(
+                width: double.infinity, // Span the whole screen
+                child: ElevatedButton(
                   style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                  onPressed: () async {
-                    var auth =
-                        await eventInfo(_title.text, _description.text, _date.text, _location.text);
-                    if (auth.runtimeType == String) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Login Failed'),
-                            content: const SingleChildScrollView(
-                              child: ListBody(
-                                children: <Widget>[
-                                  Text(
-                                      'The Lgin credentials provided do not match a user.'),
-                                  Text(
-                                      'Please re-enter your credentials and try again.'),
-                                ],
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Okay'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
+                    ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                    // When the button is pressed, do this:
+                    onPressed: () async {
+                      var auth = await eventInfo(_title.text, _description.text, _startDate.text, _location.text);
+                            if (auth.runtimeType == String) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Login Failed'),
+                                    content: const SingleChildScrollView(
+                                      child: ListBody(
+                                        children: <Widget>[
+                                          Text(
+                                              'The Lgin credentials provided do not match a user.'),
+                                          Text(
+                                              'Please re-enter your credentials and try again.'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Okay'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
                                 },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                      );
-                    }
-                  },
-                  child: const Text('Create Event')),
-            )
-
-          ]),
-        )));
-  }
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const MyApp()),
+                              );
+                            }
+                          },
+                  child: const Text('Create Event') // Button title
+                )
+              )
+          ])
+        )
+      )
+    );
+  } // build
 }
