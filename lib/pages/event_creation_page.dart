@@ -4,12 +4,80 @@ import 'package:flutter_test_app/main.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
 
-// Define a stateful widget that is mutable and its corresponding state class
+// Define a stateful widget for event creation that is mutable and its corresponding state class
 class EventCreationPage extends StatefulWidget {
   const EventCreationPage({super.key});
   @override
   State<EventCreationPage> createState() => EventCreationPageState();
 }
+
+// Stateful widget for multiselect 
+class MultiSelect extends StatefulWidget {
+  final List<String> elements;
+  const MultiSelect({super.key, required this.elements});
+  @override
+  State<MultiSelect> createState() => MultiSelectState();
+}
+
+// State class to manage multiselect
+class MultiSelectState extends State<MultiSelect> {
+
+  // Hold selected items
+  final List<String> selectedItems = [];
+
+  // Called when item is selected or unselected
+  void itemChange(String itemVal, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        selectedItems.add(itemVal);
+      }
+      else {
+        selectedItems.remove(itemVal);
+      }
+    });
+  }
+
+  // Called when the cancel button is hit
+  void cancel() {
+    Navigator.pop(context);
+  }
+
+  // Called when the submit button is hit
+  void submit() {
+    Navigator.pop(context, selectedItems);
+  }
+
+  // Pop-up to allow user to select event tags
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Event Tags'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.elements
+          .map((item) => CheckboxListTile(
+            value: selectedItems.contains(item), 
+            title: Text(item),
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (isChecked) => itemChange(item, isChecked!)
+            ))
+            .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: cancel,
+          child: const Text('Cancel')
+        ),
+
+        ElevatedButton(
+          onPressed: submit, 
+          child: const Text('Submit'),
+        )
+      ]
+    );
+  }
+} // MultiSelectState
 
 // Define the state class to manage mutable state data and the widget's lifecycle
 class EventCreationPageState extends State<EventCreationPage> {
@@ -26,7 +94,7 @@ class EventCreationPageState extends State<EventCreationPage> {
   late bool? _studentsOnly;
   late bool? _foodDrinks;
   late bool? _feeRequired;
-  late final TextEditingController _tags;
+  late List<String> _tags;
 
   // initState function to initialize all of the late final variables from above 
   @override
@@ -40,7 +108,7 @@ class EventCreationPageState extends State<EventCreationPage> {
     _studentsOnly = false;
     _foodDrinks = false;
     _feeRequired = false;
-    _tags = TextEditingController();
+    _tags = [];
     super.initState();
   } // initState
 
@@ -56,7 +124,7 @@ class EventCreationPageState extends State<EventCreationPage> {
     _studentsOnly = null;
     _foodDrinks = null;
     _feeRequired = null;
-    _tags.dispose();
+    _tags = [];
     super.dispose();
   } // dispose
 
@@ -99,6 +167,31 @@ class EventCreationPageState extends State<EventCreationPage> {
       }
     }
   } // selectDateTime
+
+  // showMultiSelect function to allow users to multiselect event tags
+  void showMultiSelect() async {
+    final List<String> items = [
+      'Grinnell Athletics',
+      'Student Org',
+      'Admin Hosted',
+      'CA Hosted',
+      'Off Campus'
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(elements: items);
+      }
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _tags = results;
+      });
+    }
+  } // showMultiSelect
 
 // Build UI of widget
 // Everything is wrapped in a container with child content being scrollable
@@ -150,7 +243,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                 readOnly: true, // Don't ask for text keyboard input
                 onTap: () => selectDateTime(context, _startDate),
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.access_time_filled),
+                  icon: Icon(Icons.access_time),
                   labelText: 'Event Starts...',
                   hintText: 'Pick the starting date & time of your event',
                   border: OutlineInputBorder()
@@ -160,12 +253,13 @@ class EventCreationPageState extends State<EventCreationPage> {
               const SizedBox(height: 10),
 
               // EVENT END TIME BOX
+              // TODO: Don't allow the end date to be before the start date
               TextField(
                 controller: _endDate,
                 readOnly: true,
                 onTap: () => selectDateTime(context, _endDate),
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.access_time),
+                  icon: Icon(Icons.access_time_filled),
                   labelText: 'Event Ends...',
                   hintText: 'Pick the ending date & time of your event',
                   border: OutlineInputBorder()
@@ -219,7 +313,7 @@ class EventCreationPageState extends State<EventCreationPage> {
 
               const SizedBox(height: 10),
 
-              // STUDENTS ONLY TAG CHECKBOX
+              // FEE REQUIRED TAG CHECKBOX
               CheckboxListTile(
                 title: const Text("Fee Required?"),
                 value: _feeRequired,
@@ -229,6 +323,26 @@ class EventCreationPageState extends State<EventCreationPage> {
                   });
                 },
                 controlAffinity: ListTileControlAffinity.leading, 
+              ),
+
+              const SizedBox(height: 10),
+
+              // EVENT TAGS
+              ElevatedButton(
+                onPressed: showMultiSelect, 
+                child: const Text('Select your Event Type')
+              ),
+
+              const SizedBox(height: 10),
+
+              // DISPLAY CHOSEN EVENT TAGS
+              // TODO: Make it so that the event tags are saved every time they press the button
+              Wrap(
+                children: _tags
+                  .map((e) => Chip(
+                    label: Text(e),
+                    ))
+                    .toList(),
               ),
 
               const SizedBox(height: 10),
