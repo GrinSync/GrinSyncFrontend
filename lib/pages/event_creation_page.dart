@@ -23,7 +23,9 @@ class EventCreationPageState extends State<EventCreationPage> {
   late final TextEditingController _startDate;
   late final TextEditingController _endDate;
   late final TextEditingController _description;
-  late final TextEditingController _studentsOnly;
+  late bool? _studentsOnly;
+  late bool? _foodDrinks;
+  late bool? _feeRequired;
   late final TextEditingController _tags;
 
   // initState function to initialize all of the late final variables from above 
@@ -35,7 +37,9 @@ class EventCreationPageState extends State<EventCreationPage> {
     _startDate = TextEditingController();
     _endDate = TextEditingController();
     _description = TextEditingController();
-    _studentsOnly = TextEditingController();
+    _studentsOnly = false;
+    _foodDrinks = false;
+    _feeRequired = false;
     _tags = TextEditingController();
     super.initState();
   } // initState
@@ -49,7 +53,9 @@ class EventCreationPageState extends State<EventCreationPage> {
     _description.dispose();
     _startDate.dispose();
     _endDate.dispose();
-    _studentsOnly.dispose();
+    _studentsOnly = null;
+    _foodDrinks = null;
+    _feeRequired = null;
     _tags.dispose();
     super.dispose();
   } // dispose
@@ -185,6 +191,48 @@ class EventCreationPageState extends State<EventCreationPage> {
 
               const SizedBox(height: 10),
 
+              // STUDENTS ONLY TAG CHECKBOX
+              CheckboxListTile(
+                title: const Text("Students Only?"),
+                value: _studentsOnly,
+                onChanged: (newValue) {
+                  setState(() {
+                    _studentsOnly = newValue;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading, 
+              ),
+
+              const SizedBox(height: 10),
+
+              // FOOD & DRINKS TAG CHECKBOX
+              CheckboxListTile(
+                title: const Text("Food/Drinks Provided?"),
+                value: _foodDrinks,
+                onChanged: (newValue) {
+                  setState(() {
+                    _foodDrinks = newValue;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading, 
+              ),
+
+              const SizedBox(height: 10),
+
+              // STUDENTS ONLY TAG CHECKBOX
+              CheckboxListTile(
+                title: const Text("Fee Required?"),
+                value: _feeRequired,
+                onChanged: (newValue) {
+                  setState(() {
+                    _feeRequired = newValue;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading, 
+              ),
+
+              const SizedBox(height: 10),
+
               // CREATE EVENT BUTTON - SEND INFO TO BACKEND
               SizedBox(
                 width: double.infinity, // Span the whole screen
@@ -193,41 +241,48 @@ class EventCreationPageState extends State<EventCreationPage> {
                     ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
                     // When the button is pressed, do this:
                     onPressed: () async {
-                      var auth = await eventInfo(_title.text, _description.text, _startDate.text, _location.text);
-                            if (auth.runtimeType == String) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Login Failed'),
-                                    content: const SingleChildScrollView(
-                                      child: ListBody(
-                                        children: <Widget>[
-                                          Text(
-                                              'The Lgin credentials provided do not match a user.'),
-                                          Text(
-                                              'Please re-enter your credentials and try again.'),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Okay'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
+                      // Send event info to backend
+                      var create = await eventInfo(_title.text, _location.text, _startDate.text, _endDate.text, _description.text, _studentsOnly);
+                        
+                        // When the event info did not successfully go to the backend 
+                        if (create.runtimeType == String) { 
+                          // Show error message
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Event Creation Error'),
+                                content: const SingleChildScrollView(
+                                  child: ListBody(
+                                    children: <Widget> [
+                                      Text('GrinSync could not create your event.'),
+                                      Text('Please try again.')
                                     ],
-                                  );
-                                },
+                                  ),
+                                ),
+                                
+                                // Allow user to exit out of error message
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Okay'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
                               );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const MyApp()),
-                              );
-                            }
-                          },
+                            },
+                          );
+                        } 
+
+                        // Otherwise, event info was successfully sent to backend
+                        else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MyApp()),
+                          );
+                        }
+                    },
                   child: const Text('Create Event') // Button title
                 )
               )
@@ -236,4 +291,4 @@ class EventCreationPageState extends State<EventCreationPage> {
       )
     );
   } // build
-}
+} // EventCreationPageState
