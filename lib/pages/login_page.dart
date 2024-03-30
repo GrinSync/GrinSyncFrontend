@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/main.dart';
 
 class LoginPage extends StatefulWidget {

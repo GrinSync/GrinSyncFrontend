@@ -31,6 +31,8 @@ Future userAuthentication(String username, String password) async {
 
 getUser(String token) async{
   var url = Uri.parse('http://grinsync.com/api/getUser'); // url to send info
-  var res = await http.get(url, headers: {});
+  var res = await http.get(url, headers: {
+    'Authorization': 'Token $token',
+  });
   print(res.body);
 }
