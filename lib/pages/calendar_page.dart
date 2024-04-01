@@ -45,7 +45,7 @@ class CalendarPageState extends State<CalendarPage> {
         dayFormat: 'EEE',
       ),
       blackoutDates: <DateTime>[],
-      //dataSource: EventDataSource(getAllEvents()),
+      dataSource: EventDataSource(getAllEvents()),
     ));
   }
 } // CalendarPageState
