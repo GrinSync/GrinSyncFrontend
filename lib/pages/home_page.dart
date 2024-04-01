@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/models/event_models.dart';
-
+import 'package:flutter_test_app/pages/event_details_page.dart';
 
 // HomePage shows user a list of events
 
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Event> allEvents = getAllEvents();
+  List<Event> allEvents = getSampleEvents();
 
 
 
@@ -20,16 +21,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //event tabs to scroll through
+      //event cards
       body: ListView.builder(
         itemCount: allEvents.length,
         itemBuilder: (context, index) {
           return Card(
             child: ListTile(
-              title: Text('Event $index'),
-              subtitle: Text('Event Description $index'),
+              // leading: event image?
+              title: Text(allEvents[index].title ?? 'Null title', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+              subtitle: Text('${allEvents[index].location ?? 'Null location'}\n${allEvents[index].startDate ?? 'Null start date'} - ${allEvents[index].endDate ?? 'Null end date'}', style: TextStyle(fontSize: 15, color: Colors.grey[600])),
+              isThreeLine: true,
+              // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
               onTap: () {
-                // navigate to event details page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventDetailsPage(event: allEvents[index]),
+                  ),
+                );
               },
             ),
           );
@@ -43,35 +52,37 @@ class _HomePageState extends State<HomePage> {
 List<Event> getSampleEvents() {
   List<Event> allEvents = <Event>[];
   allEvents.add(Event(
-    title: 'Event 1',
-    location: 'Location 1',
-    description: 'Event Description 1',
-    startDate: 'Time 1',
-    endDate: 'Date 1',
+    title: '60s Harris',
+    location: 'Harris Center',
+    description: 'Random event description Random event description Random event description Random event description Random event description',
+    startDate: '04/06/2024 22:00',
+    endDate: '04/07/2024 1:00',
     studentOnly: true,
     foodDrinks: true,
-    feeRequired: true,
-    tags: ['Tag 1', 'Tag 2'],
+    feeRequired: false,
+    tags: [],
   ));
   allEvents.add(Event(
-    title: 'Event 2',
-    description: 'Event Description 2',
-    location: 'Location 2',
-    time: 'Time 2',
-    date: 'Date 2',
-    tags: ['Tag 3', 'Tag 4'],
-    attendees: ['Attendee 3', 'Attendee 4'],
-    host: 'Host 2',
+    title: 'CSC 324 Study Session',
+    location: 'Noyce 3815',
+    description: 'We will be preparing for the upcoming presentation',
+    startDate: '04/10/2024 19:00',
+    endDate: '04/10/2024 21:00',
+    studentOnly: true,
+    foodDrinks: false,
+    feeRequired: false,
+    tags: [],
   ));
   allEvents.add(Event(
-    title: 'Event 3',
-    description: 'Event Description 3',
-    location: 'Location 3',
-    time: 'Time 3',
-    date: 'Date 3',
-    tags: ['Tag 5', 'Tag 6'],
-    attendees: ['Attendee 5', 'Attendee 6'],
-    host: 'Host 3',
+    title: 'Ten Ten Party',
+    location: '1010 High St',
+    description: 'You know what it is',
+    startDate: '10/10/2024 22:00',
+    endDate: '10/11/2024 4:00',
+    studentOnly: true,
+    foodDrinks: true,
+    feeRequired: false,
+    tags: [],
   ));
   return allEvents;
 }

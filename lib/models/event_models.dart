@@ -1,7 +1,7 @@
 class Event {
   String? eventID;
   String? title;
-  String? orgID;
+  // String? orgID;
   String? location;
   String? startDate;
   String? endDate;
@@ -15,7 +15,7 @@ class Event {
 
   Event({
     this.title,
-    this.orgID,
+    //this.orgID,
     this.location,
     this.startDate,
     this.endDate,
