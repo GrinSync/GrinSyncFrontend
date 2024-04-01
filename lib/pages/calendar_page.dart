@@ -38,8 +38,8 @@ class CalendarPageState extends State<CalendarPage> {
       timeSlotViewSettings: TimeSlotViewSettings(
         timeInterval: Duration(minutes: 30),
         timeFormat: "hh:mm",
-        timeIntervalHeight: -1,
-        timeIntervalWidth: -1,
+        timeIntervalHeight: 100,
+        timeIntervalWidth: 25,
         minimumAppointmentDuration: Duration(minutes: 15),
         dateFormat: 'd',
         dayFormat: 'EEE',
