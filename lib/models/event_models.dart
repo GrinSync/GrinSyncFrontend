@@ -9,23 +9,20 @@ class Event {
   bool? feeRequired;
   List<String>? tags;
 
+  Event(
+      {this.title,
+      this.location,
+      this.startDate,
+      this.endDate,
+      this.description,
+      this.studentOnly,
+      this.foodDrinks,
+      this.feeRequired,
+      this.tags});
 
-
-  Event({
-    this.title,
-    this.location,
-    this.startDate,
-    this.endDate,
-    this.description,
-    this.studentOnly,
-    this.foodDrinks,
-    this.feeRequired,
-    this.tags
-  });
-
-  factory Event.fromJson(json){
+  factory Event.fromJson(json) {
     return Event(
-      // Not sure what to put here yet
-    );
-  } 
+        // Not sure what to put here yet
+        );
+  }
 }

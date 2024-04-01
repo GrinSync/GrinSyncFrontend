@@ -23,13 +23,12 @@ Future userAuthentication(String username, String password) async {
     box.put('token', token); // save token in box
     box.close();
     await getUser(token);
-  }
-  else{
-     return 'Login Failed';
+  } else {
+    return 'Login Failed';
   }
 }
 
-getUser(String token) async{
+getUser(String token) async {
   var url = Uri.parse('http://grinsync.com/api/getUser'); // url to send info
   var res = await http.get(url, headers: {
     'Authorization': 'Token $token',

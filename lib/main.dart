@@ -43,7 +43,8 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
-          fontFamily: 'Futura' // Futura as the default font, the font used on Grinnell College's website
+          fontFamily:
+              'Futura' // Futura as the default font, the font used on Grinnell College's website
           ),
       home: const MyHomePage(),
     );
@@ -71,7 +72,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   var selectedIndexOnHomePage = 0;
-  final List<String> _titles = ['Upcoming Events', 'Search', 'Create an Event', 'My Agenda', 'My Profile'];
+  final List<String> _titles = [
+    'Upcoming Events',
+    'Search',
+    'Create an Event',
+    'My Agenda',
+    'My Profile'
+  ];
 
   void _incrementCounter() {
     setState(() {
@@ -89,29 +96,28 @@ class _MyHomePageState extends State<MyHomePage> {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
 
-
-  Widget currentPage;
-  // this switch statement will determine which page to display based on the navigation bar item selected
-  // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
-  switch (selectedIndexOnHomePage) {
-    case 0: // this is the home page where where user can discover events
-      currentPage = Placeholder();
-      break;
-    case 1: // this is the search page where user can search for events
-      currentPage = Placeholder();
-      break;
-    case 2: // this is the event creation page where user can create their own events
-      currentPage = EventCreationPage();
-      break;
-    case 3: // this is the user's agenda (calendar view: month view, week view, day view) 
-      currentPage = Placeholder();
-      break;
-    case 4: // this is user's profile page
-      currentPage = ProfilePage(); 
-      break;
-    default:
-      throw UnimplementedError('no widget for $selectedIndexOnHomePage');
-  }
+    Widget currentPage;
+    // this switch statement will determine which page to display based on the navigation bar item selected
+    // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
+    switch (selectedIndexOnHomePage) {
+      case 0: // this is the home page where where user can discover events
+        currentPage = Placeholder();
+        break;
+      case 1: // this is the search page where user can search for events
+        currentPage = Placeholder();
+        break;
+      case 2: // this is the event creation page where user can create their own events
+        currentPage = EventCreationPage();
+        break;
+      case 3: // this is the user's agenda (calendar view: month view, week view, day view)
+        currentPage = Placeholder();
+        break;
+      case 4: // this is user's profile page
+        currentPage = ProfilePage();
+        break;
+      default:
+        throw UnimplementedError('no widget for $selectedIndexOnHomePage');
+    }
 
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
@@ -121,13 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        foregroundColor:
-            Colors.white, // white text color
+        foregroundColor: Colors.white, // white text color
         backgroundColor: Theme.of(context).colorScheme.primary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title:
-            Text(_titles[selectedIndexOnHomePage], style: TextStyle(fontWeight: FontWeight.w800)),
+        title: Text(_titles[selectedIndexOnHomePage],
+            style: TextStyle(fontWeight: FontWeight.w800)),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -148,44 +153,46 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: Container(
-              child: currentPage, //one of the five pages depending on the navigation bar item selected
-            ),),
-            SafeArea(
-              bottom: false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
-              child: NavigationBar(
-                animationDuration: const Duration(milliseconds: 300),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                indicatorColor: Colors.white,
-                shadowColor: Colors.white,
-                destinations: const [
-                  NavigationDestination(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.search),
-                    label: 'Search',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.add),
-                    label: 'Create',
-                  ),
-                  NavigationDestination(
-                      icon: Icon(Icons.calendar_month), 
-                      label: 'Agenda'),
-                  NavigationDestination(
-                    icon: Icon(Icons.person),
-                    label: 'Profile',
-                  ),
-                ],
-                selectedIndex: selectedIndexOnHomePage,
-                onDestinationSelected: (value) {
-                    setState(() {
-                    selectedIndexOnHomePage = value;
-                    });
-                }
+            Expanded(
+              child: Container(
+                child:
+                    currentPage, //one of the five pages depending on the navigation bar item selected
               ),
+            ),
+            SafeArea(
+              bottom:
+                  false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
+              child: NavigationBar(
+                  animationDuration: const Duration(milliseconds: 300),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  indicatorColor: Colors.white,
+                  shadowColor: Colors.white,
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.search),
+                      label: 'Search',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.add),
+                      label: 'Create',
+                    ),
+                    NavigationDestination(
+                        icon: Icon(Icons.calendar_month), label: 'Agenda'),
+                    NavigationDestination(
+                      icon: Icon(Icons.person),
+                      label: 'Profile',
+                    ),
+                  ],
+                  selectedIndex: selectedIndexOnHomePage,
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedIndexOnHomePage = value;
+                    });
+                  }),
             )
           ],
         ),
