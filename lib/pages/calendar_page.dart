@@ -1,0 +1,129 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:flutter_test_app/api/new_event_info.dart';
+import 'package:flutter_test_app/main.dart';
+import 'package:http/http.dart' as http;
+
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+  @override
+  State<CalendarPage> createState() => CalendarPageState();
+}
+
+class CalendarPageState extends State<CalendarPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SfCalendar(
+      view: CalendarView.day,
+      firstDayOfWeek: 7,
+      allowedViews: [
+        CalendarView.day,
+        CalendarView.week,
+        CalendarView.month,
+        CalendarView.schedule
+      ],
+      monthViewSettings: MonthViewSettings(
+        appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+        dayFormat: 'EEE',
+      ),
+      scheduleViewSettings: ScheduleViewSettings(
+        hideEmptyScheduleWeek: true,
+      ),
+      timeSlotViewSettings: TimeSlotViewSettings(
+        timeInterval: Duration(minutes: 30),
+        timeFormat: "hh:mm",
+        timeIntervalHeight: -1,
+        timeIntervalWidth: -1,
+        minimumAppointmentDuration: Duration(minutes: 15),
+        dateFormat: 'd',
+        dayFormat: 'EEE',
+      ),
+      blackoutDates: <DateTime>[],
+      dataSource: EventDataSource(getAllEvents()),
+    ));
+  }
+} // CalendarPageState
+
+List<int> parseFormattedTime(String time) {
+  int month = int.parse(time.substring(0, 2));
+  int day = int.parse(time.substring(3, 5));
+  int year = int.parse(time.substring(6, 10));
+  int hour = int.parse(time.substring(11, 13));
+  int minute = int.parse(time.substring(14, 16));
+
+  List<int> res = <int>[month, day, year, hour, minute];
+  return res;
+}
+
+Future<List<Appointment>> getAllEvents() async {
+
+  List<Appointment> allEvents = <Appointment>[];
+
+  var url = Uri.parse('http://grinsync.com/api/create/event');
+  final response = await http.get(url);
+  var responseData = json.decode(response.body);
+
+  for (var obj in responseData) {
+    String title = obj["title"];
+    String description = obj["description"];
+    String time = obj["date"];
+    String location = obj["location"];
+    bool? studentsOnly = obj["students_only"];
+    List<EventTags> tags = obj["tags"];
+
+    List<String> temp = time.split("-");
+    String startTime = temp[0];
+    String endTime = temp[1];
+
+    String startMonth = startTime.substring(0, 2);
+    String startDay = startTime.substring(3, 5);
+    String startYear = startTime.substring(6, 10);
+    String startHour = startTime.substring(11, 13);
+    String startMinute = startTime.substring(14, 16);
+
+    String startMonth = startTime.substring(0, 2);
+    String startDay = startTime.substring(3, 5);
+    String startYear = startTime.substring(6, 10);
+    String startHour = startTime.substring(11, 13);
+    String startMinute = startTime.substring(14, 16);
+
+    Appointment event = Appointment(
+      startTime: startTime, 
+      endTime: endTime,
+      )
+
+    allEvents.add(event);
+  }
+
+  return allEvents;
+}
+
+class EventDataSource extends CalendarDataSource {
+  EventDataSource(List<Appointment> events) {
+    appointments = events;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].to;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments![index].isAllDay;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].eventName;
+  }
+}
