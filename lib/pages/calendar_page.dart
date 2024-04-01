@@ -20,6 +20,8 @@ class CalendarPageState extends State<CalendarPage> {
         body: SfCalendar(
       view: CalendarView.day,
       firstDayOfWeek: 7,
+      minDate: DateTime(2024, 08, 14, 0, 0, 0),
+      maxDate: DateTime(2025, 05, 25, 0, 0, 0),
       allowedViews: [
         CalendarView.day,
         CalendarView.week,
@@ -60,7 +62,6 @@ List<int> parseFormattedTime(String time) {
 }
 
 Future<List<Appointment>> getAllEvents() async {
-
   List<Appointment> allEvents = <Appointment>[];
 
   var url = Uri.parse('http://grinsync.com/api/create/event');
@@ -72,29 +73,37 @@ Future<List<Appointment>> getAllEvents() async {
     String description = obj["description"];
     String time = obj["date"];
     String location = obj["location"];
-    bool? studentsOnly = obj["students_only"];
-    List<EventTags> tags = obj["tags"];
+    bool studentsOnly = obj["students_only"];
+    // List<EventTags> tags = obj["tags"];
+
+    // if (studentsOnly)
 
     List<String> temp = time.split("-");
     String startTime = temp[0];
     String endTime = temp[1];
 
-    String startMonth = startTime.substring(0, 2);
-    String startDay = startTime.substring(3, 5);
-    String startYear = startTime.substring(6, 10);
-    String startHour = startTime.substring(11, 13);
-    String startMinute = startTime.substring(14, 16);
-
-    String startMonth = startTime.substring(0, 2);
-    String startDay = startTime.substring(3, 5);
-    String startYear = startTime.substring(6, 10);
-    String startHour = startTime.substring(11, 13);
-    String startMinute = startTime.substring(14, 16);
+    List<int> startTimeParsed = parseFormattedTime(startTime);
+    List<int> endTimeParsed = parseFormattedTime(endTime);
 
     Appointment event = Appointment(
-      startTime: startTime, 
-      endTime: endTime,
-      )
+      startTime: DateTime(
+        startTimeParsed[2],
+        startTimeParsed[0],
+        startTimeParsed[1],
+        startTimeParsed[3],
+        startTimeParsed[4],
+      ),
+      endTime: DateTime(
+        endTimeParsed[2],
+        endTimeParsed[0],
+        endTimeParsed[1],
+        endTimeParsed[3],
+        endTimeParsed[4],
+      ),
+      location: location,
+      subject: title,
+      notes: description,
+    );
 
     allEvents.add(event);
   }
@@ -103,7 +112,7 @@ Future<List<Appointment>> getAllEvents() async {
 }
 
 class EventDataSource extends CalendarDataSource {
-  EventDataSource(List<Appointment> events) {
+  EventDataSource(Future<List<Appointment>> events) {
     appointments = events;
   }
 
