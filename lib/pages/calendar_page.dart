@@ -45,7 +45,7 @@ class CalendarPageState extends State<CalendarPage> {
         dayFormat: 'EEE',
       ),
       blackoutDates: <DateTime>[],
-      dataSource: EventDataSource(getAllEvents()),
+      //dataSource: EventDataSource(getAllEvents()),
     ));
   }
 } // CalendarPageState
@@ -113,7 +113,7 @@ Future<List<Appointment>> getAllEvents() async {
 
 class EventDataSource extends CalendarDataSource {
   EventDataSource(Future<List<Appointment>> events) {
-    appointments = events;
+    //appointments = events;
   }
 
   @override

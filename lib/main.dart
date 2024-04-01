@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/pages/event_creation_page.dart';
+import 'package:flutter_test_app/pages/home_page.dart';
+import 'package:flutter_test_app/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -71,7 +73,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   var selectedIndexOnHomePage = 0;
-  final List<String> _titles = ['Upcoming Events', 'Search', 'Create an Event', 'My Agenda', 'My Profile'];
+  final List<String> _titles = ['Upcoming Events', 'Search', 'Create an Event', 'Calendar', 'My Profile'];
 
   void _incrementCounter() {
     setState(() {
@@ -95,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
   switch (selectedIndexOnHomePage) {
     case 0: // this is the home page where where user can discover events
-      currentPage = Placeholder();
+      currentPage = HomePage();
       break;
     case 1: // this is the search page where user can search for events
       currentPage = Placeholder();
@@ -104,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
       currentPage = EventCreationPage();
       break;
     case 3: // this is the user's agenda (calendar view: month view, week view, day view) 
-      currentPage = Placeholder();
+      currentPage = CalendarPage();
       break;
     case 4: // this is user's profile page
       currentPage = ProfilePage(); 
