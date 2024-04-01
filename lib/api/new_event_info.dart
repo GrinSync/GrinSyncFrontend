@@ -28,14 +28,15 @@ Future eventInfo(String userTitle, String userLocation, String userStartDate,
   var url = Uri.parse('https://grinsync.com/api/create/event');
   // URL to send new event info
   var result = await https.post(url, body: body, headers: headers);
-  print(result.body);
-  // If the login was not successful, we return a String so we can send an error message to the user
-  var json = jsonDecode(result.body);
+
   // This is how to check the error key
-  if (json.containsKey('detail')){
-    return 'not logged in';
+  var json = jsonDecode(result.body);
+  if (json.containsKey('error')) {
+    return 1;
   }
+
+  // If the login was not successful, we return a String so we can send an error message to the user
   if (result.statusCode != 200) {
-    return 'Event Creation Failed';
+    return 'failed';
   }
 } // eventInfo

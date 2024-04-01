@@ -351,6 +351,38 @@ class EventCreationPageState extends State<EventCreationPage> {
                                   );
                                 }
 
+                                else if (create.runtimeType == int) {
+                                  // Show error message
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title:
+                                            const Text('Event Creation Error'),
+                                        content: const SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text(
+                                                  'Event is missing information/has invalid input.'),
+                                              Text('Please edit event details.')
+                                            ],
+                                          ),
+                                        ),
+
+                                        // Allow user to exit out of error message
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+
                                 // Otherwise, event info was successfully sent to backend
                                 else {
                                   Navigator.push(
