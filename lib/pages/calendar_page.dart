@@ -111,7 +111,7 @@ Future<List<Appointment>> getAllEvents() async {
 
 class EventDataSource extends CalendarDataSource {
   EventDataSource(Future<List<Appointment>> events) {
-    appointments = events;
+    // appointments = events;
   }
 
   @override
