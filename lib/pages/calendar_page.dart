@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:http/http.dart' as http;
 
 class CalendarPage extends StatefulWidget {
@@ -113,7 +111,7 @@ Future<List<Appointment>> getAllEvents() async {
 
 class EventDataSource extends CalendarDataSource {
   EventDataSource(Future<List<Appointment>> events) {
-    //appointments = events;
+    // appointments = events;
   }
 
   @override
