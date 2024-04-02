@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter_test_app/constants.dart';
+import 'package:flutter_test_app/models/user_models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
-Future userAuthentication(String username, String password) async {
+Future<dynamic> userAuthentication(String username, String password) async {
   // body stores the username and password in a single map data structure
   Map body = {
     'username': username,
@@ -22,17 +22,50 @@ Future userAuthentication(String username, String password) async {
     // TODO: Encrypt this box!
     box.put('token', token); // save token in box
     box.close();
-    await getUser(token);
-  }
-  else{
-     return 'Login Failed';
+    User? user = await getUser(token);
+    return user;
+  } else {
+    return 'Login Failed';
   }
 }
 
-getUser(String token) async{
-  var url = Uri.parse('http://grinsync.com/api/getUser'); // url to send info
-  var res = await http.get(url, headers: {
-    'Authorization': 'Token $token',
-  });
+Future<User?> getUser(String token) async {
+  var url = Uri.parse('https://grinsync.com/api/getUser'); // url to send info
+  var res = await http.get(url, headers: {'Authorization': 'Token $token'});
   print(res.body);
+  if (res.statusCode == 200) {
+    var json = jsonDecode(res.body);
+    User user = User.fromJson(json);
+    user.token = token;
+    return user;
+  } else {
+    return null;
+  }
+}
+
+Future<dynamic> registerUser(String firstName, String lastName, String email, String password, String accType, ) async{
+  Map<String,String> data ={
+    'first_name' : firstName,
+    'last_name' : lastName,
+    'email' : email,
+    'password' : password,
+    'type' : accType
+  };
+  var url = Uri.parse('http://grinsync.com/create/user'); // url to send info
+  var res = await http.post(url, body: data);
+  if (res.statusCode == 200){
+    var json = jsonDecode(res.body);
+    String token = json['key'];
+    var userAttempt = await getUser(token);
+    if (userAttempt != null){
+      User user = userAttempt;
+      return user;
+    }
+    else {
+      return null;
+    }
+  }
+  else{
+    return null;
+  }
 }
