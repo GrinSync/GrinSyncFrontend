@@ -11,7 +11,7 @@ class EventCreationPage extends StatefulWidget {
   State<EventCreationPage> createState() => EventCreationPageState();
 }
 
-// Stateful widget for multiselect
+// Define a stateful widget for multiselect option for event tags. 
 class MultiSelect extends StatefulWidget {
   final List<String> elements;
   const MultiSelect({super.key, required this.elements});
@@ -21,31 +21,31 @@ class MultiSelect extends StatefulWidget {
 
 // State class to manage multiselect
 class MultiSelectState extends State<MultiSelect> {
-  // Hold selected items
+  // List to hold selected items
   final List<String> selectedItems = [];
 
-  // Called when item is selected or unselected
-  void itemChange(String itemVal, bool isSelected) {
+  // Function called when item is selected or unselected
+  void itemChange(String item, bool isSelected) {
     setState(() {
       if (isSelected) {
-        selectedItems.add(itemVal);
+        selectedItems.add(item);
       } else {
-        selectedItems.remove(itemVal);
+        selectedItems.remove(item);
       }
     });
   }
 
-  // Called when the cancel button is hit
+  // Function called when the cancel button is hit
   void cancel() {
     Navigator.pop(context);
   }
 
-  // Called when the submit button is hit
+  // Function called when the submit button is hit
   void submit() {
     Navigator.pop(context, selectedItems);
   }
 
-  // Pop-up to allow user to select event tags
+  // Pop-up window to allow user to select event tags
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -71,7 +71,7 @@ class MultiSelectState extends State<MultiSelect> {
   }
 } // MultiSelectState
 
-// Define the state class to manage mutable state data and the widget's lifecycle
+// State class to manage mutable state data and the widget's lifecycle for event creation page
 class EventCreationPageState extends State<EventCreationPage> {
   // late = initialization occurs later in the code
   // final = variable can only be assigned to a value once
@@ -236,7 +236,6 @@ class EventCreationPageState extends State<EventCreationPage> {
                       const SizedBox(height: 10),
 
                       // EVENT END TIME BOX
-                      // TODO: Don't allow the end date to be before the start date
                       TextField(
                         controller: _endDate,
                         readOnly: true,
