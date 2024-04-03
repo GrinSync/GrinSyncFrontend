@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
@@ -13,19 +14,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late User? _user;
-  late bool _guestmode; // default to guest mode
+  late User? _user = null;
+  late bool _guestmode = true; // default to guest mode
 
   // check if the user is logged in
   // if the user is logged in, set _guestmode to false, and set the user to the current user
   // if the user is not logged in, set _guestmode to true, and set the user to null
   Future<void> checkLoginStatus () async {
-    // TODO: need to get the token from somewhere
-    // _user = await getUser(token)
+    var box = await Hive.openBox(tokenBox);
+    var token = box.get('token');
+    box.close();
+    _user = await getUser(token);
 
-    // *** temporary ***
-    _user = User(token: '1234', username: 'TestUser', firstName: 'Brian', lastName: 'Chan');
-    // *** temporary ***
     if (_user == null) {
       _guestmode = true;
     } else {
@@ -33,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
   
-
 
   @override
   void initState() {
