@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/main.dart';
+import 'package:flutter_test_app/models/user_models.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -58,10 +59,6 @@ class _LoginPage extends State<LoginPage> {
                 labelText: 'Password',
                 hintText: 'Enter your password',
                 border: OutlineInputBorder(),
-                // suffixIcon: IconButton(
-                //   onPressed: null,
-                //   icon: Icon(Icons.remove_red_eye_sharp)
-                // )
               ),
             ),
             const SizedBox(height: 10),
@@ -87,7 +84,7 @@ class _LoginPage extends State<LoginPage> {
                               child: ListBody(
                                 children: <Widget>[
                                   Text(
-                                      'The Lgin credentials provided do not match a user.'),
+                                      'The Login credentials provided do not match a user.'),
                                   Text(
                                       'Please re-enter your credentials and try again.'),
                                 ],
@@ -104,7 +101,7 @@ class _LoginPage extends State<LoginPage> {
                           );
                         },
                       );
-                    } else {
+                    } else if (auth.runtimeType == User) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const MyApp()),
