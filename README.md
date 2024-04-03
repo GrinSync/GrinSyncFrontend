@@ -18,3 +18,6 @@ This will confirm you have everything set up correctly. If you are missing any r
 
 Once you have everything installed on your computer, you download this repository locally onto your computer.
 Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator
+
+## Operational Use Cases (so far)
+- Ben creates an event by entering his event information in GrinSync (FEATURES NOT YET DONE FOR THIS USE CASE: repeating events option, associating student organization, picture upload - we may switch this to a stretch feature; as of now, we have the MVP for the event creation page - event title, location, date/time, description, event tags).
