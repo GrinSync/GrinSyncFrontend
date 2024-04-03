@@ -3,6 +3,8 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 
+enum SingingCharacter { student, faculty, community }
+
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
   @override
@@ -15,7 +17,7 @@ class _RegistrationPage extends State<RegistrationPage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   late final TextEditingController _confirmPassword;
-  late final TextEditingController _accType;
+  SingingCharacter? _character = SingingCharacter.student;
   @override
   void initState() {
     _email = TextEditingController();
@@ -23,7 +25,6 @@ class _RegistrationPage extends State<RegistrationPage> {
     _firstName = TextEditingController();
     _lastName = TextEditingController();
     _confirmPassword = TextEditingController();
-    _accType = TextEditingController();
     super.initState();
   }
 
@@ -34,7 +35,6 @@ class _RegistrationPage extends State<RegistrationPage> {
     _firstName.dispose();
     _lastName.dispose();
     _confirmPassword.dispose();
-    _accType.dispose();
     super.dispose();
   }
 
@@ -99,7 +99,7 @@ class _RegistrationPage extends State<RegistrationPage> {
             ),
             const SizedBox(height: 10),
             TextField(
-              controller: _password,
+              controller: _confirmPassword,
               autocorrect: false,
               obscureText: true,
               enableSuggestions: false,
@@ -111,15 +111,55 @@ class _RegistrationPage extends State<RegistrationPage> {
               ),
             ),
             const SizedBox(height: 10),
+            ListTile(
+              title: const Text('Student'),
+              leading: Radio<SingingCharacter>(
+                value: SingingCharacter.student,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  setState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: const Text('Faculty Member'),
+              leading: Radio<SingingCharacter>(
+                value: SingingCharacter.faculty,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  setState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: const Text('Community Member'),
+              leading: Radio<SingingCharacter>(
+                value: SingingCharacter.community,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  setState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
                   onPressed: () async {
-                    var auth = await registerUser(_firstName.text,
-                        _lastName.text, _email.text, _password.text, _accType.text);
-                    if (auth.runtimeType == String) {
+                    var auth = await registerUser(
+                        _firstName.text,
+                        _lastName.text,
+                        _email.text,
+                        _password.text,
+                        _character);
+                    if (auth == null) {
                       showDialog(
                         context: context,
                         builder: (context) {

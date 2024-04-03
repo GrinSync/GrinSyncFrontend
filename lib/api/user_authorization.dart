@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
+import 'package:flutter_test_app/pages/registration_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -43,29 +44,41 @@ Future<User?> getUser(String token) async {
   }
 }
 
-Future<dynamic> registerUser(String firstName, String lastName, String email, String password, String accType, ) async{
-  Map<String,String> data ={
-    'first_name' : firstName,
-    'last_name' : lastName,
-    'email' : email,
-    'password' : password,
-    'type' : accType
+Future<dynamic> registerUser(String firstName, String lastName, String email,
+    String password, SingingCharacter? accType) async {
+  String account;
+  switch (accType) {
+    case SingingCharacter.student:
+      account = 'STU';
+    case SingingCharacter.faculty:
+      account = 'FAL';
+    case SingingCharacter.community:
+      account = 'COM';
+    case null:
+      account = 'COM';
+  }
+  Map<String, String> data = {
+    'first_name': firstName,
+    'last_name': lastName,
+    'email': email,
+    'password': password,
+    'type': account
   };
-  var url = Uri.parse('http://grinsync.com/create/user'); // url to send info
+  var url =
+      Uri.parse('https://grinsync.com/api/create/user'); // url to send info
   var res = await http.post(url, body: data);
-  if (res.statusCode == 200){
+  print(res.body);
+  if (res.statusCode == 200) {
     var json = jsonDecode(res.body);
     String token = json['key'];
     var userAttempt = await getUser(token);
-    if (userAttempt != null){
+    if (userAttempt != null) {
       User user = userAttempt;
       return user;
-    }
-    else {
+    } else {
       return null;
     }
-  }
-  else{
+  } else {
     return null;
   }
 }
