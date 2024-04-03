@@ -43,6 +43,16 @@ class _MyAppState extends State<MyApp> {
           //
           // This works for code too, not just values: Most code changes can be
           // tested with just a hot reload.
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            indicatorColor: Colors.white,
+            labelTextStyle: MaterialStateProperty.resolveWith((state) {
+              if (state.contains(MaterialState.selected)) {
+                return const TextStyle(color: Colors.white);
+              }
+              return const TextStyle(color: Colors.black);
+            }),
+          ),
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
