@@ -1,34 +1,40 @@
 class Event {
-  String? eventID;
+  int id;
   String? title;
   // String? orgID;
-  String? location;
-  String? startDate;
-  String? endDate;
+  // String? location;
+  String? start;
+  String? end;
   String? description;
-  bool? studentOnly;
-  bool? foodDrinks;
-  bool? feeRequired;
-  List<String>? tags;
+  bool? studentsOnly;
+  //List<String>? tags;
+  String? tags;
 
 
 
   Event({
+    this.id = -1,
     this.title,
     //this.orgID,
-    this.location,
-    this.startDate,
-    this.endDate,
+    //this.location,
+    this.start,
+    this.end,
     this.description,
-    this.studentOnly,
-    this.foodDrinks,
-    this.feeRequired,
+    this.studentsOnly,
     this.tags
   });
 
   factory Event.fromJson(json){
     return Event(
-      // Not sure what to put here yet
+      id: json['id'],
+      title: json['title'],
+      //orgID: json['orgID'],
+      //location: json['location'],
+      start: json['start'],
+      end: json['end'],
+      description: json['description'],
+      studentsOnly: json['studentsOnly'],
+      tags: json['tags']
     );
   } 
 }

@@ -17,14 +17,15 @@ class EventDetailsPage extends StatelessWidget {
         title: Text('Event Details', style: TextStyle(fontWeight: FontWeight.w800)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-        body: SafeArea(
+        body: Container(
+          padding: EdgeInsets.all(8.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: [
-                  Text(event.title ?? 'Null title', style: TextStyle(fontFamily: 'Helvetica', fontSize: 30, fontWeight: FontWeight.w800)),
+                  Flexible(child: Text(event.title ?? 'Null title', style: TextStyle(fontFamily: 'Helvetica', fontSize: 30, fontWeight: FontWeight.w800))),
                   IconButton(
                     icon: const Icon(Icons.favorite_border, color: Colors.pink),
                     tooltip: 'Save the event',
@@ -42,17 +43,17 @@ class EventDetailsPage extends StatelessWidget {
               }, 
                 child: Text('Org/User Name (Not implemented)'),
                 ),
-              Text('Event Location', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.location ?? 'Null location', style: TextStyle(fontSize: 20)),
+              //Text('Event Location', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+              //Text(event.location ?? 'Null location', style: TextStyle(fontSize: 20)),
               Text('Event starts at', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.startDate ?? 'Null start date', style: TextStyle(fontSize: 20)),
+              Text(event?.start ?? 'Null start date', style: TextStyle(fontSize: 20)),
               Text('Event ends at', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.endDate ?? 'Null end date', style: TextStyle(fontSize: 20)),
+              Text(event?.end ?? 'Null end date', style: TextStyle(fontSize: 20)),
               Text('Event Description:' , style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(event.description ?? 'Null description', style: TextStyle(fontSize: 16)),
+                  child: Text(event?.description ?? 'Null description', style: TextStyle(fontSize: 16)),
                 ),
                 color: Colors.grey[200],
               ),
