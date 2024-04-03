@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
+import 'package:flutter_test_app/constants.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as https;
 
 // HomePage shows user a list of events
 
@@ -12,15 +15,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Event> allEvents = getSampleEvents();
+  https.Response? events;
+  bool APItest = true; // set to true to test API
 
-  // event fields are on trello
+  @override
+  void initState() {
+    super.initState();
+    loadEvents();
+  }
+
+  Future<void> loadEvents() async {
+    events = await getAllEvents();
+    setState(() {});
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    if (APItest == true) {
+      return Scaffold(
+        body: Column(
+          children: [
+            Text(events?.body ?? 'events.body is null'),
+          ],
+        ),
+      );
+    } else {
     return Scaffold(
-      //event cards
-      body: ListView.builder(
+      body: const Placeholder(),
+      /*
+      ListView.builder(
         itemCount: allEvents.length,
         itemBuilder: (context, index) {
           return Card(
@@ -46,7 +70,9 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+      */
     );
+    }
   }
 }
 
@@ -89,9 +115,16 @@ List<Event> getSampleEvents() {
   return allEvents;
 }
 
-List<Event> getAllEvents() {
-  List<Event> events = <Event>[];
-  // TODO: get events from database
-  // to be implemented
-  return events;
+
+Future<https.Response> getAllEvents() async {
+  //List<Event> events = <Event>[];
+
+  var box = await Hive.openBox(tokenBox);
+  var token = box.get('token');
+  box.close();
+  Map<String, String> headers = {'Authorization': 'Token $token'};
+  var url = Uri.parse('https://grinsync.com/api/upcoming');
+  var result = await https.get(url, headers: headers);
+
+  return result;
 }

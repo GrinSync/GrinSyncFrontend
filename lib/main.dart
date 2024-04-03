@@ -6,6 +6,7 @@ import 'package:flutter_test_app/pages/event_creation_page.dart';
 import 'package:flutter_test_app/pages/home_page.dart';
 import 'package:flutter_test_app/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_test_app/pages/search_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
       currentPage = HomePage();
       break;
     case 1: // this is the search page where user can search for events
-      currentPage = Placeholder();
+      currentPage = SearchPage();
       break;
     case 2: // this is the event creation page where user can create their own events
       currentPage = EventCreationPage();
