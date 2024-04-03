@@ -122,7 +122,12 @@ Future<https.Response> getAllEvents() async {
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
   box.close();
-  Map<String, String> headers = {'Authorization': 'Token $token'};
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
   var url = Uri.parse('https://grinsync.com/api/upcoming');
   var result = await https.get(url, headers: headers);
 
