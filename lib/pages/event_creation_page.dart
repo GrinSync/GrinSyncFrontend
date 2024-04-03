@@ -303,8 +303,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                       SizedBox(
                           width: double.infinity, // Span the whole screen
                           child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow),
+                              style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 255, 143, 28), foregroundColor: Colors.black),
                               // When the button is pressed, do this:
                               onPressed: () async {
                                 // Send event info to backend

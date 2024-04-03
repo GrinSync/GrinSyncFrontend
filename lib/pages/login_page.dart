@@ -31,6 +31,8 @@ class _LoginPage extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('GrinSync Login'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
             child: Container(
@@ -70,7 +72,7 @@ class _LoginPage extends State<LoginPage> {
               width: double.infinity,
               child: ElevatedButton(
                   style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                      ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 255, 143, 28), foregroundColor: Colors.black),
                   onPressed: () async {
                     var auth =
                         await userAuthentication(_email.text, _password.text);

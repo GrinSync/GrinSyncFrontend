@@ -42,7 +42,9 @@ class _RegistrationPage extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('GrinSync Login'),
+          title: const Text('Create an Account'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
             child: Container(
@@ -151,7 +153,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               width: double.infinity,
               child: ElevatedButton(
                   style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                      ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 255, 143, 28), foregroundColor: Colors.black),
                   onPressed: () async {
                     var auth = await registerUser(
                         _firstName.text,
