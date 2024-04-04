@@ -46,6 +46,7 @@ class _MyAppState extends State<MyApp> {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
+            iconTheme: MaterialStateProperty.all(IconThemeData(color: Colors.black)),
             labelTextStyle: MaterialStateProperty.resolveWith((state) {
               if (state.contains(MaterialState.selected)) {
                 return const TextStyle(color: Colors.white);
