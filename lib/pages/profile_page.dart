@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late User? _user = null;
-  late bool _guestmode = true; // default to guest mode
+  late bool _guestmode;
 
   // check if the user is logged in
   // if the user is logged in, set _guestmode to false, and set the user to the current user
@@ -33,12 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   
   @override
-  void initState() {
-    checkLoginStatus();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: checkLoginStatus(), 
@@ -52,22 +46,22 @@ class _ProfilePageState extends State<ProfilePage> {
               const Text('Loading Profile...'),
             ],
           ); 
-        // } else if (snapshot.hasError) {
-        //   return Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       const Text('Error loading profile'),
-        //       TextButton(
-        //         onPressed: () {
-        //           setState(() {
-        //             checkLoginStatus();
-        //           });
-        //         },
-        //         child: const Text('Try again'),
-        //       ),
-        //     ],
-        //   );
+        } else if (snapshot.hasError) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('Error loading profile'),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    checkLoginStatus();
+                  });
+                },
+                child: const Text('Try again'),
+              ),
+            ],
+          );
         } else {
           if (_guestmode) {
             return GuestProfilePage();
