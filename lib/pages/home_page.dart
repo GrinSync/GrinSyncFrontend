@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
-import 'package:flutter_test_app/constants.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as https;
+
 
 // HomePage shows user a list of events
 
@@ -33,10 +30,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     if (allEvents.isEmpty) {
       return Scaffold(
-        body: ListView(
-          children: [
-            const Text('No events to show')
-          ],
+        body: Container(
+          padding: EdgeInsets.all(8.0),
+          child: RefreshIndicator(
+            onRefresh: loadEvents,
+            child: ListView(
+              children: [
+                const Text('No events to show')
+              ],
+            ),
+          ),
         ),
       );
     } else {
@@ -44,32 +47,34 @@ class _HomePageState extends State<HomePage> {
       body: 
       Container(
         padding: EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: allEvents.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                // leading: event image?
-                title: Text(allEvents[index].title ?? 'Null title',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-                subtitle: Text(
-                    '${allEvents[index].start ?? 'Null start date'} \n ${allEvents[index].end ?? 'Null end date'}',
-                    style: TextStyle(fontSize: 15, color: Colors.grey[600])
-                    ),
-                isThreeLine: true,
-                // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          EventDetailsPage(event: allEvents[index]),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+        child: RefreshIndicator(
+          onRefresh: loadEvents,
+          child: ListView.builder(
+            itemCount: allEvents.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  title: Text(allEvents[index].title ?? 'Null title',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                  subtitle: Text(
+                      '${allEvents[index].start ?? 'Null start date'} \n ${allEvents[index].end ?? 'Null end date'}',
+                      style: TextStyle(fontSize: 15, color: Colors.grey[600])
+                      ),
+                  isThreeLine: true,
+                  // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailsPage(event: allEvents[index]),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
