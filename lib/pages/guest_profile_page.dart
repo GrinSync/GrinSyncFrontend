@@ -17,23 +17,22 @@ class GuestProfilePage extends StatelessWidget {
             const SizedBox(height: 20),
             const Text('Please log in or register to access more features.'),
             TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-              child: const Text('Login')),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+                child: const Text('Login')),
             TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => const RegistrationPage()),
-                );
-              },
-              child: const Text('Register')
-            ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => const RegistrationPage()),
+                  );
+                },
+                child: const Text('Register')),
           ],
         ),
       ),

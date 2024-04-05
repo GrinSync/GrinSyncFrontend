@@ -1,9 +1,11 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/models/event_models.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:http/http.dart' as http;
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -26,14 +28,14 @@ class CalendarPageState extends State<CalendarPage> {
         CalendarView.month,
         CalendarView.schedule
       ],
-      monthViewSettings: MonthViewSettings(
+      monthViewSettings: const MonthViewSettings(
         appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
         dayFormat: 'EEE',
       ),
-      scheduleViewSettings: ScheduleViewSettings(
+      scheduleViewSettings: const ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
       ),
-      timeSlotViewSettings: TimeSlotViewSettings(
+      timeSlotViewSettings: const TimeSlotViewSettings(
         timeInterval: Duration(minutes: 30),
         timeFormat: "hh:mm",
         timeIntervalHeight: 100,
@@ -43,7 +45,7 @@ class CalendarPageState extends State<CalendarPage> {
         dayFormat: 'EEE',
       ),
       blackoutDates: <DateTime>[],
-      dataSource: EventDataSource(getAllEvents()),
+      dataSource: EventDataSource(getAllAppointmentData()),
     ));
   }
 } // CalendarPageState
@@ -59,31 +61,33 @@ List<int> parseFormattedTime(String time) {
   return res;
 }
 
-Future<List<Appointment>> getAllEvents() async {
-  List<Appointment> allEvents = <Appointment>[];
+Future<List<Appointment>> getAllAppointmentData() async {
+  List<Appointment> allAppointments = <Appointment>[];
 
-  var url = Uri.parse('http://grinsync.com/api/create/event');
-  final response = await http.get(url);
-  var responseData = json.decode(response.body);
+  late List<Event> allEvents;
+  late Future<void> _loadEventsFuture;
 
-  for (var obj in responseData) {
-    String title = obj["title"];
-    String description = obj["description"];
-    String time = obj["date"];
-    String location = obj["location"];
-    bool studentsOnly = obj["students_only"];
-    // List<EventTags> tags = obj["tags"];
+  Future<void> loadEvents() async {
+    allEvents = await getAllEvents();
+  }
+
+  _loadEventsFuture = loadEvents();
+
+  for (int index = 0; index < allEvents.length; index++) {
+    String title = allEvents[index].title ?? "";
+    String description = allEvents[index].description ?? "";
+    String startTime = allEvents[index].start ?? "";
+    String endTime = allEvents[index].end ?? "";
+    // String location = allEvents[index].location ?? "";
+    // bool studentsOnly = allEvents[index].studentsOnly ?? true;
+    // List<EventTags> tags = allEvents[index].tags;
 
     // if (studentsOnly)
-
-    List<String> temp = time.split("-");
-    String startTime = temp[0];
-    String endTime = temp[1];
 
     List<int> startTimeParsed = parseFormattedTime(startTime);
     List<int> endTimeParsed = parseFormattedTime(endTime);
 
-    Appointment event = Appointment(
+    Appointment apt = Appointment(
       startTime: DateTime(
         startTimeParsed[2],
         startTimeParsed[0],
@@ -98,15 +102,15 @@ Future<List<Appointment>> getAllEvents() async {
         endTimeParsed[3],
         endTimeParsed[4],
       ),
-      location: location,
+      // location: location,
       subject: title,
       notes: description,
     );
 
-    allEvents.add(event);
+    allAppointments.add(apt);
   }
 
-  return allEvents;
+  return allAppointments;
 }
 
 class EventDataSource extends CalendarDataSource {
