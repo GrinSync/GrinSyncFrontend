@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -14,13 +15,29 @@ class CalendarPage extends StatefulWidget {
 }
 
 class CalendarPageState extends State<CalendarPage> {
+  final CalendarController calendarController = CalendarController();
+
+  void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      calendarController.selectedDate = null;
+    });
+  }
+
+  void calendarTapped(CalendarTapDetails details) {
+    if (details.targetElement == CalendarElement.appointment ||
+        details.targetElement == CalendarElement.agenda) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SfCalendar(
+      controller: calendarController,
+      onViewChanged: calendarViewChanged,
+      onTap: calendarTapped,
       view: CalendarView.day,
       firstDayOfWeek: 7,
-      minDate: DateTime(2024, 08, 14, 0, 0, 0),
+      minDate: DateTime(2023, 08, 14, 0, 0, 0),
       maxDate: DateTime(2025, 05, 25, 0, 0, 0),
       allowedViews: [
         CalendarView.day,
@@ -28,9 +45,16 @@ class CalendarPageState extends State<CalendarPage> {
         CalendarView.month,
         CalendarView.schedule
       ],
+      allowViewNavigation: true,
       monthViewSettings: const MonthViewSettings(
-        appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
         dayFormat: 'EEE',
+        monthCellStyle: MonthCellStyle(),
+        appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+        showAgenda: true,
+        agendaViewHeight: 200,
+        agendaStyle: AgendaStyle(),
+        navigationDirection: MonthNavigationDirection.horizontal,
+        showTrailingAndLeadingDates: false,
       ),
       scheduleViewSettings: const ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
@@ -38,17 +62,42 @@ class CalendarPageState extends State<CalendarPage> {
       timeSlotViewSettings: const TimeSlotViewSettings(
         timeInterval: Duration(minutes: 30),
         timeFormat: "hh:mm",
-        timeIntervalHeight: 100,
+        timeIntervalHeight: 50,
         timeIntervalWidth: 25,
         minimumAppointmentDuration: Duration(minutes: 15),
         dateFormat: 'd',
         dayFormat: 'EEE',
+        // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
       ),
+      showDatePickerButton: true,
+      showTodayButton: true,
       blackoutDates: <DateTime>[],
-      dataSource: EventDataSource(getAllAppointmentData()),
+      // dataSource: EventDataSource(getAllAppointmentData()),
+      dataSource: getSampleDataSource(),
+      appointmentTextStyle: TextStyle(),
     ));
   }
 } // CalendarPageState
+
+// ignore: library_private_types_in_public_api
+_AppointmentDataSource getSampleDataSource() {
+  List<Appointment> appointments = <Appointment>[];
+
+  appointments.add(Appointment(
+    startTime: DateTime(2024, 4, 3, 10, 00),
+    endTime: DateTime(2024, 4, 3, 11, 50),
+    subject: 'Class',
+    color: Color.fromARGB(255, 218, 41, 28),
+  ));
+
+  return _AppointmentDataSource(appointments);
+}
+
+class _AppointmentDataSource extends CalendarDataSource {
+  _AppointmentDataSource(List<Appointment> source) {
+    appointments = source;
+  }
+}
 
 List<int> parseFormattedTime(String time) {
   int month = int.parse(time.substring(0, 2));

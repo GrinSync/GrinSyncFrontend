@@ -3,7 +3,6 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
 
-
 // HomePage shows user a list of events
 
 class HomePage extends StatefulWidget {
@@ -28,102 +27,106 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _loadEventsFuture, 
-      builder: (context, snapshot) {
-
-        // if the connection is waiting, show a loading indicator
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              const Text('Preparing events for you...'),
-            ],
-          ); 
-          // if there is an error, show an error message and a button to try again
-        } else if (snapshot.hasError) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('Error loading events'),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    loadEvents();
-                  });
-                },
-                child: const Text('Try again'),
-              ),
-            ],
-          );
-          // if the connection is done, show the events
-        } else {
-          // if there are no events, show a message
-          if (allEvents.isEmpty) {
-            return Scaffold(
-              body: Container(
-                padding: EdgeInsets.all(8.0),
-                child: RefreshIndicator(
-                  onRefresh: loadEvents,
-                  child: Center(
-                    child: ListView(
-                      children: [
-                        const Text('No events to show here')
-                      ],
+        future: _loadEventsFuture,
+        builder: (context, snapshot) {
+          // if the connection is waiting, show a loading indicator
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                const Text('Preparing events for you...'),
+              ],
+            );
+            // if there is an error, show an error message and a button to try again
+          } else if (snapshot.hasError) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text('Error loading events'),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      loadEvents();
+                    });
+                  },
+                  child: const Text('Try again'),
+                ),
+              ],
+            );
+            // if the connection is done, show the events
+          } else {
+            // if there are no events, show a message
+            if (allEvents.isEmpty) {
+              return Scaffold(
+                body: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: RefreshIndicator(
+                    onRefresh: loadEvents,
+                    child: Center(
+                      child: ListView(
+                        children: [const Text('No events to show here')],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-            // if there are events, show the events
-          } else {
-            return Scaffold(
-              body: Container(
-                padding: EdgeInsets.all(8.0),
-              child: RefreshIndicator(
-                onRefresh: loadEvents,
-                child: ListView.builder(
-                          itemCount: allEvents.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == allEvents.length) {
-                              return Column(
-                                children: [
-                                  Divider(color: Colors.grey[400]),
-                                  Text('--End of All Events--', style: TextStyle(color: Colors.grey[600])),
-                                  Text('Event Count: ${allEvents.length}', style: TextStyle(color: Colors.grey[600])),
-                                ],
-                              );
-                            } else {
-                            return Card(
-                              child: ListTile(
-                                title: Text(allEvents[index].title ?? 'Null title',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-                                subtitle: Text('${allEvents[index].start ?? 'Null start date'} \n ${allEvents[index].end ?? 'Null end date'}',
-                                style: TextStyle(fontSize: 15, color: Colors.grey[600])
-                                ),
-                                isThreeLine: true,
-                                // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                    builder: (context) =>
-                                      EventDetailsPage(event: allEvents[index]),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );}
-                          },
-                        ),
+              );
+              // if there are events, show the events
+            } else {
+              return Scaffold(
+                body: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: RefreshIndicator(
+                    onRefresh: loadEvents,
+                    child: ListView.builder(
+                      itemCount: allEvents.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == allEvents.length) {
+                          return Column(
+                            children: [
+                              Divider(color: Colors.grey[400]),
+                              Text('--End of All Events--',
+                                  style: TextStyle(color: Colors.grey[600])),
+                              Text('Event Count: ${allEvents.length}',
+                                  style: TextStyle(color: Colors.grey[600])),
+                            ],
+                          );
+                        } else {
+                          return Card(
+                            child: ListTile(
+                              title: Text(
+                                  allEvents[index].title ?? 'Null title',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800)),
+                              subtitle: Text(
+                                  '${allEvents[index].start ?? 'Null start date'} \n ${allEvents[index].end ?? 'Null end date'}',
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.grey[600])),
+                              isThreeLine: true,
+                              // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDetailsPage(
+                                        event: allEvents[index]),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
                     ),
-            ),
-          );
-        }
-      }
-    });
+                  ),
+                ),
+              );
+            }
+          }
+        });
   }
 }
 
