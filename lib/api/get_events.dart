@@ -6,7 +6,7 @@ import 'package:flutter_test_app/models/event_models.dart';
 
 
 
-Future<List<Event>> getAllEvents() async {
+Future<List<Event>> getUpcomingEvents() async {
   List<Event> allEvents = [];
 
   print('Connecting...');

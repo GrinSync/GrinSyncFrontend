@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   late Future<void> _loadEventsFuture;
 
   Future<void> loadEvents() async {
-    allEvents = await getAllEvents();
+    allEvents = await getUpcomingEvents();
   }
 
   @override
