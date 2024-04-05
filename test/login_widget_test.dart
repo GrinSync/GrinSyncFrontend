@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
 
 void main() {
-  testWidgets('Test the Login Page populated correctly', (WidgetTester tester) async {
+  testWidgets('Test the Login Page populated correctly',
+      (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const LoginPage());
 
