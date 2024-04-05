@@ -14,7 +14,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late User? _user = null;
+  late User? _user;
   late bool _guestmode;
 
   // check if the user is logged in
