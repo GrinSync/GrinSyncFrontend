@@ -130,7 +130,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
 // List<Event> getSampleEvents() {
 //   List<Event> allEvents = <Event>[];
 //   allEvents.add(Event(
@@ -163,5 +162,3 @@ class _HomePageState extends State<HomePage> {
 //   ));
 //   return allEvents;
 // }
-
-

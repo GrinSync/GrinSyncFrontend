@@ -1,11 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/pages/event_details_page.dart';
-import 'package:flutter_test_app/constants.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as https;
 
 class SearchPage extends StatefulWidget {
   @override

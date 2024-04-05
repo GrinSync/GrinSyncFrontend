@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
@@ -6,7 +5,6 @@ import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/guest_profile_page.dart';
 import 'package:flutter_test_app/pages/user_profile_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -24,16 +22,15 @@ class _ProfilePageState extends State<ProfilePage> {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
     box.close();
-    if (token == null){
-      _guestmode = true;
-    }
-    else{
-    _user = await getUser(token);
-    if (_user == null) {
+    if (token == null) {
       _guestmode = true;
     } else {
-      _guestmode = false;
-    }
+      _user = await getUser(token);
+      if (_user == null) {
+        _guestmode = true;
+      } else {
+        _guestmode = false;
+      }
     }
   }
 

@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/constants.dart';
-import 'package:flutter_test_app/pages/login_page.dart';
-import 'package:flutter_test_app/pages/registration_page.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '/pages/profile_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user;

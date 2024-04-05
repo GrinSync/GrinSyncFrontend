@@ -5,10 +5,17 @@ import 'package:http/http.dart' as https;
 
 // Asyncrhonus operation to send newly created event information to the Django backend
 // User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userStudentOnly, userTags
-Future eventInfo(String userTitle, String userLocation, String userStartDate,
-    String userEndDate, String userDescription, bool? userStudentOnly, String userTags) async {
+Future eventInfo(
+    String userTitle,
+    String userLocation,
+    String userStartDate,
+    String userEndDate,
+    String userDescription,
+    bool? userStudentOnly,
+    String userTags) async {
   if (userStudentOnly == null) return; // Error check
-  String studentOnly = (userStudentOnly ? "True" : "False"); // Set boolean to a String
+  String studentOnly =
+      (userStudentOnly ? "True" : "False"); // Set boolean to a String
 
   // 'body' stores all the event info in a single map data structure
   // Map backend API variables to user input
@@ -21,7 +28,7 @@ Future eventInfo(String userTitle, String userLocation, String userStartDate,
     'studentsOnly': studentOnly,
     'tags': userTags,
   }; // body
-  
+
   // TO DO: Ask Bradley what this does
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');

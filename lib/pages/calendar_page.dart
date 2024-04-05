@@ -50,7 +50,7 @@ class CalendarPageState extends State<CalendarPage> {
   final CalendarController calendarController = CalendarController();
 
   void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       calendarController.selectedDate = null;
     });
   }

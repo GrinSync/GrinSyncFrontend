@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 
 class EventDetailsPage extends StatelessWidget {
@@ -53,17 +50,17 @@ class EventDetailsPage extends StatelessWidget {
             //Text(event.location ?? 'Null location', style: TextStyle(fontSize: 20)),
             Text('Event starts at',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-            Text(event?.start ?? 'Null start date',
+            Text(event.start ?? 'Null start date',
                 style: TextStyle(fontSize: 20)),
             Text('Event ends at',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-            Text(event?.end ?? 'Null end date', style: TextStyle(fontSize: 20)),
+            Text(event.end ?? 'Null end date', style: TextStyle(fontSize: 20)),
             Text('Event Description:',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(event?.description ?? 'Null description',
+                child: Text(event.description ?? 'Null description',
                     style: TextStyle(fontSize: 16)),
               ),
               color: Colors.grey[200],
