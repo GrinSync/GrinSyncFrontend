@@ -23,7 +23,7 @@ Once it is downloaded, open the project in VSCode, and select View -> Command Pa
 
 To test the app, once you have followed the steps above to download and build the project, you can open a terminal window in VSCode and run the command
 ```shell
-function () { return "flutter test"}
+flutter test
 ```
 
 ## Operational Use Cases (so far)
