@@ -11,7 +11,7 @@ class EventDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
-        title: Text('Event Details',
+        title: const Text('Event Details',
             style: TextStyle(fontWeight: FontWeight.w800)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
