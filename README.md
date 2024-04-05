@@ -21,7 +21,10 @@ Once it is downloaded, open the project in VSCode, and select View -> Command Pa
 
 ## How to test our project
 
-To test the app, once you have followed the steps above to download and build the project, you can open a terminal window in VSCode and run the command 
+To test the app, once you have followed the steps above to download and build the project, you can open a terminal window in VSCode and run the command
+```shell
+function () { return "flutter test"}
+```
 
 ## Operational Use Cases (so far)
 - Ben creates an event by entering his event information in GrinSync (FEATURES NOT YET DONE FOR THIS USE CASE: repeating events option, associating student organization, picture upload - we may switch this to a stretch feature; as of now, we have the MVP for the event creation page - event title, location, date/time, description, event tags).
