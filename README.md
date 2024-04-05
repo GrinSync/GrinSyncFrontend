@@ -14,10 +14,20 @@ You will also need to follow the Android Studio installation to use an emulator,
 This can be done here: https://docs.flutter.dev/get-started/install/windows/mobile#configure-android-development
 
 Once you have Flutter and Android Studio installed, you can run the command 'flutter doctor, or if you are in VSCode, you can go to View -> Command Palette and select Flutter: Run Flutter Doctor.
-This will confirm you have everything set up correctly. If you are missing any required packages or steps, follow the steps provided to resolve the issues.
+This will confirm you have everything set up correctly. If you are missing any required packages or steps, follow the steps provided to resolve the issues. 
 
 Once you have everything installed on your computer, you download this repository locally onto your computer.
-Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator
+Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator.
+Then select Run -> Run without debugging in VSCode, and select the emulator from the list of emulators displayed. Once selected the app will run on the desired emulator (it takes a minute to run on the emulator the first time the emulator is ran). You can now interact with the application on the emulator!
 
-## Operational Use Cases (so far)
-- Ben creates an event by entering his event information in GrinSync (FEATURES NOT YET DONE FOR THIS USE CASE: repeating events option, associating student organization, picture upload - we may switch this to a stretch feature; as of now, we have the MVP for the event creation page - event title, location, date/time, description, event tags).
+## How to test our project
+
+To test the app, once you have followed the steps above to download and build the project, you can open a terminal window in VSCode and run the command
+```shell
+flutter test
+```
+This will run the test suite and confirm the app is working as expected.
+
+## Operational Use Cases (so far) ## 
+- Ben creates an event by entering his event information in GrinSync (FEATURES NOT YET DONE FOR THIS USE CASE: repeating events option, associating student organization, picture upload (we may switch this to a stretch feature); as of now, we have the MVP for the event creation page - event title, location, date/time, description, event tags).
+- Noah looks through the daily, weekly, and monthly calendar views on the Calendar page. 

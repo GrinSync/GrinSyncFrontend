@@ -11,7 +11,7 @@ class EventCreationPage extends StatefulWidget {
   State<EventCreationPage> createState() => EventCreationPageState();
 }
 
-// Define a stateful widget for multiselect option for event tags. 
+// Define a stateful widget for multiselect option for event tags.
 class MultiSelect extends StatefulWidget {
   final List<String> elements;
   const MultiSelect({super.key, required this.elements});
@@ -175,7 +175,6 @@ class EventCreationPageState extends State<EventCreationPage> {
 
     // Update variable to send tags to backend
     _tagsString = _tags.join(',');
-
   } // showMultiSelect
 
 // Build UI of widget
@@ -303,7 +302,10 @@ class EventCreationPageState extends State<EventCreationPage> {
                       SizedBox(
                           width: double.infinity, // Span the whole screen
                           child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 255, 143, 28), foregroundColor: Colors.black),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 143, 28),
+                                  foregroundColor: Colors.black),
                               // When the button is pressed, do this:
                               onPressed: () async {
                                 // Send event info to backend
@@ -347,9 +349,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                                       );
                                     },
                                   );
-                                }
-
-                                else if (create.runtimeType == int) {
+                                } else if (create.runtimeType == int) {
                                   // Show error message
                                   showDialog(
                                     context: context,

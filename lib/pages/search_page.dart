@@ -16,7 +16,7 @@ class _SearchPageState extends State<SearchPage> {
   late TextEditingController _keyword;
   int searchMode = 0;
   var searchBarLabelText = 'Search Events';
-  Icon searchBarIcon = Icon(Icons.search); 
+  Icon searchBarIcon = Icon(Icons.search);
 
   @override
   void initState() {
@@ -27,40 +27,42 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(children: [
-              TextField(
-              controller: _keyword,
-              autocorrect: true,
-              decoration: InputDecoration(
-                prefixIcon: searchMode == 0 ? Icon(Icons.event) : Icon(Icons.person),
-                labelText: searchMode == 0 ? 'Search for Events' : 'Search for Users',
-                hintText: 'Enter a keyword',
-                border: OutlineInputBorder(),
-              ),
+        body: Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          TextField(
+            controller: _keyword,
+            autocorrect: true,
+            decoration: InputDecoration(
+              prefixIcon:
+                  searchMode == 0 ? Icon(Icons.event) : Icon(Icons.person),
+              labelText:
+                  searchMode == 0 ? 'Search for Events' : 'Search for Users',
+              hintText: 'Enter a keyword',
+              border: OutlineInputBorder(),
             ),
-            DropdownButton(
-                value: searchMode,
-                items: 
-                  <DropdownMenuItem<int>>[
-                    const DropdownMenuItem(
-                      child: Text('Search Events'),
-                      value: 0,
-                    ),
-                    const DropdownMenuItem(
-                      child: Text('Search Users'),
-                      value: 1,
-                    ),
-                  ],
-                  onChanged: (int? value) {
-                    setState(() {
-                      searchMode = value!;
-                    });
-                  },
+          ),
+          DropdownButton(
+            value: searchMode,
+            items: <DropdownMenuItem<int>>[
+              const DropdownMenuItem(
+                child: Text('Search Events'),
+                value: 0,
               ),
-        ],),
-      )
-    );
+              const DropdownMenuItem(
+                child: Text('Search Users'),
+                value: 1,
+              ),
+            ],
+            onChanged: (int? value) {
+              setState(() {
+                searchMode = value!;
+              });
+            },
+          ),
+        ],
+      ),
+    ));
   }
 }
