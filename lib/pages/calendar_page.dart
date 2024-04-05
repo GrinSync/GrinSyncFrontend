@@ -54,7 +54,6 @@ class CalendarPageState extends State<CalendarPage> {
         agendaViewHeight: 200,
         agendaStyle: AgendaStyle(),
         navigationDirection: MonthNavigationDirection.horizontal,
-        showTrailingAndLeadingDates: false,
       ),
       scheduleViewSettings: const ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
