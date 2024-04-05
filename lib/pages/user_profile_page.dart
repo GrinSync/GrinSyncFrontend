@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:flutter_test_app/pages/registration_page.dart';
 import 'package:flutter_test_app/models/user_models.dart';
+import '/pages/profile_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user;
@@ -21,7 +22,7 @@ class UserProfilePage extends StatelessWidget {
             // display info
             const SizedBox(height: 8),
             Text('${user?.firstName} ${user?.lastName}', style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, fontFamily: 'Helvetica')),
-            Text(user?.username ?? ' null_username' ' (${user?.email})', style: TextStyle(fontSize: 15, color: Colors.grey[600])),
+            Text(' (${user?.email})', style: TextStyle(fontSize: 15, color: Colors.grey[600])),
             //Text('Email: ${user?.email}'),
 
             // display options
@@ -57,8 +58,9 @@ class UserProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: () {
-                // TODO: implement logout functionality
+              onPressed: () async {
+                //var logout = await logout();
+
               },
             ),
         ]),
