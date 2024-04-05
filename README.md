@@ -8,7 +8,7 @@ This the repository for the front-end of the GrinSync app
 
 ## How to build and run our project
 
-To run the app, you will first need to install Flutter: https://docs.flutter.dev/get-started/install
+To run the app, you will first need to install Flutter: https://docs.flutter.dev/get-started/install //
 Follow the installation for mobile development.
 You will also need to follow the Android Studio installation to use an emulator, even if you are working in VSCode.
 This can be done here: https://docs.flutter.dev/get-started/install/windows/mobile#configure-android-development
