@@ -1,0 +1,1 @@
+bool guestmode = true; 
