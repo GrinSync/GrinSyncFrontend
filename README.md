@@ -18,7 +18,7 @@ This will confirm you have everything set up correctly. If you are missing any r
 
 Once you have everything installed on your computer, you download this repository locally onto your computer.
 Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator.
-Then select Run -> Run without debugging in VSCODE, and select the emulator from the list of emulators displayed. Once selected the app will run on the desired emulator (it takes a minute to run on the emulator the first time the emulator is ran). You can now interact with the application on the emulator!
+Then select Run -> Run without debugging in VSCode, and select the emulator from the list of emulators displayed. Once selected the app will run on the desired emulator (it takes a minute to run on the emulator the first time the emulator is ran). You can now interact with the application on the emulator!
 
 ## How to test our project
 
