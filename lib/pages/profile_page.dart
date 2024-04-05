@@ -24,11 +24,16 @@ class _ProfilePageState extends State<ProfilePage> {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
     box.close();
+    if (token == null){
+      _guestmode = true;
+    }
+    else{
     _user = await getUser(token);
     if (_user == null) {
       _guestmode = true;
     } else {
       _guestmode = false;
+    }
     }
   }
 
