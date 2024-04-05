@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   // check if the user is logged in
   // if the user is logged in, set _guestmode to false, and set the user to the current user
   // if the user is not logged in, set _guestmode to true, and set the user to null
-  Future<void> checkLoginStatus () async {
+  Future<void> checkLoginStatus() async {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
     box.close();
@@ -31,11 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
       _guestmode = false;
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: checkLoginStatus(), 
+      future: checkLoginStatus(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Column(
@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
               CircularProgressIndicator(),
               const Text('Loading Profile...'),
             ],
-          ); 
+          );
         } else if (snapshot.hasError) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
             return GuestProfilePage();
           } else {
             return UserProfilePage(user: _user);
-        }
+          }
         }
       },
     );
