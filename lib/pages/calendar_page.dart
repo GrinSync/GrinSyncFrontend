@@ -87,17 +87,6 @@ class CalendarPageState extends State<CalendarPage> {
     return _AppointmentDataSource(appointments);
   }
 
-  List<int> parseFormattedTime(String time) {
-    int month = int.parse(time.substring(0, 2));
-    int day = int.parse(time.substring(3, 5));
-    int year = int.parse(time.substring(6, 10));
-    int hour = int.parse(time.substring(11, 13));
-    int minute = int.parse(time.substring(14, 16));
-
-    List<int> res = <int>[month, day, year, hour, minute];
-    return res;
-  }
-
   List<Appointment> getAllAppointmentData() {
     List<Appointment> allAppointments = <Appointment>[];
 
@@ -112,26 +101,9 @@ class CalendarPageState extends State<CalendarPage> {
 
       // if (studentsOnly)
 
-      // List<int> startTimeParsed = parseFormattedTime(startTime);
-      // List<int> endTimeParsed = parseFormattedTime(endTime);
-
       Appointment apt = Appointment(
         startTime: DateTime.parse(startTime),
         endTime: DateTime.parse(endTime),
-        // startTime: DateTime(
-        //   startTimeParsed[2],
-        //   startTimeParsed[0],
-        //   startTimeParsed[1],
-        //   startTimeParsed[3],
-        //   startTimeParsed[4],
-        // ),
-        // endTime: DateTime(
-        //   endTimeParsed[2],
-        //   endTimeParsed[0],
-        //   endTimeParsed[1],
-        //   endTimeParsed[3],
-        //   endTimeParsed[4],
-        // ),
         // location: location,
         subject: title,
         notes: description,
