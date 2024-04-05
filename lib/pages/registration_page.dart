@@ -40,7 +40,8 @@ class _RegistrationPage extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         appBar: AppBar(
           title: const Text('Create an Account'),
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -198,6 +199,6 @@ class _RegistrationPage extends State<RegistrationPage> {
                   child: const Text('Register')),
             )
           ]),
-        )));
+        ))));
   }
 }

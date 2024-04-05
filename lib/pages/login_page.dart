@@ -28,7 +28,8 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+    home: Scaffold(
         appBar: AppBar(
           title: const Text('GrinSync Login'),
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -113,6 +114,6 @@ class _LoginPage extends State<LoginPage> {
                   child: const Text('Log in')),
             )
           ]),
-        )));
+        ))));
   }
 }
