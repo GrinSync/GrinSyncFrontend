@@ -82,3 +82,10 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
     return null;
   }
 }
+
+  // Calling this function logs the user out
+  Future<void> logout() async {
+    var box = await Hive.openBox(tokenBox);
+    box.delete('token'); // save token in box
+    box.close();
+  }
