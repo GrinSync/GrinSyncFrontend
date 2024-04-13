@@ -85,6 +85,7 @@ class EventCreationPageState extends State<EventCreationPage> {
   late bool? _studentsOnly;
   late List<String> _tags;
   late String _tagsString;
+  late String? _repeat;
 
   // initState function to initialize all of the late final variables from above
   @override
@@ -98,6 +99,7 @@ class EventCreationPageState extends State<EventCreationPage> {
     _studentsOnly = false;
     _tags = [];
     _tagsString = "";
+    _repeat = null;
     super.initState();
   } // initState
 
@@ -113,6 +115,7 @@ class EventCreationPageState extends State<EventCreationPage> {
     _studentsOnly = null;
     _tags = [];
     _tagsString = "";
+    _repeat = "";
     super.dispose();
   } // dispose
 
@@ -265,6 +268,28 @@ class EventCreationPageState extends State<EventCreationPage> {
 
                       const SizedBox(height: 10),
 
+                      // REPEATING EVENT OPTIONS
+                      const Text('Repeats:'),
+
+                      DropdownButton(
+                        hint: const Text('Select Repeating Event Customization'),
+                        items: const [
+                          DropdownMenuItem(value: "None", child: Text("None")),
+                          DropdownMenuItem(value: "Daily", child: Text("Daily")),
+                          DropdownMenuItem(value: "Weekly", child: Text("Weekly")),
+                          DropdownMenuItem(value: "Monthly", child: Text("Monthly")),
+                        ], 
+                        isExpanded: true,
+                        value: _repeat,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _repeat = newValue;
+                          });
+                        }
+                        ),
+
+                      const SizedBox(height: 10),
+
                       // STUDENTS ONLY TAG CHECKBOX
                       CheckboxListTile(
                         title: const Text("Student-Only Event?"),
@@ -315,6 +340,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                                     _startDate.text,
                                     _endDate.text,
                                     _description.text,
+                                    _repeat,
                                     _studentsOnly,
                                     _tagsString);
 
