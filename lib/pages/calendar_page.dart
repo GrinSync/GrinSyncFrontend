@@ -107,6 +107,8 @@ class CalendarPageState extends State<CalendarPage> {
         // location: location,
         subject: title,
         notes: description,
+        startTimeZone: 'UTC', // Need these so that it interprets the given datetimes as ofsets from UTC, which they are
+        endTimeZone: 'UTC',   // The calendar widget will automatically update the time in the user's timezone
       );
 
       allAppointments.add(apt);
