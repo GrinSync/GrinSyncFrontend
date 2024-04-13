@@ -12,6 +12,7 @@ Future eventInfo(
     String userEndDate,
     String userDescription,
     String? userRepeat,
+    String userEndRepeat,
     bool? userStudentOnly,
     String userTags) async {
   if (userStudentOnly == null) return; // Error check
@@ -42,6 +43,7 @@ Future eventInfo(
     'description': userDescription,
     'repeatingDays': repeatingDays,
     'repeatingMonths': repeatingMonths,
+    'repeatDate': userEndRepeat,
     'studentsOnly': studentOnly,
     'tags': userTags,
   }; // body
