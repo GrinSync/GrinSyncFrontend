@@ -7,7 +7,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late TextEditingController _keyword;
-  int searchMode = 0;
+  int searchMode = 0; // 0 for search event, 1 for search user
   var searchBarLabelText = 'Search Events';
   Icon searchBarIcon = Icon(Icons.search);
 
