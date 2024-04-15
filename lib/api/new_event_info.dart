@@ -19,17 +19,17 @@ Future eventInfo(
   String studentOnly =
       (userStudentOnly ? "True" : "False"); // Set boolean to a String
 
-  int repeatingDays = 0;
-  int repeatingMonths = 0;
+  String repeatingDays = "0";
+  String repeatingMonths = "0";
   if (userRepeat != null) {
     if (userRepeat == 'Daily') {
-      repeatingDays = 1;
+      repeatingDays = "1";
     }
     else if (userRepeat == 'Weekly') {
-      repeatingDays = 7;
+      repeatingDays = "7";
     }
     else if (userRepeat == 'Monthly') {
-      repeatingMonths = 1;
+      repeatingMonths = "1";
     }
   }
 
