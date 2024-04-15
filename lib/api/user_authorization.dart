@@ -83,9 +83,20 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
   }
 }
 
-  // Calling this function logs the user out
-  Future<void> logout() async {
-    var box = await Hive.openBox(tokenBox);
-    box.delete('token'); // save token in box
-    box.close();
-  }
+// Calling this function logs the user out
+Future<void> logout() async {
+  var box = await Hive.openBox(tokenBox);
+  box.delete('token'); // save token in box
+  box.close();
+}
+
+Future<dynamic> passwordReset(String email) async {
+  // body stores the username and password in a single map data structure
+  Map body = {
+    'username': email,
+  };
+  var url =
+      Uri.parse('https://grinsync.com/api/password_reset/'); // url to send info
+  var result = await http.post(url, body: body);
+  print(result.body); // This is for testing purposes only
+}
