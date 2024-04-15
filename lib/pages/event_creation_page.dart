@@ -85,6 +85,8 @@ class EventCreationPageState extends State<EventCreationPage> {
   late bool? _studentsOnly;
   late List<String> _tags;
   late String _tagsString;
+  late String? _repeat;
+  late final TextEditingController _repeatDate;
 
   // initState function to initialize all of the late final variables from above
   @override
@@ -98,6 +100,8 @@ class EventCreationPageState extends State<EventCreationPage> {
     _studentsOnly = false;
     _tags = [];
     _tagsString = "";
+    _repeat = null;
+    _repeatDate = TextEditingController();
     super.initState();
   } // initState
 
@@ -110,9 +114,11 @@ class EventCreationPageState extends State<EventCreationPage> {
     _description.dispose();
     _startDate.dispose();
     _endDate.dispose();
+    _repeatDate.dispose();
     _studentsOnly = null;
     _tags = [];
     _tagsString = "";
+    _repeat = "";
     super.dispose();
   } // dispose
 
@@ -129,6 +135,13 @@ class EventCreationPageState extends State<EventCreationPage> {
 
     // If the user inputted a date, do this:
     if (userDate != null) {
+      if (control == _repeatDate) {
+      final DateTime userRepeatDate = DateTime(userDate.year, userDate.month, userDate.day);
+      setState(() {
+          control.text = userRepeatDate.toString();
+        });
+    }
+    else {
       // Show time picker to user with limited range
       final TimeOfDay? userTime = await showTimePicker(
           context: context,
@@ -145,6 +158,7 @@ class EventCreationPageState extends State<EventCreationPage> {
         setState(() {
           control.text = userDateTime.toString();
         });
+      }
       }
     }
   } // selectDateTime
@@ -265,6 +279,43 @@ class EventCreationPageState extends State<EventCreationPage> {
 
                       const SizedBox(height: 10),
 
+                      // REPEATING EVENT OPTIONS
+                      const Text('Repeats:'),
+
+                      DropdownButton(
+                        hint: const Text('Select Repeating Event Customization'),
+                        items: const [
+                          DropdownMenuItem(value: "None", child: Text("None")),
+                          DropdownMenuItem(value: "Daily", child: Text("Daily")),
+                          DropdownMenuItem(value: "Weekly", child: Text("Weekly")),
+                          DropdownMenuItem(value: "Monthly", child: Text("Monthly")),
+                        ], 
+                        isExpanded: true,
+                        value: _repeat,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _repeat = newValue;
+                          });
+                        }
+                        ),
+                        
+
+                      const SizedBox(height: 10),
+
+                      // END REPEAT DATE
+                      TextField(
+                        controller: _repeatDate,
+                        readOnly: true,
+                        onTap: () => selectDateTime(context, _repeatDate),
+                        decoration: const InputDecoration(
+                            labelText: 'End Repeat...',
+                            hintText:
+                                'Pick the ending date for your repeating events',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(height: 10),
+
                       // STUDENTS ONLY TAG CHECKBOX
                       CheckboxListTile(
                         title: const Text("Student-Only Event?"),
@@ -315,6 +366,8 @@ class EventCreationPageState extends State<EventCreationPage> {
                                     _startDate.text,
                                     _endDate.text,
                                     _description.text,
+                                    _repeat,
+                                    _repeatDate.text,
                                     _studentsOnly,
                                     _tagsString);
 

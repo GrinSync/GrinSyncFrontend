@@ -11,11 +11,27 @@ Future eventInfo(
     String userStartDate,
     String userEndDate,
     String userDescription,
+    String? userRepeat,
+    String userEndRepeat,
     bool? userStudentOnly,
     String userTags) async {
   if (userStudentOnly == null) return; // Error check
   String studentOnly =
       (userStudentOnly ? "True" : "False"); // Set boolean to a String
+
+  int repeatingDays = 0;
+  int repeatingMonths = 0;
+  if (userRepeat != null) {
+    if (userRepeat == 'Daily') {
+      repeatingDays = 1;
+    }
+    else if (userRepeat == 'Weekly') {
+      repeatingDays = 7;
+    }
+    else if (userRepeat == 'Monthly') {
+      repeatingMonths = 1;
+    }
+  }
 
   // 'body' stores all the event info in a single map data structure
   // Map backend API variables to user input
@@ -25,6 +41,9 @@ Future eventInfo(
     'start': userStartDate,
     'end': userEndDate,
     'description': userDescription,
+    'repeatingDays': repeatingDays,
+    'repeatingMonths': repeatingMonths,
+    'repeatDate': userEndRepeat,
     'studentsOnly': studentOnly,
     'tags': userTags,
   }; // body
