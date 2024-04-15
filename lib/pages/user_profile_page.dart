@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_test_app/pages/profile_page.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user;
+  final Function() refreshProfilePage;
 
-  UserProfilePage({Key? key, required this.user}) : super(key: key);
+  UserProfilePage({Key? key, required this.user, required this.refreshProfilePage}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +76,9 @@ class UserProfilePage extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-                var box = await Hive.openBox(tokenBox);
-                box.delete('token'); // save token in box
-                box.close();
+                await logout();
+                refreshProfilePage();
+                //Fluttertoast.showToast(msg: "Method called in child");
               },
             ),
           ]),

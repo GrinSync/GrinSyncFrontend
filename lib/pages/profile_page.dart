@@ -5,33 +5,38 @@ import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/guest_profile_page.dart';
 import 'package:flutter_test_app/pages/user_profile_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_test_app/global.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   late User? _user;
-  late bool _guestmode;
 
   // check if the user is logged in
-  // if the user is logged in, set _guestmode to false, and set the user to the current user
-  // if the user is not logged in, set _guestmode to true, and set the user to null
+  // if the user is logged in, set guestmode to false, and set the user to the current user
+  // if the user is not logged in, set guestmode to true, and set the user to null
   Future<void> checkLoginStatus() async {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
     box.close();
     if (token == null) {
-      _guestmode = true;
+      guestmode = true;
     } else {
       _user = await getUser(token);
       if (_user == null) {
-        _guestmode = true;
+        guestmode = true;
       } else {
-        _guestmode = false;
+        guestmode = false;
       }
     }
+  }
+
+  refresh() {
+    setState(() {});
   }
 
   @override
@@ -65,10 +70,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           );
         } else {
-          if (_guestmode) {
+          if (guestmode) {
             return GuestProfilePage();
           } else {
-            return UserProfilePage(user: _user);
+            return UserProfilePage(user: _user, refreshProfilePage: refresh);
           }
         }
       },
