@@ -14,6 +14,8 @@ class _AppointmentDataSource extends CalendarDataSource {
   }
 }
 
+/// Extending the CalendarDataSource abstract class to take in a list of events
+/// and map the fields of each event to the fields of an object that can be read and displayed by calendars
 class EventDataSource extends CalendarDataSource {
   EventDataSource(List<Appointment> events) {
     appointments = events;
@@ -55,12 +57,17 @@ class CalendarPageState extends State<CalendarPage> {
     });
   }
 
+  /// Detects whether an event card is being tapped on
+  /// and routes the user to the Event Details page
   void calendarTapped(CalendarTapDetails details) {
     if (details.targetElement == CalendarElement.appointment ||
         details.targetElement == CalendarElement.agenda) {}
   }
 
+  /// Initializes empty list of event
   late List<Event> allEvents = <Event>[];
+
+  /// Declares a future function call to load all events with the API call
   late Future<void> loadEventsFuture;
 
   Future<void> loadEvents() async {
@@ -87,6 +94,8 @@ class CalendarPageState extends State<CalendarPage> {
     return _AppointmentDataSource(appointments);
   }
 
+  /// Gets the data for all the events by mapping fields from the Json responses
+  /// to the fields that can be converted to calendar-readable format
   List<Appointment> getAllAppointmentData() {
     List<Appointment> allAppointments = <Appointment>[];
 
