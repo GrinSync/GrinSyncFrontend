@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/user_models.dart';
+import 'package:flutter_test_app/pages/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,8 +11,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  /// Variables to store email and password
   late final TextEditingController _email;
   late final TextEditingController _password;
+
+  /// Initialize variables to store email and password for the login page
   @override
   void initState() {
     _email = TextEditingController();
@@ -19,6 +23,7 @@ class _LoginPage extends State<LoginPage> {
     super.initState();
   }
 
+  /// Dispose of the email and password when page closes.
   @override
   void dispose() {
     _email.dispose();
@@ -26,10 +31,10 @@ class _LoginPage extends State<LoginPage> {
     super.dispose();
   }
 
+  /// Build the Login Page interface
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: const Text('GrinSync Login'),
               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -41,6 +46,7 @@ class _LoginPage extends State<LoginPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Create a TextField for the user to enter their username
                     TextField(
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
@@ -53,6 +59,7 @@ class _LoginPage extends State<LoginPage> {
                           border: OutlineInputBorder()),
                     ),
                     const SizedBox(height: 10),
+                    // Create a TextField for the user to enter their password
                     TextField(
                       controller: _password,
                       autocorrect: false,
@@ -66,23 +73,32 @@ class _LoginPage extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    // Create Forgot Password Button
                     Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () { // Send to forgot password page when pressed
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ForgotPasswordPage()),
+                              );
+                            },
                             child: const Text('Forgot Password?'))),
                     SizedBox(
                       width: double.infinity,
+                      // Create Login Button
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromARGB(255, 255, 143, 28),
+                                  const Color.fromARGB(255, 255, 143, 28),
                               foregroundColor: Colors.black),
-                          onPressed: () async {
+                          onPressed: () async { // Authorize user with provided credentials
                             var auth = await userAuthentication(
                                 _email.text, _password.text);
+                            // If string was returned, login failed.
                             if (auth.runtimeType == String) {
-                              showDialog(
+                              showDialog( // Show error message that credentials provided were incorrect
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
@@ -108,7 +124,10 @@ class _LoginPage extends State<LoginPage> {
                                   );
                                 },
                               );
-                            } else if (auth.runtimeType == User) {
+                            } 
+                            // If user was returned, login succeeded!
+                            else if (auth.runtimeType == User) {
+                              // Open the app home page
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -119,6 +138,6 @@ class _LoginPage extends State<LoginPage> {
                           child: const Text('Log in')),
                     )
                   ]),
-            ))));
+            )));
   }
 }
