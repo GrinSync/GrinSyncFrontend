@@ -47,6 +47,13 @@ class UserProfilePage extends StatelessWidget {
             // const Divider(color: Colors.grey,),
             TextButton(
               child:
+                  const Text('Events I Created', style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                // TODO: implement events I follow page
+              },
+            ),
+            TextButton(
+              child:
                   const Text('Events I Follow', style: TextStyle(fontSize: 20)),
               onPressed: () {
                 // TODO: implement events I follow page
