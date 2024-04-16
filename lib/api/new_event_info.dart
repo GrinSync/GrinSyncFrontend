@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as https;
 
 // Asyncrhonus operation to send newly created event information to the Django backend
-// User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userStudentOnly, userTags
+// User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userRepeat, userEndRepeat, userStudentOnly, userTags
 Future eventInfo(
     String userTitle,
     String userLocation,
@@ -19,6 +19,12 @@ Future eventInfo(
   String studentOnly =
       (userStudentOnly ? "True" : "False"); // Set boolean to a String
 
+  // Set repeat customizations to numbers 
+  // Daily -> repeatingDays = 1
+  // Weekly -> repeatingDays = 7
+  // Monthly -> repeatingMonths = 1
+  // Otherwise, 0
+  // Send as Strings because that is how the backend will want it
   String repeatingDays = "0";
   String repeatingMonths = "0";
   if (userRepeat != null) {
@@ -60,7 +66,8 @@ Future eventInfo(
 
   // This is how to check the error key
   var json = jsonDecode(result.body);
-  // Check for invalid input
+  // Check for invalid input/missing information
+  // Return an int if that's the case
   if (json.containsKey('error')) {
     return 1;
   }

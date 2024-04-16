@@ -4,14 +4,9 @@ import 'package:flutter_test_app/main.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
 
-// Define a stateful widget for event creation that is mutable and its corresponding state class
-class EventCreationPage extends StatefulWidget {
-  const EventCreationPage({super.key});
-  @override
-  State<EventCreationPage> createState() => EventCreationPageState();
-}
+///// ----- MULTI-SELECT CLASS FOR MULTI-SELECTING EVENT TAGS ----- /////
 
-// Define a stateful widget for multiselect option for event tags.
+// Define a stateful widget for multiselect option for event tags
 class MultiSelect extends StatefulWidget {
   final List<String> elements;
   const MultiSelect({super.key, required this.elements});
@@ -28,8 +23,10 @@ class MultiSelectState extends State<MultiSelect> {
   void itemChange(String item, bool isSelected) {
     setState(() {
       if (isSelected) {
+        // Add item if selected
         selectedItems.add(item);
       } else {
+        // Remove item if not selected in new selection
         selectedItems.remove(item);
       }
     });
@@ -53,6 +50,7 @@ class MultiSelectState extends State<MultiSelect> {
         content: SingleChildScrollView(
           child: ListBody(
             children: widget.elements
+            // Display event tags and change their selected status according to if they're pressed
                 .map((item) => CheckboxListTile(
                     value: selectedItems.contains(item),
                     title: Text(item),
@@ -62,6 +60,7 @@ class MultiSelectState extends State<MultiSelect> {
           ),
         ),
         actions: [
+          // Cancel and submit button actions
           TextButton(onPressed: cancel, child: const Text('Cancel')),
           ElevatedButton(
             onPressed: submit,
@@ -70,6 +69,13 @@ class MultiSelectState extends State<MultiSelect> {
         ]);
   }
 } // MultiSelectState
+
+// Define a stateful widget for event creation that is mutable and its corresponding state class
+class EventCreationPage extends StatefulWidget {
+  const EventCreationPage({super.key});
+  @override
+  State<EventCreationPage> createState() => EventCreationPageState();
+}
 
 // State class to manage mutable state data and the widget's lifecycle for event creation page
 class EventCreationPageState extends State<EventCreationPage> {
@@ -84,7 +90,7 @@ class EventCreationPageState extends State<EventCreationPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String> _tags;
-  late String _tagsString;
+  late String _tagsString; // Convert the list above to a comma-separated string
   late String? _repeat;
   late final TextEditingController _repeatDate;
 
@@ -135,36 +141,41 @@ class EventCreationPageState extends State<EventCreationPage> {
 
     // If the user inputted a date, do this:
     if (userDate != null) {
+
+      // If this is for the repeat end date, we only want the date. So we have the date and we save date to the controller's text as a string
       if (control == _repeatDate) {
       final DateTime userRepeatDate = DateTime(userDate.year, userDate.month, userDate.day);
       setState(() {
           control.text = userRepeatDate.toString();
         });
-    }
-    else {
-      // Show time picker to user with limited range
-      final TimeOfDay? userTime = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now() // Initial time will be the current time
-          ); // userTime
-
-      // If the user inputted a time, do this:
-      if (userTime != null) {
-        // Create full date-time format
-        final DateTime userDateTime = DateTime(userDate.year, userDate.month,
-            userDate.day, userTime.hour, userTime.minute); // userDateTime
-
-        // Save date-time to the controller's text as a string
-        setState(() {
-          control.text = userDateTime.toString();
-        });
       }
+
+      // Otherwise, get the time
+      else {
+        // Show time picker to user with limited range
+        final TimeOfDay? userTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now() // Initial time will be the current time
+            ); // userTime
+
+        // If the user inputted a time, do this:
+        if (userTime != null) {
+          // Create full date-time format
+          final DateTime userDateTime = DateTime(userDate.year, userDate.month,
+              userDate.day, userTime.hour, userTime.minute); // userDateTime
+
+          // Save date-time to the controller's text as a string
+          setState(() {
+            control.text = userDateTime.toString();
+          });
+        }
       }
     }
   } // selectDateTime
 
   // showMultiSelect function to allow users to multiselect event tags
   void showMultiSelect() async {
+    // List of event tags
     final List<String> items = [
       'Fee Required',
       'Food/Drinks Provided',
@@ -187,7 +198,7 @@ class EventCreationPageState extends State<EventCreationPage> {
       });
     }
 
-    // Update variable to send tags to backend
+    // Update variable to send tags to backend; create a comma-separated string
     _tagsString = _tags.join(',');
   } // showMultiSelect
 
@@ -280,7 +291,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                       const SizedBox(height: 10),
 
                       // REPEATING EVENT OPTIONS
-                      const Text('Repeats:'),
+                      const Text('How Often Does Your Event Repeat?:'),
 
                       DropdownButton(
                         hint: const Text('Select Repeating Event Customization'),
@@ -297,9 +308,8 @@ class EventCreationPageState extends State<EventCreationPage> {
                             _repeat = newValue;
                           });
                         }
-                        ),
+                      ),
                         
-
                       const SizedBox(height: 10),
 
                       // END REPEAT DATE
@@ -338,7 +348,6 @@ class EventCreationPageState extends State<EventCreationPage> {
                       const SizedBox(height: 10),
 
                       // DISPLAY CHOSEN EVENT TAGS
-                      // TODO: Make it so that the event tags are saved every time they press the button
                       Wrap(
                         children: _tags
                             .map((e) => Chip(
@@ -373,7 +382,7 @@ class EventCreationPageState extends State<EventCreationPage> {
 
                                 // When the event info did not successfully go to the backend
                                 if (create.runtimeType == String) {
-                                  // Show error message
+                                  // Show error message - USER IS NOT LOGGED IN
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -403,7 +412,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                                     },
                                   );
                                 } else if (create.runtimeType == int) {
-                                  // Show error message
+                                  // Show error message - INVALID INPUT OR MISSING INFO
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -434,7 +443,7 @@ class EventCreationPageState extends State<EventCreationPage> {
                                   );
                                 }
 
-                                // Otherwise, event info was successfully sent to backend
+                                // Otherwise, event info was successfully sent to backend; reload page
                                 else {
                                   Navigator.push(
                                     context,
