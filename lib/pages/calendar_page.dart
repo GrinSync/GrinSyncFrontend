@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
+import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class _AppointmentDataSource extends CalendarDataSource {
@@ -60,8 +61,14 @@ class CalendarPageState extends State<CalendarPage> {
   /// Detects whether an event card is being tapped on
   /// and routes the user to the Event Details page
   void calendarTapped(CalendarTapDetails details) {
-    if (details.targetElement == CalendarElement.appointment ||
-        details.targetElement == CalendarElement.agenda) {}
+    if (details.targetElement == CalendarElement.appointment) {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => EventDetailsPage(event: ),
+      //   ),
+      // );
+    }
   }
 
   /// Initializes empty list of event
@@ -78,20 +85,6 @@ class CalendarPageState extends State<CalendarPage> {
   void initState() {
     super.initState();
     loadEventsFuture = loadEvents();
-  }
-
-  // ignore: library_private_types_in_public_api
-  _AppointmentDataSource getSampleDataSource() {
-    List<Appointment> appointments = <Appointment>[];
-
-    appointments.add(Appointment(
-      startTime: DateTime(2024, 4, 3, 10, 00),
-      endTime: DateTime(2024, 4, 3, 11, 50),
-      subject: 'Class',
-      color: Color.fromARGB(255, 218, 41, 28),
-    ));
-
-    return _AppointmentDataSource(appointments);
   }
 
   /// Gets the data for all the events by mapping fields from the Json responses
@@ -116,8 +109,11 @@ class CalendarPageState extends State<CalendarPage> {
         // location: location,
         subject: title,
         notes: description,
-        startTimeZone: 'UTC', // Need these so that it interprets the given datetimes as ofsets from UTC, which they are
-        endTimeZone: 'UTC',   // The calendar widget will automatically update the time in the user's timezone
+        startTimeZone:
+            'UTC', // Need these so that it interprets the given datetimes as offsets from UTC, which they are
+        endTimeZone:
+            'UTC', // The calendar widget will automatically update the time in the user's timezone
+        color: Color.fromARGB(255, 156, 25, 15),
       );
 
       allAppointments.add(apt);
@@ -131,17 +127,18 @@ class CalendarPageState extends State<CalendarPage> {
     return FutureBuilder(
         future: loadEventsFuture,
         builder: (context, snapshot) {
-          // if the connection is waiting, show a loading indicator
+          // If the connection is waiting, show a loading indicator
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
+            return const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
-                const Text('Preparing the calendar for you...'),
+                Text('Preparing the calendar for you...'),
               ],
             );
-            // if there is an error, show an error message and a button to try again
+
+            // If there is an error, show an error message and a button to try again
           } else if (snapshot.hasError) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -158,9 +155,10 @@ class CalendarPageState extends State<CalendarPage> {
                 ),
               ],
             );
-            // if the connection is done, show the events
+
+            // If the connection is done, show the events
           } else {
-            // if there are no events, show a message
+            // If there are no events, show a message
             if (allEvents.isEmpty) {
               return Scaffold(
                 body: Container(
@@ -175,36 +173,36 @@ class CalendarPageState extends State<CalendarPage> {
                   ),
                 ),
               );
-              // if there are events, show the events
+
+              // If there are events, show the events
             } else {
               return Scaffold(
+                  // Return the actual calendar
                   body: SfCalendar(
                 controller: calendarController,
                 onViewChanged: calendarViewChanged,
                 onTap: calendarTapped,
-                view: CalendarView.day,
-                firstDayOfWeek: 7,
+                view: CalendarView.day, // default view of the calendar
+                firstDayOfWeek:
+                    7, // default first day of the week set to Sunday
                 minDate: DateTime(2023, 08, 14, 0, 0, 0),
                 maxDate: DateTime(2025, 05, 25, 0, 0, 0),
                 allowedViews: [
                   CalendarView.day,
                   CalendarView.week,
                   CalendarView.month,
-                  CalendarView.schedule
-                ],
+                ], // the calendar only allows three views - discussed in previous milestones
                 allowViewNavigation: true,
                 viewNavigationMode: ViewNavigationMode.none,
                 monthViewSettings: const MonthViewSettings(
                   dayFormat: 'EEE',
                   monthCellStyle: MonthCellStyle(),
                   appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+                  appointmentDisplayCount: 4,
                   showAgenda: true,
                   agendaViewHeight: 200,
                   agendaStyle: AgendaStyle(),
                   navigationDirection: MonthNavigationDirection.horizontal,
-                ),
-                scheduleViewSettings: const ScheduleViewSettings(
-                  hideEmptyScheduleWeek: true,
                 ),
                 timeSlotViewSettings: const TimeSlotViewSettings(
                   timeInterval: Duration(minutes: 30),
@@ -218,10 +216,12 @@ class CalendarPageState extends State<CalendarPage> {
                 ),
                 showDatePickerButton: true,
                 showTodayButton: true,
-                blackoutDates: <DateTime>[],
-                dataSource: EventDataSource(getAllAppointmentData()),
-                // dataSource: getSampleDataSource(),
-                appointmentTextStyle: TextStyle(),
+                blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
+                dataSource: EventDataSource(
+                    getAllAppointmentData()), // get the event data
+                appointmentTextStyle: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                ),
               ));
             }
           }
