@@ -62,12 +62,18 @@ class CalendarPageState extends State<CalendarPage> {
   /// and routes the user to the Event Details page
   void calendarTapped(CalendarTapDetails details) {
     if (details.targetElement == CalendarElement.appointment) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => EventDetailsPage(event: ),
-      //   ),
-      // );
+      // Get the first and only appointment object that is being tapped on
+      Appointment event = details.appointments!.first;
+      // Get the id of the appointment (same id as in the list of events)
+      Object? id = event.id;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EventDetailsPage(
+              // Look for the single event in the list that has a matching ID
+              event: allEvents.singleWhere((element) => element.id == id)),
+        ),
+      );
     }
   }
 
@@ -93,6 +99,7 @@ class CalendarPageState extends State<CalendarPage> {
     List<Appointment> allAppointments = <Appointment>[];
 
     for (int index = 0; index < allEvents.length; index++) {
+      int eventID = allEvents[index].id;
       String title = allEvents[index].title ?? "";
       String description = allEvents[index].description ?? "";
       String startTime = allEvents[index].start ?? "";
@@ -104,6 +111,7 @@ class CalendarPageState extends State<CalendarPage> {
       // if (studentsOnly)
 
       Appointment apt = Appointment(
+        id: eventID,
         startTime: DateTime.parse(startTime),
         endTime: DateTime.parse(endTime),
         // location: location,
