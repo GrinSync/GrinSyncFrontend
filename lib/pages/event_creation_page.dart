@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
 
@@ -445,11 +446,14 @@ class EventCreationPageState extends State<EventCreationPage> {
 
                                 // Otherwise, event info was successfully sent to backend; reload page
                                 else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const MyApp()),
-                                  );
+                                  Fluttertoast.showToast(
+                                      msg: 'Event Created Successfully!',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.grey[300],
+                                      textColor: Colors.black,
+                                      fontSize: 16.0);
                                 }
                               },
                               child: const Text('Create Event') // Button title
