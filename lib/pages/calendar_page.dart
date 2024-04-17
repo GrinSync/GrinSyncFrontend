@@ -201,6 +201,7 @@ class CalendarPageState extends State<CalendarPage> {
                   CalendarView.month,
                 ], // the calendar only allows three views - discussed in previous milestones
                 allowViewNavigation: true,
+                showNavigationArrow: true,
                 viewNavigationMode: ViewNavigationMode.none,
                 monthViewSettings: const MonthViewSettings(
                   dayFormat: 'EEE',
