@@ -69,15 +69,16 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
   var res = await http.post(url, body: data);
   print(res.body);
   if (res.statusCode == 200) {
-    var json = jsonDecode(res.body);
-    String token = json['key'];
-    var userAttempt = await getUser(token);
-    if (userAttempt != null) {
-      User user = userAttempt;
-      return user;
-    } else {
-      return null;
-    }
+    //var json = jsonDecode(res.body);
+    // String token = json['key'];
+    // var userAttempt = await getUser(token);
+    // if (userAttempt != null) {
+    //   User user = userAttempt;
+    //   return user;
+    // } else {
+    //   return null;
+    // }
+    return 'Login Success';
   } else {
     return null;
   }
