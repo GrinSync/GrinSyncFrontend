@@ -1,7 +1,7 @@
 class Event {
   int id;
   String? title;
-  String? host;
+  int host;
   String? org; 
   String? location;
   String? start;
@@ -13,7 +13,7 @@ class Event {
   Event(
       {this.id = -1,
       this.title,
-      this.host,
+      this.host = -1,
       this.org,
       this.location,
       this.start,
