@@ -94,30 +94,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           );
                         } else {
-                          return Card(
-                            child: ListTile(
-                              title: Text(
-                                  allEvents[index].title ?? 'Null title',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800)),
-                              subtitle: Text(
-                                  '${allEvents[index].start ?? 'Null start date'} \n ${allEvents[index].end ?? 'Null end date'}',
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey[600])),
-                              isThreeLine: true,
-                              // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EventDetailsPage(
-                                        event: allEvents[index]),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
+                          return EventCard(event: allEvents[index]);
                         }
                       },
                     ),
@@ -130,35 +107,41 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// List<Event> getSampleEvents() {
-//   List<Event> allEvents = <Event>[];
-//   allEvents.add(Event(
-//     title: '60s Harris',
-//     // location: 'Harris Center',
-//     description:
-//         'Random event description Random event description Random event description Random event description Random event description',
-//     start: '04/06/2024 22:00',
-//     end: '04/07/2024 1:00',
-//     studentsOnly: true,
-//     tags: "",
-//   ));
-//   allEvents.add(Event(
-//     title: 'CSC 324 Study Session',
-//     // location: 'Noyce 3815',
-//     description: 'We will be preparing for the upcoming presentation',
-//     start: '04/10/2024 19:00',
-//     end: '04/10/2024 21:00',
-//     studentsOnly: true,
-//     tags: "",
-//   ));
-//   allEvents.add(Event(
-//     title: 'Ten Ten Party',
-//     // location: '1010 High St',
-//     description: 'You know what it is',
-//     start: '10/10/2024 22:00',
-//     end: '10/11/2024 4:00',
-//     studentsOnly: true,
-//     tags: "",
-//   ));
-//   return allEvents;
-// }
+
+class EventCard extends StatelessWidget {
+  const EventCard({
+    super.key,
+    required this.event,
+
+  });
+
+  final Event event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(
+            event.title ?? 'Null title',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800)),
+        subtitle: Text(
+            '${event.start ?? 'Null start date'} \n ${event.end ?? 'Null end date'}',
+            style: TextStyle(
+                fontSize: 15, color: Colors.grey[600])),
+        isThreeLine: true,
+        // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EventDetailsPage(
+                  event: event),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
