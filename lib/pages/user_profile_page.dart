@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_test_app/pages/events_I_created_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user;
@@ -30,7 +31,7 @@ class UserProfilePage extends StatelessWidget {
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Helvetica')),
-            Text(user?.username ?? ' null_username' ' (${user?.email})',
+            Text(' ${user?.email}',
                 style: TextStyle(fontSize: 15, color: Colors.grey[600])),
             //Text('Email: ${user?.email}'),
 
@@ -49,7 +50,10 @@ class UserProfilePage extends StatelessWidget {
               child:
                   const Text('Events I Created', style: TextStyle(fontSize: 20)),
               onPressed: () {
-                // TODO: implement events I follow page
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => EventICreatedPage()));
               },
             ),
             TextButton(
