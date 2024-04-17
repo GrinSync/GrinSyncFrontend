@@ -39,7 +39,7 @@ Future<List<Event>> getAllEvents() async {
 Future<List<Event>> getUpcomingEvents() async {
   List<Event> allEvents = [];
 
-  print('Connecting...');
+  //print('Connecting...');
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
@@ -50,11 +50,11 @@ Future<List<Event>> getUpcomingEvents() async {
   } else {
     headers = {'Authorization': 'Token $token'};
   }
-  print('Fetching events...');
+  //print('Fetching events...');
   var url = Uri.parse('https://grinsync.com/api/upcoming');
   var result = await https.get(url, headers: headers);
 
-  print('Parsing JSON response...');
+  //print('Parsing JSON response...');
 
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
@@ -63,7 +63,36 @@ Future<List<Event>> getUpcomingEvents() async {
     allEvents.add(newEvent);
   }
 
-  print('Returning events...');
+  //print('Returning events...');
 
   return allEvents;
+}
+
+
+// this function gets the events created by the current user (assuming the user is logged in)
+Future<List<Event>> getMyEvents() async {
+  List<Event> myEvents = [];
+
+  var box = await Hive.openBox(tokenBox);
+  var token = box.get('token');
+  box.close();
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri.parse('https://grinsync.com/api/getCreatedEvents');
+  var result = await https.get(url, headers: headers);
+
+
+  // parse the json response and create a list of Event objects
+  // result.body is a list of maps with event information
+  for (var jsonEvent in jsonDecode(result.body)) {
+    Event newEvent = Event.fromJson(jsonEvent);
+    myEvents.add(newEvent);
+  }
+
+  return myEvents;
 }
