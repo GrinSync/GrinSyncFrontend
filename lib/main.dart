@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       label: 'Create',
                     ),
                     NavigationDestination(
-                        icon: Icon(Icons.calendar_month), label: 'Agenda'),
+                        icon: Icon(Icons.calendar_month), label: 'Calendar'),
                     NavigationDestination(
                       icon: Icon(Icons.person),
                       label: 'Profile',
