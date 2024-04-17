@@ -1,20 +1,21 @@
 class Event {
   int id;
   String? title;
-  // String? orgID;
-  // String? location;
+  String? host;
+  String? org; 
+  String? location;
   String? start;
   String? end;
   String? description;
   bool? studentsOnly;
-  //List<String>? tags;
   String? tags;
 
   Event(
       {this.id = -1,
       this.title,
-      //this.orgID,
-      //this.location,
+      this.host,
+      this.org,
+      this.location,
       this.start,
       this.end,
       this.description,
@@ -25,8 +26,9 @@ class Event {
     return Event(
         id: json['id'],
         title: json['title'],
-        //orgID: json['orgID'],
-        //location: json['location'],
+        host: json['host'],
+        org: json['parentOrg'],
+        location: json['location'],
         start: json['start'],
         end: json['end'],
         description: json['description'],
