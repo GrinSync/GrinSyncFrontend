@@ -4,6 +4,7 @@ import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/registration_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_test_app/global.dart';
 
 Future<dynamic> userAuthentication(String username, String password) async {
   // body stores the username and password in a single map data structure
@@ -43,6 +44,24 @@ Future<User?> getUser(String token) async {
     return null;
   }
 }
+
+  // check if the user is logged in
+  // if the user is logged in, set GUESTMODE to false, and set the user to the current user
+  // if the user is not logged in, set GUESTMODE to true, and set the user to null
+  Future<void> checkLoginStatus() async {
+    var box = await Hive.openBox(tokenBox);
+    var token = box.get('token');
+    box.close();
+    if (token == null) {
+      GUESTMODE = true;
+    } else {
+      if (await getUser(token) == null) {
+        GUESTMODE = true;
+      } else {
+        GUESTMODE = false;
+      }
+    }
+  }
 
 Future<dynamic> registerUser(String firstName, String lastName, String email,
     String password, SingingCharacter? accType) async {
@@ -89,6 +108,7 @@ Future<void> logout() async {
   var box = await Hive.openBox(tokenBox);
   box.delete('token'); // save token in box
   box.close();
+  GUESTMODE = true;
 }
 
 Future<dynamic> passwordReset(String email) async {
