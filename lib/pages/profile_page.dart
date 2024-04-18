@@ -17,20 +17,20 @@ class _ProfilePageState extends State<ProfilePage> {
   late User? _user;
 
   // check if the user is logged in
-  // if the user is logged in, set guestmode to false, and set the user to the current user
-  // if the user is not logged in, set guestmode to true, and set the user to null
+  // if the user is logged in, set GUESTMODE to false, and set the user to the current user
+  // if the user is not logged in, set GUESTMODE to true, and set the user to null
   Future<void> checkLoginStatus() async {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
     box.close();
     if (token == null) {
-      guestmode = true;
+      GUESTMODE = true;
     } else {
       _user = await getUser(token);
       if (_user == null) {
-        guestmode = true;
+        GUESTMODE = true;
       } else {
-        guestmode = false;
+        GUESTMODE = false;
       }
     }
   }
@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           );
         } else {
-          if (guestmode) {
+          if (GUESTMODE) {
             return GuestProfilePage();
           } else {
             return UserProfilePage(user: _user, refreshProfilePage: refresh);

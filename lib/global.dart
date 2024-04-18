@@ -1,1 +1,1 @@
-bool guestmode = true;
+bool GUESTMODE = true;
