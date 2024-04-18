@@ -57,23 +57,6 @@ class _HomePageState extends State<HomePage> {
               ],
             );
             // if the connection is done, show the events
-          } else {
-            // if there are no events, show a message
-            if (allEvents.isEmpty) {
-              return Scaffold(
-                body: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: RefreshIndicator(
-                    onRefresh: loadEvents,
-                    child: Center(
-                      child: ListView(
-                        children: [const Text('No events to show here')],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-              // if there are events, show the events
             } else {
               return Scaffold(
                 body: Container(
@@ -103,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               );
             }
           }
-        });
+);
   }
 }
 
@@ -127,7 +110,7 @@ class EventCard extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w800)),
         subtitle: Text(
-            '${event.start ?? 'Null start date'} \n ${event.end ?? 'Null end date'}',
+            '${event.start ?? 'Null start date'}\n${event.end ?? 'Null end date'}',
             style: TextStyle(
                 fontSize: 15, color: Colors.grey[600])),
         isThreeLine: true,
