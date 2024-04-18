@@ -1,20 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/main.dart';
-import 'package:flutter_test_app/pages/user_event_creation_page.dart';
-import 'package:flutter_test_app/models/event_models.dart';
 
-// Define a stateful widget for event edit that is mutable and its corresponding state class
-class EventEditPage extends StatefulWidget {
-  final Event event;
-  const EventEditPage({super.key, required this.event});
-  
+// TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
+
+///// ----- MULTI-SELECT CLASS FOR MULTI-SELECTING EVENT TAGS ----- /////
+
+// Define a stateful widget for multiselect option for event tags
+class MultiSelect extends StatefulWidget {
+  final List<String> elements;
+  const MultiSelect({super.key, required this.elements});
   @override
-  EventEditPageState createState() => EventEditPageState();
+  State<MultiSelect> createState() => MultiSelectState();
 }
 
-// State class to manage mutable state data and the widget's lifecycle for event edit page
-class EventEditPageState extends State<EventEditPage> {
+// State class to manage multiselect
+class MultiSelectState extends State<MultiSelect> {
+  // List to hold selected items
+  final List<String> selectedItems = [];
+
+  // Function called when item is selected or unselected
+  void itemChange(String item, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        // Add item if selected
+        selectedItems.add(item);
+      } else {
+        // Remove item if not selected in new selection
+        selectedItems.remove(item);
+      }
+    });
+  }
+
+  // Function called when the cancel button is hit
+  void cancel() {
+    Navigator.pop(context);
+  }
+
+  // Function called when the submit button is hit
+  void submit() {
+    Navigator.pop(context, selectedItems);
+  }
+
+  // Pop-up window to allow user to select event tags
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        title: const Text('Select Event Tags'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: widget.elements
+            // Display event tags and change their selected status according to if they're pressed
+                .map((item) => CheckboxListTile(
+                    value: selectedItems.contains(item),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (isChecked) => itemChange(item, isChecked!)))
+                .toList(),
+          ),
+        ),
+        actions: [
+          // Cancel and submit button actions
+          TextButton(onPressed: cancel, child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: submit,
+            child: const Text('Submit'),
+          )
+        ]);
+  }
+} // MultiSelectState
+
+// Define a stateful widget for event creation that is mutable and its corresponding state class
+class EventCreationPage extends StatefulWidget {
+  const EventCreationPage({super.key});
+  @override
+  State<EventCreationPage> createState() => EventCreationPageState();
+}
+
+// State class to manage mutable state data and the widget's lifecycle for event creation page
+class EventCreationPageState extends State<EventCreationPage> {
   // late = initialization occurs later in the code
   // final = variable can only be assigned to a value once
   // TextEditingController = class that allows for the manipulation of text input
@@ -29,22 +93,21 @@ class EventEditPageState extends State<EventEditPage> {
   late String _tagsString; // Convert the list above to a comma-separated string
   late String? _repeat;
   late final TextEditingController _repeatDate;
-  late final Event event = widget.event;
 
   // initState function to initialize all of the late final variables from above
   @override
   void initState() {
     // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs
-    _title = TextEditingController(text: event.title);
-    _location = TextEditingController(text:event.location);
-    _startDate = TextEditingController(text:event.start);
-    _endDate = TextEditingController(text:event.end);
-    _description = TextEditingController(text:event.description);
-    _studentsOnly = event.studentsOnly;
-    _tags = _tagsString.split(",");
-    _tagsString = _tags.join(',');
-    _repeat = null; // TODO
-    _repeatDate = TextEditingController(); // TODO
+    _title = TextEditingController();
+    _location = TextEditingController();
+    _startDate = TextEditingController();
+    _endDate = TextEditingController();
+    _description = TextEditingController();
+    _studentsOnly = false;
+    _tags = [];
+    _tagsString = "";
+    _repeat = null;
+    _repeatDate = TextEditingController();
     super.initState();
   } // initState
 
@@ -295,7 +358,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EDIT EVENT BUTTON - SEND INFO TO BACKEND
+                      // CREATE EVENT BUTTON - SEND INFO TO BACKEND
                       SizedBox(
                           width: double.infinity, // Span the whole screen
                           child: ElevatedButton(
@@ -325,12 +388,12 @@ class EventEditPageState extends State<EventEditPage> {
                                     builder: (context) {
                                       return AlertDialog(
                                         title:
-                                            const Text('Event Edit Error'),
+                                            const Text('Event Creation Error'),
                                         content: const SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
                                               Text(
-                                                  'GrinSync could not edit your event.'),
+                                                  'GrinSync could not create your event.'),
                                               Text('Please try again.')
                                             ],
                                           ),
@@ -355,7 +418,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     builder: (context) {
                                       return AlertDialog(
                                         title:
-                                            const Text('Event Edit Error'),
+                                            const Text('Event Creation Error'),
                                         content: const SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
@@ -389,7 +452,7 @@ class EventEditPageState extends State<EventEditPage> {
                                   );
                                 }
                               },
-                              child: const Text('Edit Event') // Button title
+                              child: const Text('Create Event') // Button title
                               ))
                     ]))));
   } // build
