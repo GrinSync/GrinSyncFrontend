@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         currentPage = SearchPage();
         break;
       case 2: // this is the event creation page where user can create their own events
-        currentPage = EventCreationPage();
+        currentPage = CreatePage();
         break;
       case 3: // this is the user's agenda (calendar view: month view, week view, day view)
         currentPage = CalendarPage();
