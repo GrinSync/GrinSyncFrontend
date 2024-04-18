@@ -5,10 +5,12 @@ import 'package:flutter_test_app/pages/home_page.dart';
 import 'package:flutter_test_app/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_test_app/pages/search_page.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await checkLoginStatus();
   runApp(const MyApp());
 }
 
