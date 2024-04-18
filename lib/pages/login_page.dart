@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/forgot_password_page.dart';
@@ -129,6 +130,7 @@ class _LoginPage extends State<LoginPage> {
                     // If user was returned, login succeeded!
                     else if (auth.runtimeType == User) {
                       // Open the app home page
+                      GUESTMODE = false;
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const MyApp()),
