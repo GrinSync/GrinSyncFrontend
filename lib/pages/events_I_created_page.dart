@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/pages/edit_event_page.dart';
+import 'package:flutter/cupertino.dart';
 
 class EventICreatedPage extends StatefulWidget {
 
@@ -61,16 +63,8 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
             } else {
               // if there are no events, show a message
               if (myEvents.isEmpty) {
-                return Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: RefreshIndicator(
-                      onRefresh: loadEvents,
-                      child: Center(
-                        child: ListView(
-                          children: [const Text('No events to show here')],
-                        ),
-                      ),
-                    ),
+                return const Center(
+                        child: Text("You haven't created any events yet."),
                 );
                 // if there are events, show the events
               } else {
@@ -90,29 +84,7 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
                               ],
                             );
                           } else {
-                            return Card(
-                              child: ListTile(
-                                title: Text(
-                                    myEvents[index].title ?? 'Null title',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w800)),
-                                subtitle: Text(
-                                    '${myEvents[index].start ?? 'Null start date'} \n ${myEvents[index].end ?? 'Null end date'}',
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.grey[600])),
-                                isThreeLine: true,
-                                // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Placeholder(), //go to event edit page
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
+                            return MyEventCard(event: myEvents[index]);
                           }
                         },
                       ),
@@ -120,6 +92,43 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
               }
             }
           }),
+    );
+  }
+}
+
+class MyEventCard extends StatelessWidget {
+  const MyEventCard({
+    super.key,
+    required this.event,
+  });
+
+  final Event event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(
+            event.title ?? 'Null title',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800)),
+        subtitle: Text(
+            '${event.location ?? 'Null location'}\n${event.start ?? 'Null start date'}',
+            style: TextStyle(
+                fontSize: 15, color: Colors.grey[600])),
+        isThreeLine: true,
+        // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              //go to event edit page
+              builder: (context) => EventEditPage(event: event),
+          )
+          );
+        },
+      ),
     );
   }
 }
