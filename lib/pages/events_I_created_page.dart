@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/pages/edit_event_page.dart';
-import 'package:flutter/cupertino.dart';
 
-class EventICreatedPage extends StatefulWidget {
+class EventsICreatedPage extends StatefulWidget {
 
-  EventICreatedPage({super.key});
+  EventsICreatedPage({super.key});
 
   @override
-  State<EventICreatedPage> createState() => _EventICreatedPageState();
+  State<EventsICreatedPage> createState() => _EventsICreatedPageState();
 }
 
-class _EventICreatedPageState extends State<EventICreatedPage> {
+class _EventsICreatedPageState extends State<EventsICreatedPage> {
   late List<Event> myEvents;
 
   Future<void> loadEvents() async {
@@ -84,7 +82,7 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
                               ],
                             );
                           } else {
-                            return MyEventCard(event: myEvents[index]);
+                            return EventCardtoEdit(event: myEvents[index]);
                           }
                         },
                       ),
@@ -92,43 +90,6 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
               }
             }
           }),
-    );
-  }
-}
-
-class MyEventCard extends StatelessWidget {
-  const MyEventCard({
-    super.key,
-    required this.event,
-  });
-
-  final Event event;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(
-            event.title ?? 'Null title',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800)),
-        subtitle: Text(
-            '${event.location ?? 'Null location'}\n${event.start ?? 'Null start date'}',
-            style: TextStyle(
-                fontSize: 15, color: Colors.grey[600])),
-        isThreeLine: true,
-        // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-        onTap: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              //go to event edit page
-              builder: (context) => EventEditPage(event: event),
-          )
-          );
-        },
-      ),
     );
   }
 }
