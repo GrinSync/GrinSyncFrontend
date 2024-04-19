@@ -10,7 +10,7 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await checkLoginStatus();
+  await setLoginStatus();
   runApp(const MyApp());
 }
 
@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -96,9 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-
     Widget currentPage;
     // this switch statement will determine which page to display based on the navigation bar item selected
     // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
@@ -200,16 +198,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       CupertinoPageRoute(builder: (context) => const LoginPage()),
-      //     );
-      //   },
-      //   tooltip: 'Log in',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
