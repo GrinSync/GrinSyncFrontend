@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
+import 'package:flutter_test_app/global.dart';
 
 class UserProfilePage extends StatelessWidget {
-  final User? user;
-  final Function() refreshProfilePage;
+  final User? user = USER.value;
 
-  UserProfilePage({Key? key, required this.user, required this.refreshProfilePage}) : super(key: key);
+  UserProfilePage({Key? key}) : super(key: key);
 
 
 
@@ -88,8 +85,6 @@ class UserProfilePage extends StatelessWidget {
               ),
               onPressed: () async {
                 await logout();
-                refreshProfilePage();
-                //Fluttertoast.showToast(msg: "Method called in child");
               },
             ),
           ]),
