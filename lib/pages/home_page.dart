@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/pages/event_details_page.dart';
 
 // HomePage shows user a list of events
 
@@ -77,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           );
                         } else {
-                          return EventCard(event: allEvents[index]);
+                          return EventCardtoDetails(event: allEvents[index]);
                         }
                       },
                     ),
@@ -90,41 +89,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-class EventCard extends StatelessWidget {
-  const EventCard({
-    super.key,
-    required this.event,
-
-  });
-
-  final Event event;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(
-            event.title ?? 'Null title',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800)),
-        subtitle: Text(
-            '${event.start ?? 'Null start date'}\n${event.end ?? 'Null end date'}',
-            style: TextStyle(
-                fontSize: 15, color: Colors.grey[600])),
-        isThreeLine: true,
-        // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EventDetailsPage(
-                  event: event),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
