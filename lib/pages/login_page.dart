@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/forgot_password_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -129,12 +128,14 @@ class _LoginPage extends State<LoginPage> {
                     }
                     // If user was returned, login succeeded!
                     else if (auth.runtimeType == User) {
-                      // Open the app home page
-                      GUESTMODE = false;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                      );
+                      setLoginStatus(); //set USER to current user
+                      Navigator.of(context).pop(); //close login page
+
+                      Fluttertoast.showToast( // show toast message that login was successful
+                        msg: "You are successfully logged in",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        );
                     }
                   },
                   child: const Text('Log in')),
