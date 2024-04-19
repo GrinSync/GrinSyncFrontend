@@ -46,6 +46,7 @@ class EventCardtoDetails extends StatelessWidget {
               icon: value? Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary):Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary),
               onPressed: () {
                 toggleLikeEvent(event.id);
+                event.isFavoited = !value;
                 favorited.value = !value;
               },
             ):null, // favorite button to favorite an event

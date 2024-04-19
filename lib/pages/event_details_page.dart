@@ -43,7 +43,8 @@ class EventDetailsPage extends StatelessWidget {
                         tooltip: value? 'Unsave the event':'Save the event',
                         onPressed: () {
                           toggleLikeEvent(event.id);
-                          favorited.value = !favorited.value;
+                          event.isFavoited = !value;
+                          favorited.value = !value;
                         });
                   }
                 )
