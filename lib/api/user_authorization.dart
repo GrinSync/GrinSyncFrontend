@@ -46,9 +46,9 @@ Future<User?> getUser(String token) async {
   }
 }
 
-  // check if the user is logged in, 
-  // if the user is logged in, set GUESTMODE to false, and set USER to the current user
-  // if the user is not logged in, set GUESTMODE to true, and set USER to null
+  // Set login status based on if the user is logged in, 
+  // if the user is logged in, set USER to the current user
+  // if the user is not logged in, set USER to null
   Future<void> setLoginStatus() async {
     var box = await Hive.openBox(tokenBox);
     var token = box.get('token');
@@ -58,6 +58,11 @@ Future<User?> getUser(String token) async {
     } else {
       USER.value = await getUser(token);
     }
+  }
+
+  // check if the user is logged in
+  bool isLoggedIn() {
+    return USER.value != null;
   }
 
 Future<dynamic> registerUser(String firstName, String lastName, String email,
