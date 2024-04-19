@@ -16,7 +16,7 @@ class _EventICreatedPageState extends State<EventICreatedPage> {
   late List<Event> myEvents;
 
   Future<void> loadEvents() async {
-    myEvents = await getUpcomingEvents();
+    myEvents = await getMyEvents();
   }
 
   @override
