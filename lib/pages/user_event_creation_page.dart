@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
