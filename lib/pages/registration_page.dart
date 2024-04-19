@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum SingingCharacter { student, faculty, community }
 
@@ -189,10 +189,11 @@ class _RegistrationPage extends State<RegistrationPage> {
                         },
                       );
                     } else if (auth.runtimeType == String) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                      );
+                      Fluttertoast.showToast( // show toast message that login was successful
+                        msg: "You are successfully registered",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        );
                     }
                   },
                   child: const Text('Register')),
