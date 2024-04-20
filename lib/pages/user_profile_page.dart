@@ -26,7 +26,7 @@ class UserProfilePage extends StatelessWidget {
             const SizedBox(height: 8),
             Text('${user?.firstName} ${user?.lastName}',
                 style: const TextStyle(
-                    fontSize: 50,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Helvetica')),
             Text(' ${user?.email}',
