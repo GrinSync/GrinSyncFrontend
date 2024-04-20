@@ -71,7 +71,7 @@ class EventDetailsPage extends StatelessWidget {
               Text('Host',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(
-                event.host
+                event.hostName
                     .toString(), //TODO: currently it shows host's user id, we need a way to access host's name
                 style: TextStyle(fontSize: 20),
               ),
