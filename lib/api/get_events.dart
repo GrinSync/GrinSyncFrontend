@@ -282,10 +282,10 @@ Future<List<Event>> getLikedEvents() async {
     headers = {'Authorization': 'Token $token'};
   }
 
-  var url = Uri.parse('https://grinsync.com/api/getlikedEvents');
+  var url = Uri.parse('https://grinsync.com/api/getLikedEvents');
   var result = await https.get(url, headers: headers);
 
-  print(result.body);
+
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
   for (var jsonEvent in jsonDecode(result.body)) {

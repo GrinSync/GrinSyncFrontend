@@ -75,7 +75,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                             return Column(
                               children: [
                                 Divider(color: Colors.grey[400]),
-                                Text('--End of Your Events Created--',
+                                Text('--End of Your Saved Events--',
                                     style: TextStyle(color: Colors.grey[600])),
                                 Text('Event Count: ${events.length}',
                                     style: TextStyle(color: Colors.grey[600])),
