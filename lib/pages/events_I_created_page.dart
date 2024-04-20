@@ -48,9 +48,8 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                       const Text('Error loading events'),
                       TextButton(
                         onPressed: () {
-                          setState(() {
-                            loadEvents();
-                          });
+                          loadEvents();
+                          setState(() {});
                         },
                         child: const Text('Try again'),
                       ),

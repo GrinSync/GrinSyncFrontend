@@ -48,8 +48,8 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                       const Text('Error loading events'),
                       TextButton(
                         onPressed: () {
+                          loadEvents();
                           setState(() {
-                            loadEvents();
                           });
                         },
                         child: const Text('Try again'),

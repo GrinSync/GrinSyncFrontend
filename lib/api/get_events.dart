@@ -8,6 +8,7 @@ import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 // This event card leads user to the event details page. It's used when user can't edit an event (e.g. on home page and events I follow page)
@@ -48,6 +49,16 @@ class EventCardtoDetails extends StatelessWidget {
                 toggleLikeEvent(event.id);
                 event.isFavoited = !value;
                 favorited.value = !value;
+                Fluttertoast.showToast(
+                              msg: value
+                                  ? 'Unsaved successfully'
+                                  : 'Saved successfully',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey[800],
+                              textColor: Colors.white,
+                              fontSize: 16.0);
               },
             ):null, 
             onTap: () {
@@ -274,7 +285,7 @@ Future<List<Event>> getLikedEvents() async {
   var url = Uri.parse('https://grinsync.com/api/getlikedEvents');
   var result = await https.get(url, headers: headers);
 
-
+  print(result.body);
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
   for (var jsonEvent in jsonDecode(result.body)) {
