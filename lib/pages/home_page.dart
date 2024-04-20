@@ -10,23 +10,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Event> allEvents;
-  late Future<void> _loadEventsFuture;
+  ValueNotifier allEvents = ValueNotifier<List<Event>?>(null);
+  
 
   Future<void> loadEvents() async {
-    allEvents = await getUpcomingEvents();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadEventsFuture = loadEvents();
+    allEvents.value = await getUpcomingEvents();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _loadEventsFuture,
+        future: loadEvents(),
         builder: (context, snapshot) {
           // if the connection is waiting, show a loading indicator
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,31 +51,36 @@ class _HomePageState extends State<HomePage> {
             );
             // if the connection is done, show the events
             } else {
-              return Scaffold(
-                body: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: RefreshIndicator(
-                    onRefresh: loadEvents,
-                    child: ListView.builder(
-                      itemCount: allEvents.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == allEvents.length) {
-                          return Column(
-                            children: [
-                              Divider(color: Colors.grey[400]),
-                              Text('--End of All Events--',
-                                  style: TextStyle(color: Colors.grey[600])),
-                              Text('Event Count: ${allEvents.length}',
-                                  style: TextStyle(color: Colors.grey[600])),
-                            ],
-                          );
-                        } else {
-                          return EventCardtoDetails(event: allEvents[index]);
-                        }
-                      },
+              return ValueListenableBuilder(
+                valueListenable: allEvents,
+                builder: (context, eventList, child) {
+                  return Scaffold(
+                    body: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: RefreshIndicator(
+                        onRefresh: loadEvents,
+                        child: ListView.builder(
+                          itemCount: eventList!.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == eventList.length) {
+                              return Column(
+                                children: [
+                                  Divider(color: Colors.grey[400]),
+                                  Text('--End of All Events--',
+                                      style: TextStyle(color: Colors.grey[600])),
+                                  Text('Event Count: ${eventList.length}',
+                                      style: TextStyle(color: Colors.grey[600])),
+                                ],
+                              );
+                            } else {
+                              return EventCardtoDetails(event: eventList[index]);
+                            }
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }
               );
             }
           }

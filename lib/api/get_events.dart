@@ -49,7 +49,7 @@ class EventCardtoDetails extends StatelessWidget {
                 event.isFavoited = !value;
                 favorited.value = !value;
               },
-            ):null, // favorite button to favorite an event
+            ):null, 
             onTap: () {
               Navigator.push(
                 context,
