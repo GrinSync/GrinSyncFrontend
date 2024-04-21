@@ -175,6 +175,8 @@ class _LoginPage extends State<LoginPage> {
                         }
                         // If user was returned, login succeeded!
                         else if (auth.runtimeType == User) {
+                          // Set login status to logged in
+                          await setLoginStatus();
                           // Open the app home page
                           Navigator.push(
                             context,
