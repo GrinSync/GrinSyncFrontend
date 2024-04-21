@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:flutter_test_app/models/event_models.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // Define a stateful widget for event edit that is mutable and its corresponding state class
 class EventEditPage extends StatefulWidget {
-  final Event event;
+  final Event event; // Event that we are editing
   const EventEditPage({super.key, required this.event});
   
   @override
@@ -25,13 +25,15 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _endDate;
   late final TextEditingController _description;
   late bool? _studentsOnly;
-  late List<String> _tags;
-  late String _tagsString; // Convert the list above to a comma-separated string
+  late List<String>? _tags;
+  late String? _tagsString; // Convert the list above to a comma-separated string
   late String? _repeat;
   late final TextEditingController _repeatDate;
+  late final int _id;
   late final Event event = widget.event;
 
   // initState function to initialize all of the late final variables from above
+  // Initialize based on the event information that we got
   @override
   void initState() {
     // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs
@@ -41,10 +43,15 @@ class EventEditPageState extends State<EventEditPage> {
     _endDate = TextEditingController(text:event.end);
     _description = TextEditingController(text:event.description);
     _studentsOnly = event.studentsOnly;
-    _tags = _tagsString.split(",");
-    _tagsString = _tags.join(',');
-    _repeat = null; // TODO
-    _repeatDate = TextEditingController(); // TODO
+    _tagsString = event.tags;
+    if (_tagsString != "") {
+      _tags = _tagsString?.split(",");
+    } else {
+      _tags = [];
+    }
+    _repeat = null; // TODO WHEN EVENT MODEL IS UPDATED
+    _repeatDate = TextEditingController(); // TODO WHEN EVENT MODEL IS UPDATED
+    _id = event.id;
     super.initState();
   } // initState
 
@@ -136,7 +143,7 @@ class EventEditPageState extends State<EventEditPage> {
     }
 
     // Update variable to send tags to backend; create a comma-separated string
-    _tagsString = _tags.join(',');
+    _tagsString = _tags?.join(',');
   } // showMultiSelect
 
 // Build UI of widget
@@ -285,13 +292,15 @@ class EventEditPageState extends State<EventEditPage> {
                       const SizedBox(height: 10),
 
                       // DISPLAY CHOSEN EVENT TAGS
+                      
                       Wrap(
-                        children: _tags
-                            .map((e) => Chip(
-                                  label: Text(e),
+                        children: _tags 
+                            !.map((e) => Chip( 
+                                  label: Text(e), 
                                 ))
                             .toList(),
                       ),
+                      
 
                       const SizedBox(height: 10),
 
@@ -315,40 +324,11 @@ class EventEditPageState extends State<EventEditPage> {
                                     _repeat,
                                     _repeatDate.text,
                                     _studentsOnly,
-                                    _tagsString);
+                                    _tagsString,
+                                    _id,
+                                    'https://grinsync.com/api/editEvent');
 
-                                // When the event info did not successfully go to the backend
                                 if (create.runtimeType == String) {
-                                  // Show error message - USER IS NOT LOGGED IN
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title:
-                                            const Text('Event Edit Error'),
-                                        content: const SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text(
-                                                  'GrinSync could not edit your event.'),
-                                              Text('Please try again.')
-                                            ],
-                                          ),
-                                        ),
-
-                                        // Allow user to exit out of error message
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Okay'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (create.runtimeType == int) {
                                   // Show error message - INVALID INPUT OR MISSING INFO
                                   showDialog(
                                     context: context,
@@ -356,11 +336,10 @@ class EventEditPageState extends State<EventEditPage> {
                                       return AlertDialog(
                                         title:
                                             const Text('Event Edit Error'),
-                                        content: const SingleChildScrollView(
+                                        content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
-                                              Text(
-                                                  'Event is missing information/has invalid input.'),
+                                              Text('$create'),
                                               Text('Please edit event details.')
                                             ],
                                           ),
@@ -382,11 +361,14 @@ class EventEditPageState extends State<EventEditPage> {
 
                                 // Otherwise, event info was successfully sent to backend; reload page
                                 else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const MyApp()),
-                                  );
+                                  Fluttertoast.showToast(
+                                      msg: 'Event Edited Successfully!',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.grey[300],
+                                      textColor: Colors.black,
+                                      fontSize: 16.0);
                                 }
                               },
                               child: const Text('Edit Event') // Button title

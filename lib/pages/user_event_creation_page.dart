@@ -71,14 +71,14 @@ class MultiSelectState extends State<MultiSelect> {
 } // MultiSelectState
 
 // Define a stateful widget for event creation that is mutable and its corresponding state class
-class EventCreationPage extends StatefulWidget {
-  const EventCreationPage({super.key});
+class UserEventCreationPage extends StatefulWidget {
+  const UserEventCreationPage({super.key});
   @override
-  State<EventCreationPage> createState() => EventCreationPageState();
+  State<UserEventCreationPage> createState() => UserEventCreationPageState();
 }
 
 // State class to manage mutable state data and the widget's lifecycle for event creation page
-class EventCreationPageState extends State<EventCreationPage> {
+class UserEventCreationPageState extends State<UserEventCreationPage> {
   // late = initialization occurs later in the code
   // final = variable can only be assigned to a value once
   // TextEditingController = class that allows for the manipulation of text input
@@ -369,6 +369,8 @@ class EventCreationPageState extends State<EventCreationPage> {
                               // When the button is pressed, do this:
                               onPressed: () async {
                                 // Send event info to backend
+                                // There is no evet ID yet, so send -1
+                                // Send to Create Event URL
                                 var create = await eventInfo(
                                     _title.text,
                                     _location.text,
@@ -378,40 +380,12 @@ class EventCreationPageState extends State<EventCreationPage> {
                                     _repeat,
                                     _repeatDate.text,
                                     _studentsOnly,
-                                    _tagsString);
+                                    _tagsString,
+                                    -1,
+                                    'https://grinsync.com/api/create/event');
 
-                                // When the event info did not successfully go to the backend
-                                if (create.runtimeType == String) {
-                                  // Show error message - USER IS NOT LOGGED IN
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title:
-                                            const Text('Event Creation Error'),
-                                        content: const SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text(
-                                                  'GrinSync could not create your event.'),
-                                              Text('Please try again.')
-                                            ],
-                                          ),
-                                        ),
-
-                                        // Allow user to exit out of error message
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Okay'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (create.runtimeType == int) {
+                                 if (create.runtimeType == String) {
+  
                                   // Show error message - INVALID INPUT OR MISSING INFO
                                   showDialog(
                                     context: context,
@@ -419,11 +393,10 @@ class EventCreationPageState extends State<EventCreationPage> {
                                       return AlertDialog(
                                         title:
                                             const Text('Event Creation Error'),
-                                        content: const SingleChildScrollView(
+                                        content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
-                                              Text(
-                                                  'Event is missing information/has invalid input.'),
+                                              Text('$create'),
                                               Text('Please edit event details.')
                                             ],
                                           ),
