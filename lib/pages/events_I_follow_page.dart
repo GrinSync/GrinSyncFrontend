@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 
-class EventsICreatedPage extends StatefulWidget {
+class EventsIFollowPage extends StatefulWidget {
 
-  EventsICreatedPage({super.key});
+  EventsIFollowPage({super.key});
 
   @override
-  State<EventsICreatedPage> createState() => _EventsICreatedPageState();
+  State<EventsIFollowPage> createState() => _EventsIFollowPageState();
 }
 
-class _EventsICreatedPageState extends State<EventsICreatedPage> {
-  late List<Event> myEvents;
+class _EventsIFollowPageState extends State<EventsIFollowPage> {
+  late List<Event> events;
 
   Future<void> loadEvents() async {
-    myEvents = await getMyEvents();
+    events = await getLikedEvents();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Events I Created', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text('Events I Follow', style: TextStyle(fontWeight: FontWeight.bold),),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -49,7 +49,8 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                       TextButton(
                         onPressed: () {
                           loadEvents();
-                          setState(() {});
+                          setState(() {
+                          });
                         },
                         child: const Text('Try again'),
                       ),
@@ -59,29 +60,29 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
               // if the connection is done, show the events
             } else {
               // if there are no events, show a message
-              if (myEvents.isEmpty) {
+              if (events.isEmpty) {
                 return const Center(
-                        child: Text("You haven't created any events yet."),
+                        child: Text("You are not following any events yet."),
                 );
                 // if there are events, show the events
               } else {
                 return Container(
                     padding: EdgeInsets.all(8.0),
                     child: ListView.builder(
-                        itemCount: myEvents.length + 1,
+                        itemCount: events.length + 1,
                         itemBuilder: (context, index) {
-                          if (index == myEvents.length) {
+                          if (index == events.length) {
                             return Column(
                               children: [
                                 Divider(color: Colors.grey[400]),
-                                Text('--End of Your Events Created--',
+                                Text('--End of Your Saved Events--',
                                     style: TextStyle(color: Colors.grey[600])),
-                                Text('Event Count: ${myEvents.length}',
+                                Text('Event Count: ${events.length}',
                                     style: TextStyle(color: Colors.grey[600])),
                               ],
                             );
                           } else {
-                            return EventCardtoEdit(event: myEvents[index]);
+                            return EventCardtoDetails(event: events[index]);
                           }
                         },
                       ),

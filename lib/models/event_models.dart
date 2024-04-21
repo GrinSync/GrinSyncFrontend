@@ -2,6 +2,7 @@ class Event {
   int id;
   String? title;
   int host;
+  String? hostName;
   String? org; 
   String? location;
   String? start;
@@ -9,30 +10,36 @@ class Event {
   String? description;
   bool? studentsOnly;
   String? tags;
+  bool isFavoited;  
 
   Event(
       {this.id = -1,
       this.title,
       this.host = -1,
+      this.hostName,
       this.org,
       this.location,
       this.start,
       this.end,
       this.description,
       this.studentsOnly,
-      this.tags});
+      this.tags,
+      this.isFavoited = false});
 
   factory Event.fromJson(json) {
     return Event(
         id: json['id'],
         title: json['title'],
         host: json['host'],
+        hostName: json['hostName'],
         org: json['parentOrg'],
         location: json['location'],
         start: json['start'],
         end: json['end'],
         description: json['description'],
         studentsOnly: json['studentsOnly'],
-        tags: json['tags']);
+        tags: json['tags'],
+        isFavoited: json['isFavorited']
+        );
   }
 }

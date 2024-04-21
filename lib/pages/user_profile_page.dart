@@ -4,6 +4,7 @@ import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
+import 'package:flutter_test_app/pages/events_I_follow_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user = USER.value;
@@ -25,7 +26,7 @@ class UserProfilePage extends StatelessWidget {
             const SizedBox(height: 8),
             Text('${user?.firstName} ${user?.lastName}',
                 style: const TextStyle(
-                    fontSize: 50,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Helvetica')),
             Text(' ${user?.email}',
@@ -50,14 +51,17 @@ class UserProfilePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                        builder: (context) => EventICreatedPage()));
+                        builder: (context) => EventsICreatedPage()));
               },
             ),
             TextButton(
               child:
                   const Text('Events I Follow', style: TextStyle(fontSize: 20)),
               onPressed: () {
-                // TODO: implement events I follow page
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => EventsIFollowPage()));
               },
             ),
             TextButton(
