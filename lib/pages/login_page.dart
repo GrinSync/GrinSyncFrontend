@@ -176,11 +176,13 @@ class _LoginPage extends State<LoginPage> {
                         // If user was returned, login succeeded!
                         else if (auth.runtimeType == User) {
                           // Open the app home page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyApp()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const MyApp()),
+                          // );
+                          Navigator.pop(context);
+                          setLoginStatus();
                         }
                       },
                       child: const Text('Log in')),
