@@ -97,7 +97,9 @@ class EventDetailsPage extends StatelessWidget {
               ),
               Text('Tags:',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              //TODO: show tags here
+              Wrap(
+                children: buildTags(context),
+              ),
 
               // some space
               const SizedBox(height: 50),
@@ -141,5 +143,32 @@ class EventDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Card> buildTags(BuildContext context) {
+    List<Card> allCards = <Card>[];
+
+    String? tags = event.tags;
+
+    if (tags != null) {
+      List<String> allTags = tags.split(',');
+
+      for (String tag in allTags) {
+        allCards.add(Card.outlined(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  width: 3.0),
+              borderRadius: BorderRadius.circular(5.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(tag, style: TextStyle(fontSize: 16)),
+          ),
+          // color: Theme.of(context).colorScheme.secondaryContainer,
+        ));
+      }
+    }
+
+    return allCards;
   }
 }
