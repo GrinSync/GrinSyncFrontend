@@ -65,56 +65,59 @@ class _LoginPage extends State<LoginPage> {
                 ),
               ),
             ),
-        SizedBox(
-          height: 40,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Text(
-                "Welcome back!",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Sign in to continue.",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-        
-            // Create a TextField for the user to enter their username
-            TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person_outline_outlined),
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
-                  border: OutlineInputBorder()),
+            SizedBox(
+              height: 40,
             ),
-            const SizedBox(height: 10),
-            // Create a TextField for the user to enter their password
-            TextField(
-              controller: _password,
-              autocorrect: false,
-              obscureText: true,
-              enableSuggestions: false,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.fingerprint),
-                labelText: 'Password',
-                hintText: 'Enter your password',
-                border: OutlineInputBorder(),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome back!",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Sign in to continue.",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+
+                    // Create a TextField for the user to enter their username
+                    TextField(
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.person_outline_outlined),
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
+                          border: OutlineInputBorder()),
+                    ),
+                    const SizedBox(height: 10),
+                    // Create a TextField for the user to enter their password
+                    TextField(
+                      controller: _password,
+                      autocorrect: false,
+                      obscureText: true,
+                      enableSuggestions: false,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.fingerprint),
+                        labelText: 'Password',
+                        hintText: 'Enter your password',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ]),
             ),
-            const SizedBox(height: 10),]),),
             // Create Forgot Password Button
             Align(
                 alignment: Alignment.centerRight,
@@ -178,11 +181,13 @@ class _LoginPage extends State<LoginPage> {
                           // Set login status to logged in
                           await setLoginStatus();
                           // Open the app home page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyApp()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const MyApp()),
+                          // );
+                          Navigator.pop(context);
+                          setLoginStatus();
                         }
                       },
                       child: const Text('Log in')),

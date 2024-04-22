@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ValueNotifier allEvents = ValueNotifier<List<Event>?>(null);
-  
 
   Future<void> loadEvents() async {
     allEvents.value = await getUpcomingEvents();
@@ -50,8 +49,8 @@ class _HomePageState extends State<HomePage> {
               ],
             );
             // if the connection is done, show the events
-            } else {
-              return ValueListenableBuilder(
+          } else {
+            return ValueListenableBuilder(
                 valueListenable: allEvents,
                 builder: (context, eventList, child) {
                   return Scaffold(
@@ -67,24 +66,24 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Divider(color: Colors.grey[400]),
                                   Text('--End of All Events--',
-                                      style: TextStyle(color: Colors.grey[600])),
+                                      style:
+                                          TextStyle(color: Colors.grey[600])),
                                   Text('Event Count: ${eventList.length}',
-                                      style: TextStyle(color: Colors.grey[600])),
+                                      style:
+                                          TextStyle(color: Colors.grey[600])),
                                 ],
                               );
                             } else {
-                              return EventCardtoDetails(event: eventList[index]);
+                              return EventCardtoDetails(
+                                  event: eventList[index]);
                             }
                           },
                         ),
                       ),
                     ),
                   );
-                }
-              );
-            }
+                });
           }
-);
+        });
   }
 }
-

@@ -11,8 +11,6 @@ class UserProfilePage extends StatelessWidget {
 
   UserProfilePage({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +43,8 @@ class UserProfilePage extends StatelessWidget {
             ),
             // const Divider(color: Colors.grey,),
             TextButton(
-              child:
-                  const Text('Events I Created', style: TextStyle(fontSize: 20)),
+              child: const Text('Events I Created',
+                  style: TextStyle(fontSize: 20)),
               onPressed: () {
                 Navigator.push(
                     context,

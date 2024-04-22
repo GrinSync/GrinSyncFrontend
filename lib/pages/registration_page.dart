@@ -190,12 +190,13 @@ class _RegistrationPage extends State<RegistrationPage> {
                       );
                     } else if (auth.runtimeType == String) {
                       Navigator.pop(context);
-                      
-                      Fluttertoast.showToast( // show toast message that login was successful
+
+                      Fluttertoast.showToast(
+                        // show toast message that login was successful
                         msg: "You are successfully registered",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        );
+                      );
                     }
                   },
                   child: const Text('Register')),

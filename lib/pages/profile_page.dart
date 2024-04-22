@@ -5,7 +5,6 @@ import 'package:flutter_test_app/pages/user_profile_page.dart';
 import 'package:flutter_test_app/global.dart';
 
 class ProfilePage extends StatelessWidget {
-
   ProfilePage({Key? key}) : super(key: key);
 
   @override

@@ -3,8 +3,8 @@ import 'package:flutter_test_app/constants.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as https;
 
-// Asyncrhonus operation to send newly created event information to the Django backend
-// User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userRepeat, userEndRepeat, userStudentOnly, userTags
+// Asyncrhonus operation to send event information to the Django backend
+// User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userRepeat, userEndRepeat, userStudentOnly, userTags, eventID, userURL
 Future eventInfo(
     String userTitle,
     String userLocation,
@@ -14,12 +14,14 @@ Future eventInfo(
     String? userRepeat,
     String userEndRepeat,
     bool? userStudentOnly,
-    String userTags) async {
+    String? userTags,
+    int eventId,
+    String userUrl) async {
   if (userStudentOnly == null) return; // Error check
   String studentOnly =
       (userStudentOnly ? "True" : "False"); // Set boolean to a String
 
-  // Set repeat customizations to numbers 
+  // Set repeat customizations to numbers
   // Daily -> repeatingDays = 1
   // Weekly -> repeatingDays = 7
   // Monthly -> repeatingMonths = 1
@@ -30,11 +32,9 @@ Future eventInfo(
   if (userRepeat != null) {
     if (userRepeat == 'Daily') {
       repeatingDays = "1";
-    }
-    else if (userRepeat == 'Weekly') {
+    } else if (userRepeat == 'Weekly') {
       repeatingDays = "7";
-    }
-    else if (userRepeat == 'Monthly') {
+    } else if (userRepeat == 'Monthly') {
       repeatingMonths = "1";
     }
   }
@@ -52,28 +52,32 @@ Future eventInfo(
     'repeatDate': userEndRepeat,
     'studentsOnly': studentOnly,
     'tags': userTags,
-  }; // body
+  };
+  // If the event ID is a valid ID, set the backend variable to the event ID
+  if (eventId >= 0) {
+    body['id'] = eventId.toString();
+  }
 
-  // TO DO: Ask Bradley what this does
+  // TODO: Ask Bradley what this does
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
   box.close();
   Map<String, String> headers = {'Authorization': 'Token $token'};
 
-  var url = Uri.parse('https://grinsync.com/api/create/event');
-  // URL to send new event info
+  // Send info to the URL the user provides
+  // This is either the edit event URL or the create event URL
+  var url = Uri.parse(userUrl);
+  // URL to send event info
   var result = await https.post(url, body: body, headers: headers);
 
-  // This is how to check the error key
+  // If the edit/create event can be successful but something is wrong with user input, return the reason why
   var json = jsonDecode(result.body);
-  // Check for invalid input/missing information
-  // Return an int if that's the case
   if (json.containsKey('error')) {
-    return 1;
+    return json['error'];
   }
 
-  // If the login was not successful, we return a String so we can send an error message to the user
+  // If the edit/create event was not successful, return the reason why
   if (result.statusCode != 200) {
-    return 'failed';
+    return result.reasonPhrase;
   }
 } // eventInfo

@@ -50,7 +50,7 @@ class MultiSelectState extends State<MultiSelect> {
         content: SingleChildScrollView(
           child: ListBody(
             children: widget.elements
-            // Display event tags and change their selected status according to if they're pressed
+                // Display event tags and change their selected status according to if they're pressed
                 .map((item) => CheckboxListTile(
                     value: selectedItems.contains(item),
                     title: Text(item),
@@ -71,14 +71,14 @@ class MultiSelectState extends State<MultiSelect> {
 } // MultiSelectState
 
 // Define a stateful widget for event creation that is mutable and its corresponding state class
-class EventCreationPage extends StatefulWidget {
-  const EventCreationPage({super.key});
+class UserEventCreationPage extends StatefulWidget {
+  const UserEventCreationPage({super.key});
   @override
-  State<EventCreationPage> createState() => EventCreationPageState();
+  State<UserEventCreationPage> createState() => UserEventCreationPageState();
 }
 
 // State class to manage mutable state data and the widget's lifecycle for event creation page
-class EventCreationPageState extends State<EventCreationPage> {
+class UserEventCreationPageState extends State<UserEventCreationPage> {
   // late = initialization occurs later in the code
   // final = variable can only be assigned to a value once
   // TextEditingController = class that allows for the manipulation of text input
@@ -141,11 +141,11 @@ class EventCreationPageState extends State<EventCreationPage> {
 
     // If the user inputted a date, do this:
     if (userDate != null) {
-
       // If this is for the repeat end date, we only want the date. So we have the date and we save date to the controller's text as a string
       if (control == _repeatDate) {
-      final DateTime userRepeatDate = DateTime(userDate.year, userDate.month, userDate.day);
-      setState(() {
+        final DateTime userRepeatDate =
+            DateTime(userDate.year, userDate.month, userDate.day);
+        setState(() {
           control.text = userRepeatDate.toString();
         });
       }
@@ -155,7 +155,8 @@ class EventCreationPageState extends State<EventCreationPage> {
         // Show time picker to user with limited range
         final TimeOfDay? userTime = await showTimePicker(
             context: context,
-            initialTime: TimeOfDay.now() // Initial time will be the current time
+            initialTime:
+                TimeOfDay.now() // Initial time will be the current time
             ); // userTime
 
         // If the user inputted a time, do this:
@@ -178,10 +179,16 @@ class EventCreationPageState extends State<EventCreationPage> {
     // List of event tags
     final List<String> items = [
       'Fee Required',
+      'RSVP Required',
       'Food/Drinks Provided',
-      'Grinnell Athletics',
-      'Student Org',
-      'Admin Hosted',
+      'Athletic',
+      'Cultural',
+      'Academic',
+      'Study Break',
+      'Hosted by SEPCs',
+      'Hosted by Student Orgs',
+      'Hosted by CAs',
+      'Hosted by Admin',
       'Off Campus'
     ];
 
@@ -294,22 +301,26 @@ class EventCreationPageState extends State<EventCreationPage> {
                       const Text('How Often Does Your Event Repeat?:'),
 
                       DropdownButton(
-                        hint: const Text('Select Repeating Event Customization'),
-                        items: const [
-                          DropdownMenuItem(value: "None", child: Text("None")),
-                          DropdownMenuItem(value: "Daily", child: Text("Daily")),
-                          DropdownMenuItem(value: "Weekly", child: Text("Weekly")),
-                          DropdownMenuItem(value: "Monthly", child: Text("Monthly")),
-                        ], 
-                        isExpanded: true,
-                        value: _repeat,
-                        onChanged: (newValue) {
-                          setState(() {
-                            _repeat = newValue;
-                          });
-                        }
-                      ),
-                        
+                          hint: const Text(
+                              'Select Repeating Event Customization'),
+                          items: const [
+                            DropdownMenuItem(
+                                value: "None", child: Text("None")),
+                            DropdownMenuItem(
+                                value: "Daily", child: Text("Daily")),
+                            DropdownMenuItem(
+                                value: "Weekly", child: Text("Weekly")),
+                            DropdownMenuItem(
+                                value: "Monthly", child: Text("Monthly")),
+                          ],
+                          isExpanded: true,
+                          value: _repeat,
+                          onChanged: (newValue) {
+                            setState(() {
+                              _repeat = newValue;
+                            });
+                          }),
+
                       const SizedBox(height: 10),
 
                       // END REPEAT DATE
@@ -369,6 +380,8 @@ class EventCreationPageState extends State<EventCreationPage> {
                               // When the button is pressed, do this:
                               onPressed: () async {
                                 // Send event info to backend
+                                // There is no evet ID yet, so send -1
+                                // Send to Create Event URL
                                 var create = await eventInfo(
                                     _title.text,
                                     _location.text,
@@ -378,40 +391,11 @@ class EventCreationPageState extends State<EventCreationPage> {
                                     _repeat,
                                     _repeatDate.text,
                                     _studentsOnly,
-                                    _tagsString);
+                                    _tagsString,
+                                    -1,
+                                    'https://grinsync.com/api/create/event');
 
-                                // When the event info did not successfully go to the backend
                                 if (create.runtimeType == String) {
-                                  // Show error message - USER IS NOT LOGGED IN
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title:
-                                            const Text('Event Creation Error'),
-                                        content: const SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text(
-                                                  'GrinSync could not create your event.'),
-                                              Text('Please try again.')
-                                            ],
-                                          ),
-                                        ),
-
-                                        // Allow user to exit out of error message
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Okay'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (create.runtimeType == int) {
                                   // Show error message - INVALID INPUT OR MISSING INFO
                                   showDialog(
                                     context: context,
@@ -419,11 +403,10 @@ class EventCreationPageState extends State<EventCreationPage> {
                                       return AlertDialog(
                                         title:
                                             const Text('Event Creation Error'),
-                                        content: const SingleChildScrollView(
+                                        content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
-                                              Text(
-                                                  'Event is missing information/has invalid input.'),
+                                              Text('$create'),
                                               Text('Please edit event details.')
                                             ],
                                           ),
@@ -445,7 +428,7 @@ class EventCreationPageState extends State<EventCreationPage> {
 
                                 // Otherwise, event info was successfully sent to backend; reload page
                                 else {
-                                      Fluttertoast.showToast(
+                                  Fluttertoast.showToast(
                                       msg: 'Event Created Successfully!',
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.CENTER,
