@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/launch_url.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/main.dart';
 import 'package:flutter_test_app/models/user_models.dart';
-import 'package:flutter_test_app/pages/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -73,19 +72,19 @@ class _LoginPage extends State<LoginPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Welcome back!",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "Sign in to continue.",
                       style: TextStyle(fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
 
@@ -124,11 +123,9 @@ class _LoginPage extends State<LoginPage> {
                 child: TextButton(
                     onPressed: () {
                       // Send to forgot password page when pressed
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordPage()),
-                      );
+                      final Uri url =
+                          Uri.parse('https://grinsync.com/auth/password_reset');
+                      urlLauncher(url);
                     },
                     child: const Text('Forgot Password?'))),
             Align(
