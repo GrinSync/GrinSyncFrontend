@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class EventEditPage extends StatefulWidget {
   final Event event; // Event that we are editing
   const EventEditPage({super.key, required this.event});
-  
+
   @override
   EventEditPageState createState() => EventEditPageState();
 }
@@ -26,7 +26,8 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String>? _tags;
-  late String? _tagsString; // Convert the list above to a comma-separated string
+  late String?
+      _tagsString; // Convert the list above to a comma-separated string
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late final int _id;
@@ -38,10 +39,10 @@ class EventEditPageState extends State<EventEditPage> {
   void initState() {
     // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs
     _title = TextEditingController(text: event.title);
-    _location = TextEditingController(text:event.location);
-    _startDate = TextEditingController(text:event.start);
-    _endDate = TextEditingController(text:event.end);
-    _description = TextEditingController(text:event.description);
+    _location = TextEditingController(text: event.location);
+    _startDate = TextEditingController(text: event.start);
+    _endDate = TextEditingController(text: event.end);
+    _description = TextEditingController(text: event.description);
     _studentsOnly = event.studentsOnly;
     _tagsString = event.tags;
     if (_tagsString != "") {
@@ -85,11 +86,11 @@ class EventEditPageState extends State<EventEditPage> {
 
     // If the user inputted a date, do this:
     if (userDate != null) {
-
       // If this is for the repeat end date, we only want the date. So we have the date and we save date to the controller's text as a string
       if (control == _repeatDate) {
-      final DateTime userRepeatDate = DateTime(userDate.year, userDate.month, userDate.day);
-      setState(() {
+        final DateTime userRepeatDate =
+            DateTime(userDate.year, userDate.month, userDate.day);
+        setState(() {
           control.text = userRepeatDate.toString();
         });
       }
@@ -99,7 +100,8 @@ class EventEditPageState extends State<EventEditPage> {
         // Show time picker to user with limited range
         final TimeOfDay? userTime = await showTimePicker(
             context: context,
-            initialTime: TimeOfDay.now() // Initial time will be the current time
+            initialTime:
+                TimeOfDay.now() // Initial time will be the current time
             ); // userTime
 
         // If the user inputted a time, do this:
@@ -122,10 +124,16 @@ class EventEditPageState extends State<EventEditPage> {
     // List of event tags
     final List<String> items = [
       'Fee Required',
+      'RSVP Required',
       'Food/Drinks Provided',
-      'Grinnell Athletics',
-      'Student Org',
-      'Admin Hosted',
+      'Athletic',
+      'Cultural',
+      'Academic',
+      'Study Break',
+      'Hosted by SEPCs',
+      'Hosted by Student Orgs',
+      'Hosted by CAs',
+      'Hosted by Admin',
       'Off Campus'
     ];
 
@@ -238,22 +246,26 @@ class EventEditPageState extends State<EventEditPage> {
                       const Text('How Often Does Your Event Repeat?:'),
 
                       DropdownButton(
-                        hint: const Text('Select Repeating Event Customization'),
-                        items: const [
-                          DropdownMenuItem(value: "None", child: Text("None")),
-                          DropdownMenuItem(value: "Daily", child: Text("Daily")),
-                          DropdownMenuItem(value: "Weekly", child: Text("Weekly")),
-                          DropdownMenuItem(value: "Monthly", child: Text("Monthly")),
-                        ], 
-                        isExpanded: true,
-                        value: _repeat,
-                        onChanged: (newValue) {
-                          setState(() {
-                            _repeat = newValue;
-                          });
-                        }
-                      ),
-                        
+                          hint: const Text(
+                              'Select Repeating Event Customization'),
+                          items: const [
+                            DropdownMenuItem(
+                                value: "None", child: Text("None")),
+                            DropdownMenuItem(
+                                value: "Daily", child: Text("Daily")),
+                            DropdownMenuItem(
+                                value: "Weekly", child: Text("Weekly")),
+                            DropdownMenuItem(
+                                value: "Monthly", child: Text("Monthly")),
+                          ],
+                          isExpanded: true,
+                          value: _repeat,
+                          onChanged: (newValue) {
+                            setState(() {
+                              _repeat = newValue;
+                            });
+                          }),
+
                       const SizedBox(height: 10),
 
                       // END REPEAT DATE
@@ -292,15 +304,14 @@ class EventEditPageState extends State<EventEditPage> {
                       const SizedBox(height: 10),
 
                       // DISPLAY CHOSEN EVENT TAGS
-                      
+
                       Wrap(
-                        children: _tags 
-                            !.map((e) => Chip( 
-                                  label: Text(e), 
+                        children: _tags!
+                            .map((e) => Chip(
+                                  label: Text(e),
                                 ))
                             .toList(),
                       ),
-                      
 
                       const SizedBox(height: 10),
 
@@ -334,8 +345,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title:
-                                            const Text('Event Edit Error'),
+                                        title: const Text('Event Edit Error'),
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: <Widget>[
