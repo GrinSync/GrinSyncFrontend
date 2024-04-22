@@ -105,7 +105,11 @@ class EventCardtoEdit extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 15, color: Colors.grey[600])),
             isThreeLine: true,
-            // trailing: Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary), // favorite button to favorite an event
+            // trailing: IconButton(
+            //   icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.primary),
+            //   onPressed: () {
+            //     deleteEvent(event.id);
+            //   }),
             onTap: () {
               Navigator.push(
                 context,
@@ -141,8 +145,12 @@ Future<void> deleteEvent(int eventId) async {
     headers = {'Authorization': 'Token $token'};
   }
 
+  Map<String, String> body = {
+    'id': eventId.toString(),
+  };
+
   var url = Uri.parse('https://grinsync.com/api/deleteEvent');
-  var response = await https.post(url, headers: headers, body: {'id': eventId.toString()});
+  var response = await https.post(url, headers: headers, body: body);
 
   if (response.statusCode == 200) {
     print('Event deleted');
@@ -294,4 +302,33 @@ Future<List<Event>> getLikedEvents() async {
   }
 
   return likedEvents;
+}
+
+
+Future<List<Event>> searchEvents(String query) async {
+  List<Event> searchResults = [];
+
+  var box = await Hive.openBox(tokenBox);
+  var token = box.get('token');
+  box.close();
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  Map<String, String> body = {
+    'query': query,
+  };
+
+  var url = Uri.parse('https://grinsync.com/api/searchEvents');
+  var result = await https.post(url, headers: headers, body: body);
+
+  for (var jsonEvent in jsonDecode(result.body)) {
+    Event newEvent = Event.fromJson(jsonEvent);
+    searchResults.add(newEvent);
+  }
+
+  return searchResults;
 }
