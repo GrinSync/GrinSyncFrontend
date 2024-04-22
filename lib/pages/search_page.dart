@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/models/event_models.dart';
+import 'package:flutter_test_app/models/user_models.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -6,16 +9,29 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late TextEditingController _query = TextEditingController();
+  late TextEditingController _query = TextEditingController(); //text box for search
   int searchMode = 0; // 0 for search event, 1 for search user
-  var searchBarLabelText = 'Search Events';
-  Icon searchBarIcon = Icon(Icons.search);
+  Future<List<Event>?>? _eventSearchResults;
+  Future<List<User>?>? _userSearchResults;
 
   @override
   void initState() {
     _query = TextEditingController();
     super.initState();
   }
+
+  Future<void> search() async {
+    if (searchMode == 0) {
+      setState(() {
+        _eventSearchResults = searchEvents(_query.text);
+      });
+    } else {
+      // search for users
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               IconButton(
-                icon: searchBarIcon,
+                icon: Icon(Icons.search),
                 onPressed: () {
                   // search for events
                 },
@@ -67,6 +83,21 @@ class _SearchPageState extends State<SearchPage> {
               });
             },
           ),
+          // Expanded(
+          //   child: ValueListenableBuilder<List<Event>?>(
+          //     valueListenable: searchResults,
+          //     builder: (context, value, child) {
+          //       if (value == null) {
+          //         return Expanded(child: SizedBox());
+          //       } else {
+          //         return FutureBuilder(
+          //           future: search, 
+          //           builder: builder
+          //           );
+          //       }
+          //     },
+          //   ),
+          //   )
         ],
       ),
     );
