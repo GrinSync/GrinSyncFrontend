@@ -71,27 +71,27 @@ class EventDetailsPage extends StatelessWidget {
               Text(
                 event.hostName
                     .toString(), //TODO: currently it shows host's user id, we need a way to access host's name
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
               ),
               Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(event.location ?? 'Null location',
-                  style: TextStyle(fontSize: 20)),
+                  style: TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               Text('Starts at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(timeFormat(event.start) ?? 'Null start date',
-                  style: TextStyle(fontSize: 20)),
+                  style: TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               Text('Ends at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(timeFormat(event.end) ?? 'Null end date',
-                  style: TextStyle(fontSize: 20)),
+                  style: TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               Text('Description:',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(event.description ?? 'Null description',
-                      style: TextStyle(fontSize: 16)),
+                      style: TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
                 ),
                 color: Theme.of(context).colorScheme.secondaryContainer,
               ),
@@ -161,7 +161,7 @@ class EventDetailsPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(5.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(tag, style: TextStyle(fontSize: 16)),
+            child: Text(tag, style: TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
           ),
         ));
       }
