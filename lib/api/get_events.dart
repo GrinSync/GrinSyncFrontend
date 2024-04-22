@@ -204,12 +204,12 @@ Future<void> deleteEvent(int eventId) async {
 
   var url = Uri.parse('https://grinsync.com/api/deleteEvent');
   var response =
-      await https.post(url, headers: headers, body: {'id': eventId.toString()});
+      await https.delete(url, headers: headers, body: body);
 
   if (response.statusCode == 200) {
     print('Event deleted');
   } else {
-    print('Failed to delete event');
+    print(response.body);
   }
 }
 
@@ -366,12 +366,8 @@ Future<List<Event>> searchEvents(String query) async {
     headers = {'Authorization': 'Token $token'};
   }
 
-  Map<String, String> body = {
-    'query': query,
-  };
-
-  var url = Uri.parse('https://grinsync.com/api/searchEvents');
-  var result = await https.post(url, headers: headers, body: body);
+  var url = Uri.parse('https://grinsync.com/api/search?query=$query');
+  var result = await https.get(url, headers: headers);
 
   for (var jsonEvent in jsonDecode(result.body)) {
     Event newEvent = Event.fromJson(jsonEvent);
