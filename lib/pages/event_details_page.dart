@@ -30,10 +30,8 @@ class EventDetailsPage extends StatelessWidget {
                   builder: (context, value, child) {
                     return IconButton(
                         icon: value
-                            ? Icon(Icons.favorite,
-                                color: Colors.white)
-                            : Icon(Icons.favorite_border,
-                                color: Colors.white),
+                            ? Icon(Icons.favorite, color: Colors.white)
+                            : Icon(Icons.favorite_border, color: Colors.white),
                         tooltip: value ? 'Unsave the event' : 'Save the event',
                         onPressed: () {
                           toggleLikeEvent(event.id);
@@ -81,11 +79,11 @@ class EventDetailsPage extends StatelessWidget {
                   style: TextStyle(fontSize: 20)),
               Text('Starts at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.start ?? 'Null start date',
+              Text(timeFormat(event.start) ?? 'Null start date',
                   style: TextStyle(fontSize: 20)),
               Text('Ends at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.end ?? 'Null end date',
+              Text(timeFormat(event.end) ?? 'Null end date',
                   style: TextStyle(fontSize: 20)),
               Text('Description:',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
@@ -105,7 +103,7 @@ class EventDetailsPage extends StatelessWidget {
               const SizedBox(height: 50),
 
               //TODO: Nam - Add other buttons here, put them in sizedbox if you want them to be full width
-              
+
               // Edit button
               if (isCreatedByThisUser)
                 SizedBox(
@@ -119,7 +117,8 @@ class EventDetailsPage extends StatelessWidget {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => EventEditPage(event: event)));
+                                builder: (context) =>
+                                    EventEditPage(event: event)));
                       }),
                 ),
 
@@ -131,7 +130,8 @@ class EventDetailsPage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
                           foregroundColor: Colors.white),
                       child: const Text('Delete'),
                       onPressed: () {}),
