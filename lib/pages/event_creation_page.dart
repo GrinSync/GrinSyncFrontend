@@ -15,17 +15,16 @@ class CreatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Using valueListenableBuilder so the page rebuilds every time USER changes
     return ValueListenableBuilder<User?>(
-      valueListenable: USER,
-      builder: (context, user, _) {
-        // If the user is not logged in, go to the Guest Event Creation page
-        if (USER.value == null) {
-          return GuestEventCreationPage();
-        } 
-        // Otherwise, the user is logged in, so they can see the User Event Creation page
-        else {
-          return const UserEventCreationPage();
-        }
-      }
-    );
+        valueListenable: USER,
+        builder: (context, user, _) {
+          // If the user is not logged in, go to the Guest Event Creation page
+          if (USER.value == null) {
+            return GuestEventCreationPage();
+          }
+          // Otherwise, the user is logged in, so they can see the User Event Creation page
+          else {
+            return const UserEventCreationPage();
+          }
+        });
   }
 }

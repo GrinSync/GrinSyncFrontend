@@ -17,12 +17,11 @@ Future eventInfo(
     String? userTags,
     int eventId,
     String userUrl) async {
-    
   if (userStudentOnly == null) return; // Error check
   String studentOnly =
       (userStudentOnly ? "True" : "False"); // Set boolean to a String
 
-  // Set repeat customizations to numbers 
+  // Set repeat customizations to numbers
   // Daily -> repeatingDays = 1
   // Weekly -> repeatingDays = 7
   // Monthly -> repeatingMonths = 1
@@ -33,11 +32,9 @@ Future eventInfo(
   if (userRepeat != null) {
     if (userRepeat == 'Daily') {
       repeatingDays = "1";
-    }
-    else if (userRepeat == 'Weekly') {
+    } else if (userRepeat == 'Weekly') {
       repeatingDays = "7";
-    }
-    else if (userRepeat == 'Monthly') {
+    } else if (userRepeat == 'Monthly') {
       repeatingMonths = "1";
     }
   }
@@ -55,11 +52,11 @@ Future eventInfo(
     'repeatDate': userEndRepeat,
     'studentsOnly': studentOnly,
     'tags': userTags,
-  }; 
+  };
   // If the event ID is a valid ID, set the backend variable to the event ID
-   if (eventId >= 0) {
+  if (eventId >= 0) {
     body['id'] = eventId.toString();
-   }
+  }
 
   // TODO: Ask Bradley what this does
   var box = await Hive.openBox(tokenBox);
@@ -68,7 +65,7 @@ Future eventInfo(
   Map<String, String> headers = {'Authorization': 'Token $token'};
 
   // Send info to the URL the user provides
-  // This is either the edit event URL or the create event URL 
+  // This is either the edit event URL or the create event URL
   var url = Uri.parse(userUrl);
   // URL to send event info
   var result = await https.post(url, body: body, headers: headers);

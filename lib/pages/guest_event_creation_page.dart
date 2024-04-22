@@ -7,14 +7,14 @@ class GuestEventCreationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Welcome to GrinSync!', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 20),
-            Text('Please log in or register to create an event.'),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('Welcome to GrinSync!', style: TextStyle(fontSize: 20)),
+          SizedBox(height: 20),
+          Text('Please log in or register to create an event.'),
+        ],
+      ),
     );
   }
 }

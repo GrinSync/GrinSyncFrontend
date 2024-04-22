@@ -3,14 +3,14 @@ class Event {
   String? title;
   int host;
   String? hostName;
-  String? org; 
+  String? org;
   String? location;
   String? start;
   String? end;
   String? description;
   bool? studentsOnly;
   String? tags;
-  bool isFavoited;  
+  bool isFavoited;
 
   Event(
       {this.id = -1,
@@ -39,7 +39,6 @@ class Event {
         description: json['description'],
         studentsOnly: json['studentsOnly'],
         tags: json['tags'],
-        isFavoited: json['isFavorited']
-        );
+        isFavoited: json['isFavorited']);
   }
 }

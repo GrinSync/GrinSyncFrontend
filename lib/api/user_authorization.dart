@@ -46,24 +46,24 @@ Future<User?> getUser(String token) async {
   }
 }
 
-  // Set login status based on if the user is logged in, 
-  // if the user is logged in, set USER to the current user
-  // if the user is not logged in, set USER to null
-  Future<void> setLoginStatus() async {
-    var box = await Hive.openBox(tokenBox);
-    var token = box.get('token');
-    box.close();
-    if (token == null) {
-      USER.value = null;
-    } else {
-      USER.value = await getUser(token);
-    }
+// Set login status based on if the user is logged in,
+// if the user is logged in, set USER to the current user
+// if the user is not logged in, set USER to null
+Future<void> setLoginStatus() async {
+  var box = await Hive.openBox(tokenBox);
+  var token = box.get('token');
+  box.close();
+  if (token == null) {
+    USER.value = null;
+  } else {
+    USER.value = await getUser(token);
   }
+}
 
-  // check if the user is logged in
-  bool isLoggedIn() {
-    return USER.value != null;
-  }
+// check if the user is logged in
+bool isLoggedIn() {
+  return USER.value != null;
+}
 
 Future<dynamic> registerUser(String firstName, String lastName, String email,
     String password, SingingCharacter? accType) async {

@@ -6,7 +6,13 @@ class User {
   String? lastName;
   String? email;
 
-  User({this.token, this.id = -1, this.username, this.firstName, this.lastName, this.email});
+  User(
+      {this.token,
+      this.id = -1,
+      this.username,
+      this.firstName,
+      this.lastName,
+      this.email});
 
   factory User.fromJson(json) {
     return User(

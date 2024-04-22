@@ -30,10 +30,12 @@ class _SearchPageState extends State<SearchPage> {
                   controller: _query,
                   autocorrect: true,
                   decoration: InputDecoration(
-                    prefixIcon:
-                        searchMode == 0 ? Icon(Icons.event) : Icon(Icons.person),
-                    labelText:
-                        searchMode == 0 ? 'Search for Events' : 'Search for Users',
+                    prefixIcon: searchMode == 0
+                        ? Icon(Icons.event)
+                        : Icon(Icons.person),
+                    labelText: searchMode == 0
+                        ? 'Search for Events'
+                        : 'Search for Users',
                     hintText: 'Enter a keyword',
                     border: OutlineInputBorder(),
                   ),
@@ -65,7 +67,6 @@ class _SearchPageState extends State<SearchPage> {
               });
             },
           ),
-
         ],
       ),
     );
