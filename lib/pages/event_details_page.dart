@@ -157,14 +157,12 @@ class EventDetailsPage extends StatelessWidget {
         allCards.add(Card.outlined(
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  width: 3.0),
+                  color: Theme.of(context).colorScheme.primary, width: 3.0),
               borderRadius: BorderRadius.circular(5.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(tag, style: TextStyle(fontSize: 16)),
           ),
-          // color: Theme.of(context).colorScheme.secondaryContainer,
         ));
       }
     }
