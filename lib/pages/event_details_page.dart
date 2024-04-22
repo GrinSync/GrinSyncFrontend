@@ -17,6 +17,50 @@ class EventDetailsPage extends StatelessWidget {
     bool isCreatedByThisUser = event.host == USER.value?.id;
     var favorited = ValueNotifier(event.isFavoited);
 
+    // Function to delete an event
+    Future<void> confirmDeletion() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Deletion'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Are you sure you want to delete this event?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+              ),
+              TextButton(
+                child: const Text('Yes'),
+                onPressed: () {
+                  deleteEvent(event.id); // Call deleteEvent
+                  Fluttertoast.showToast(
+                      msg: 'Event deleted successfully',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey[800],
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                  Navigator.of(context).pop(); // Dismiss the page
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
           foregroundColor: Colors.white,
@@ -136,7 +180,9 @@ class EventDetailsPage extends StatelessWidget {
                               Theme.of(context).colorScheme.primary,
                           foregroundColor: Colors.white),
                       child: const Text('Delete'),
-                      onPressed: () {}),
+                      onPressed: () {
+                        confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
+                      }),
                 ),
             ],
           ),
@@ -161,7 +207,8 @@ class EventDetailsPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(5.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(tag, style: TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
+            child: Text(tag,
+                style: TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
           ),
         ));
       }
