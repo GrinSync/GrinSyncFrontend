@@ -85,7 +85,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                           ],
                         );
                       } else {
-                        return EventCardtoDetails(event: events[index]);
+                        return EventCardFavoritable(event: events[index]);
                       }
                     },
                   ),

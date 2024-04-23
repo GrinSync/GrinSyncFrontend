@@ -85,7 +85,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                           ],
                         );
                       } else {
-                        return EventCardtoEdit(event: myEvents[index]);
+                        return EventCardPlain(event: myEvents[index]);
                       }
                     },
                   ),
