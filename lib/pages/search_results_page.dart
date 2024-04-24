@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 
 // HomePage shows user a list of events
@@ -18,6 +19,7 @@ class SearchResultsPage extends StatefulWidget {
 class _SearchResultsPageState extends State<SearchResultsPage> {
   ValueNotifier allEvents = ValueNotifier<List<Event>?>(null);
   String k = '';
+  late List<Event> events;
   Future<void> loadEvents() async {
     allEvents.value = await getSearchedEvents(k);
   }
@@ -29,37 +31,50 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: loadEvents(),
-        builder: (context, snapshot) {
-          // if the connection is waiting, show a loading indicator
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
-            );
-            // if there is an error, show an error message and a button to try again
-          } else if (snapshot.hasError) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text('Error loading events'),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      loadEvents();
-                    });
-                  },
-                  child: const Text('Try again'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Search Results',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      body: FutureBuilder(
+          future: loadEvents(),
+          builder: (context, snapshot) {
+            // if the connection is waiting, show a loading indicator
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    const Text(
+                      'Preparing events for you...',
+                    ),
+                  ],
                 ),
-              ],
-            );
-            // if the connection is done, show the events
-          } else {
+              );
+              // if there is an error, show an error message and a button to try again
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Error loading events'),
+                    TextButton(
+                      onPressed: () {
+                        loadEvents();
+                        setState(() {});
+                      },
+                      child: const Text('Try again'),
+                    ),
+                  ],
+                ),
+              );
+              // if the connection is done, show the events
+            } else {
             return ValueListenableBuilder(
                 valueListenable: allEvents,
                 builder: (context, eventList, child) {
@@ -84,8 +99,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                 ],
                               );
                             } else {
-                              return EventCardFavoritable(
-                                  event: eventList[index]);
+                              return isLoggedIn()
+                                  ? EventCardFavoritable(
+                                      event: eventList[index])
+                                  : EventCardPlain(event: eventList[index]);
                             }
                           },
                         ),
@@ -94,6 +111,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   );
                 });
           }
-        });
+          }),
+    );
   }
 }
