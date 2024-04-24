@@ -376,3 +376,30 @@ Future<List<Event>> searchEvents(String query) async {
 
   return searchResults;
 }
+
+Future<List<Event>> getSearchedEvents(String keyword) async {
+  List<Event> searchedEvents = [];
+  var box = await Hive.openBox(tokenBox);
+  var token = box.get('token');
+  box.close();
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {
+      'Authorization': 'Token $token'
+    };
+  }
+  var url = Uri.parse('https://grinsync.com/api/search?query=$keyword');
+  var result = await https.get(url, headers: headers);
+  print(result.body);
+  // print('Parsing JSON response...');
+
+  // parse the json response and create a list of Event objects
+  // result.body is a list of maps with event information
+  for (var jsonEvent in jsonDecode(result.body)) {
+    Event newEvent = Event.fromJson(jsonEvent);
+    searchedEvents.add(newEvent);
+  }
+  return searchedEvents;
+}
