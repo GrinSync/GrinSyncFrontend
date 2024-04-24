@@ -10,16 +10,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 //TODO: show student only events
 
 class EventDetailsPage extends StatelessWidget {
-  final Event event;
+  final Event event; // Event to show details of as a field of the class
 
   EventDetailsPage({required this.event});
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = event.host == USER.value?.id;
-    var favorited = ValueNotifier(event.isFavoited);
+    bool isCreatedByThisUser = event.host == USER.value?.id; // Check if the event is created by the current user
+    var favorited = ValueNotifier(event.isFavoited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
 
-    // Function to delete an event
+    // Function to confirm deletion of the event
+    // delete the event if confirmed
+    // pop the dialog and the page to go back to the previous page
     Future<void> confirmDeletion() async {
       return showDialog<void>(
         context: context,
@@ -35,12 +37,14 @@ class EventDetailsPage extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
+              // Cancel button
               TextButton(
                 child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Dismiss the dialog
                 },
               ),
+              // Yes button
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
@@ -70,19 +74,23 @@ class EventDetailsPage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w800)),
           backgroundColor: Theme.of(context).colorScheme.primary,
           actions: [
+            // Show favorite button if user is logged in
             if (isLoggedIn())
               ValueListenableBuilder(
                   valueListenable: favorited,
                   builder: (context, value, child) {
                     return IconButton(
-                        icon: value
+                        icon: value // Show filled heart if the event is favorited, otherwise show empty heart
                             ? Icon(Icons.favorite, color: Colors.white)
                             : Icon(Icons.favorite_border, color: Colors.white),
                         tooltip: value ? 'Unsave the event' : 'Save the event',
                         onPressed: () {
+                          // Update the event's favorited status in the database
                           toggleLikeEvent(event.id);
+                          // Update the event's favorited status in the frontend
                           event.isFavoited = !value;
                           favorited.value = !value;
+                          // Show a toast message to confirm the event is saved or unsaved
                           Fluttertoast.showToast(
                               msg: value
                                   ? 'Unsaved successfully'
@@ -106,17 +114,18 @@ class EventDetailsPage extends StatelessWidget {
             children: <Widget>[
               Row(children: [
                 Flexible(
-                    child: Text(event.title ?? 'Null title',
+                    child: Text(event.title ?? 'Null title', // Show the event's title
                         style: const TextStyle(
                             fontFamily: 'Helvetica',
                             fontSize: 30,
                             fontWeight: FontWeight.bold))),
               ]),
+              // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
               const Text('Host',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(
                 event.hostName
-                    .toString(), //TODO: currently it shows host's user id, we need a way to access host's name
+                    .toString(),
                 style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
               ),
               const Text('Location',
@@ -154,8 +163,7 @@ class EventDetailsPage extends StatelessWidget {
               // some space
               const SizedBox(height: 50),
 
-              //TODO: Nam - Add other buttons here, put them in sizedbox if you want them to be full width
-
+              // Buttons from here
               // Edit button
               if (isCreatedByThisUser)
                 SizedBox(
@@ -197,14 +205,17 @@ class EventDetailsPage extends StatelessWidget {
     );
   }
 
+  // Function to parse the tags of the event and build a list of Card widgets to show the tags
   List<Card> buildTags(BuildContext context) {
-    List<Card> allCards = <Card>[];
+    List<Card> allCards = <Card>[]; // List to store the tags as Card widgets
 
     String? tags = event.tags;
 
+    // If the tags are not null, split the tags by comma and add each tag as a Card widget to the list
     if (tags != null) {
       List<String> allTags = tags.split(',');
 
+      // For each tag, create a Card widget with the tag as the text
       for (String tag in allTags) {
         allCards.add(Card.outlined(
           shape: RoundedRectangleBorder(
