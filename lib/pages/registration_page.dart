@@ -192,8 +192,8 @@ class _RegistrationPage extends State<RegistrationPage> {
                       Navigator.pop(context);
 
                       Fluttertoast.showToast(
-                        // show toast message that login was successful
-                        msg: "You are successfully registered",
+                        // show toast message that the verification email has been sent
+                        msg: "A verification email has been sent to your email address. Please verify your email address to login.",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                       );
