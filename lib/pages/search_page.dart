@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
+import 'package:flutter_test_app/pages/search_results_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _SearchPageState extends State<SearchPage> {
   int searchMode = 0; // 0 for search event, 1 for search user
   Future<List<Event>?>? _eventSearchResults;
   Future<List<User>?>? _userSearchResults;
+
 
   @override
   void initState() {
@@ -47,20 +49,24 @@ class _SearchPageState extends State<SearchPage> {
                   autocorrect: true,
                   decoration: InputDecoration(
                     prefixIcon: searchMode == 0
-                        ? Icon(Icons.event)
-                        : Icon(Icons.person),
+                        ? const Icon(Icons.event)
+                        : const Icon(Icons.person),
                     labelText: searchMode == 0
                         ? 'Search for Events'
                         : 'Search for Users',
                     hintText: 'Enter a keyword',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.search),
+                icon: const Icon(Icons.search),
                 onPressed: () {
-                  // search for events
+                Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                                 builder: (context) => SearchResultsPage(todo: _query.text)),
+                          );
                 },
               ),
             ],
