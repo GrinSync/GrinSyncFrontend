@@ -29,5 +29,15 @@ flutter test
 This will run the test suite and confirm the app is working as expected.
 
 ## Operational Use Cases (so far) ## 
-- Ben creates an event by entering his event information in GrinSync (FEATURES NOT YET DONE FOR THIS USE CASE: repeating events option, associating student organization, picture upload (we may switch this to a stretch feature); as of now, we have the MVP for the event creation page - event title, location, date/time, description, event tags).
-- Noah looks through the daily, weekly, and monthly calendar views on the Calendar page. 
+
+## Operational Use Cases (so far) ## 
+- Register a new student user with email confirmation
+- Forgot password?
+- Log in after registration
+- Create a new event (with repeating event options)
+- Edit an event you created
+- Delete an event
+- Like an event
+- Search for events
+- View events on comprehensive calendar (in various time views: monthly, weekly, daily) with new arrows to navigate (can see event details in calendar)
+- Log out
