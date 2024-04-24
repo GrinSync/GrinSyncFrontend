@@ -14,7 +14,7 @@ You will also need to follow the Android Studio installation to use an emulator,
 This can be done here: https://docs.flutter.dev/get-started/install/windows/mobile#configure-android-development
 
 Once you have Flutter and Android Studio installed, you can run the command 'flutter doctor, or if you are in VSCode, you can go to View -> Command Palette and select Flutter: Run Flutter Doctor.
-This will confirm you have everything set up correctly. If you are missing any required packages or steps, follow the steps provided to resolve the issues. 
+This will confirm you have everything set up correctly. If you are missing any required packages or steps, follow the steps provided to resolve the issues. Here is a guide with a few common errors you might come across: 
 
 Once you have everything installed on your computer, you download this repository locally onto your computer.
 Once it is downloaded, open the project in VSCode, and select View -> Command Palette and select Flutter: Launch Emulator.
