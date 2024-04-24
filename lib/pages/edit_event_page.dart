@@ -159,11 +159,11 @@ class EventEditPageState extends State<EventEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          foregroundColor: Colors.white,
-          title: const Text('Edit Event',
-              style: TextStyle(fontWeight: FontWeight.w800)),
-          backgroundColor: Theme.of(context).colorScheme.primary),
+        appBar: AppBar(
+            foregroundColor: Colors.white,
+            title: const Text('Edit Event',
+                style: TextStyle(fontWeight: FontWeight.w800)),
+            backgroundColor: Theme.of(context).colorScheme.primary),
         body: SingleChildScrollView(
             child: Container(
                 padding: const EdgeInsets.all(8.0),

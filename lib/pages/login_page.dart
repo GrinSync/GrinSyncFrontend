@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/launch_url.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/user_models.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -184,7 +185,10 @@ class _LoginPage extends State<LoginPage> {
                           //       builder: (context) => const MyApp()),
                           // );
                           Navigator.pop(context);
-                          setLoginStatus();
+                          Fluttertoast.showToast(
+                              msg: "Login Successful",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,);
                         }
                       },
                       child: const Text('Log in')),

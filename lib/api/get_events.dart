@@ -10,9 +10,12 @@ import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-/// This event card leads user to the event details page. It's used when user can't edit an event (e.g. on home page and events I follow page)
-class EventCardtoDetails extends StatelessWidget {
-  const EventCardtoDetails({
+// This event card allows user to like the event if they are logged in.
+// Use the other card 'EventCardPlain' when the user doesn't need to
+// favorite the event when you show them.
+// This is used on home page and (should be used on) search event page (when Bradley implements it).
+class EventCardFavoritable extends StatelessWidget {
+  const EventCardFavoritable({
     super.key,
     required this.event,
   });
@@ -37,7 +40,8 @@ class EventCardtoDetails extends StatelessWidget {
               ),
               tileColor: value ? null : Colors.white,
               title: Text(event.title ?? 'Null title',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.w800)),
               subtitle: Text(
                   'Location: ${event.location}\nStarts at: ${timeFormat(event.start)}',
                   style: TextStyle(fontSize: 15, color: Colors.grey[700])),
@@ -80,9 +84,11 @@ class EventCardtoDetails extends StatelessWidget {
   }
 }
 
-/// This event card leads user to the event edit page. It's used when user can edit an event (e.g. on events I created page)
-class EventCardtoEdit extends StatelessWidget {
-  const EventCardtoEdit({
+// This event card is used to show events on the home page when the user
+// is not logged in or in the user's own list (e.g. in events I created
+// page)
+class EventCardPlain extends StatelessWidget {
+  const EventCardPlain({
     super.key,
     required this.event,
   });
@@ -113,8 +119,8 @@ class EventCardtoEdit extends StatelessWidget {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                //go to event edit page
-                builder: (context) => EventEditPage(event: event),
+                //go to event details page
+                builder: (context) => EventDetailsPage(event: event),
               ));
         },
       ),
@@ -203,8 +209,7 @@ Future<void> deleteEvent(int eventId) async {
   };
 
   var url = Uri.parse('https://grinsync.com/api/deleteEvent');
-  var response =
-      await https.delete(url, headers: headers, body: body);
+  var response = await https.delete(url, headers: headers, body: body);
 
   if (response.statusCode == 200) {
     print('Event deleted');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
 
 // HomePage shows user a list of events
 
@@ -74,8 +75,10 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               );
                             } else {
-                              return EventCardtoDetails(
-                                  event: eventList[index]);
+                              return isLoggedIn()
+                                  ? EventCardFavoritable(
+                                      event: eventList[index])
+                                  : EventCardPlain(event: eventList[index]);
                             }
                           },
                         ),

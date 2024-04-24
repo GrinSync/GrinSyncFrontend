@@ -7,6 +7,8 @@ import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+//TODO: show student only events
+
 class EventDetailsPage extends StatelessWidget {
   final Event event;
 
@@ -120,15 +122,18 @@ class EventDetailsPage extends StatelessWidget {
               const Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(event.location ?? 'Null location',
-                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                  style:
+                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               const Text('Starts at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(timeFormat(event.start),
-                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                  style:
+                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               const Text('Ends at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(timeFormat(event.end),
-                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                  style:
+                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               const Text('Description:',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Card(
@@ -136,7 +141,8 @@ class EventDetailsPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(event.description ?? 'Null description',
-                      style: const TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
+                      style: const TextStyle(
+                          fontSize: 16, fontFamily: 'Helvetica')),
                 ),
               ),
               const Text('Tags:',
