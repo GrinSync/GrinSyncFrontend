@@ -29,8 +29,6 @@ flutter test
 This will run the test suite and confirm the app is working as expected.
 
 ## Operational Use Cases (so far) ## 
-
-## Operational Use Cases (so far) ## 
 - Register a new student user with email confirmation
 - Forgot password?
 - Log in after registration
