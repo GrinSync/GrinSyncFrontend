@@ -13,7 +13,7 @@ void main() {
       box = await Hive.openBox('test-box');
       await box.clear();
     });
-  testWidgets('Test the event creation populated correctly',
+  testWidgets('Test that the User Event Creation page populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const UserEventCreationPage());
