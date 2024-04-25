@@ -4,7 +4,9 @@ import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// Define a stateful widget for event edit that is mutable and its corresponding state class
+// TODO: Refactor code so that select date time is in another file.
+
+// Define a stateful widget for event edit that is mutable and its corresponding state class.
 class EventEditPage extends StatefulWidget {
   final Event event; // Event that we are editing
   const EventEditPage({super.key, required this.event});
@@ -13,12 +15,9 @@ class EventEditPage extends StatefulWidget {
   EventEditPageState createState() => EventEditPageState();
 }
 
-// State class to manage mutable state data and the widget's lifecycle for event edit page
+// This is the state class to manage mutable state data and the widget's lifecycle for event edit page.
 class EventEditPageState extends State<EventEditPage> {
-  // late = initialization occurs later in the code
-  // final = variable can only be assigned to a value once
-  // TextEditingController = class that allows for the manipulation of text input
-  // late final TextEditingController _orgId; TODO: Uncomment when we implement student orgs
+  // late final TextEditingController _orgId; TODO: Uncomment when we implement student orgs.
   late final TextEditingController _title;
   late final TextEditingController _location;
   late final TextEditingController _startDate;
@@ -26,18 +25,17 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String>? _tags;
-  late String?
-      _tagsString; // Convert the list above to a comma-separated string
+  late String? _tagsString;
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late final int _id;
   late final Event event = widget.event;
 
-  // initState function to initialize all of the late final variables from above
-  // Initialize based on the event information that we got
+  // initState function initializes all of the late final variables from above.
+  // Initialize based on the event information that we got.
   @override
   void initState() {
-    // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs
+    // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs.
     _title = TextEditingController(text: event.title);
     _location = TextEditingController(text: event.location);
     _startDate = TextEditingController(text: event.start);
@@ -45,21 +43,21 @@ class EventEditPageState extends State<EventEditPage> {
     _description = TextEditingController(text: event.description);
     _studentsOnly = event.studentsOnly;
     _tagsString = event.tags;
+    // If there are tags, split them into a list of strings. 
     if (_tagsString != "") {
       _tags = _tagsString?.split(",");
     } else {
+      // Otherwise, keep the list empty. 
       _tags = [];
     }
-    _repeat = null; // TODO WHEN EVENT MODEL IS UPDATED
-    _repeatDate = TextEditingController(); // TODO WHEN EVENT MODEL IS UPDATED
     _id = event.id;
     super.initState();
   } // initState
 
-  // dispose function for cleanup tasks
+  // dispose function cleans up tasks.
   @override
   void dispose() {
-    // _orgId.dispose(); TODO: Uncomment when we implement student orgs
+    // _orgId.dispose(); TODO: Uncomment when we implement student orgs.
     _title.dispose();
     _location.dispose();
     _description.dispose();
@@ -73,6 +71,7 @@ class EventEditPageState extends State<EventEditPage> {
     super.dispose();
   } // dispose
 
+  // TODO: Refactor this.
   // selectDateTime function to allow users to select date and time for their events
   // in the built-in date and time widgets of Flutter
   Future<void> selectDateTime(
@@ -154,8 +153,8 @@ class EventEditPageState extends State<EventEditPage> {
     _tagsString = _tags?.join(',');
   } // showMultiSelect
 
-// Build UI of widget
-// Everything is wrapped in a container with child content being scrollable
+// Build UI of widget.
+// Everything is wrapped in a container with child content being scrollable.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,10 +167,10 @@ class EventEditPageState extends State<EventEditPage> {
             child: Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                    // Arrange children vertically
+                    // Arrange children vertically.
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // EVENT TITLE BOX
+                      // EVENT TITLE BOX DISPLAYS HERE.
                       TextField(
                         controller: _title,
                         autocorrect: false,
@@ -184,9 +183,9 @@ class EventEditPageState extends State<EventEditPage> {
                             border: OutlineInputBorder()),
                       ),
 
-                      const SizedBox(height: 10), // Gap in between text fields
+                      const SizedBox(height: 10), // This is the gap in between text fields.
 
-                      // EVENT LOCATION BOX
+                      // EVENT LOCATION BOX DISPLAYS HERE.
                       TextField(
                         controller: _location,
                         autocorrect: false,
@@ -201,7 +200,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EVENT START TIME BOX
+                      // EVENT START TIME BOX DISPLAYS HERE.
                       TextField(
                         controller: _startDate,
                         readOnly: true, // Don't ask for text keyboard input
@@ -216,7 +215,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EVENT END TIME BOX
+                      // EVENT END TIME BOX DISPLAYS HERE.
                       TextField(
                         controller: _endDate,
                         readOnly: true,
@@ -231,7 +230,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EVENT DESCRIPTION BOX
+                      // EVENT DESCRIPTION BOX DISPLAYS HERE.
                       TextField(
                         controller: _description,
                         autocorrect: false,
@@ -243,51 +242,11 @@ class EventEditPageState extends State<EventEditPage> {
                             border: OutlineInputBorder(),
                             alignLabelWithHint: true,
                             icon: Icon(Icons.summarize_outlined)),
-                      ),
+                      ),   
 
                       const SizedBox(height: 10),
 
-                      // REPEATING EVENT OPTIONS
-                      const Text('How Often Does Your Event Repeat?:'),
-
-                      DropdownButton(
-                          hint: const Text(
-                              'Select Repeating Event Customization'),
-                          items: const [
-                            DropdownMenuItem(
-                                value: "None", child: Text("None")),
-                            DropdownMenuItem(
-                                value: "Daily", child: Text("Daily")),
-                            DropdownMenuItem(
-                                value: "Weekly", child: Text("Weekly")),
-                            DropdownMenuItem(
-                                value: "Monthly", child: Text("Monthly")),
-                          ],
-                          isExpanded: true,
-                          value: _repeat,
-                          onChanged: (newValue) {
-                            setState(() {
-                              _repeat = newValue;
-                            });
-                          }),
-
-                      const SizedBox(height: 10),
-
-                      // END REPEAT DATE
-                      TextField(
-                        controller: _repeatDate,
-                        readOnly: true,
-                        onTap: () => selectDateTime(context, _repeatDate),
-                        decoration: const InputDecoration(
-                            labelText: 'End Repeat...',
-                            hintText:
-                                'Pick the ending date for your repeating events',
-                            border: OutlineInputBorder()),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // STUDENTS ONLY TAG CHECKBOX
+                      // STUDENTS ONLY TAG CHECKBOX DISPLAYS HERE.
                       CheckboxListTile(
                         title: const Text("Student-Only Event?"),
                         value: _studentsOnly,
@@ -301,15 +260,14 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EVENT TAGS
+                      // EVENT TAGS BUTTON DISPLAYS HERE.
                       ElevatedButton(
                           onPressed: showMultiSelect,
                           child: const Text('Select your Event Type')),
 
                       const SizedBox(height: 10),
 
-                      // DISPLAY CHOSEN EVENT TAGS
-
+                      // DISPLAY CHOSEN EVENT TAGS.
                       Wrap(
                         children: _tags!
                             .map((e) => Chip(
@@ -320,9 +278,9 @@ class EventEditPageState extends State<EventEditPage> {
 
                       const SizedBox(height: 10),
 
-                      // EDIT EVENT BUTTON - SEND INFO TO BACKEND
+                      // EDIT EVENT BUTTON SENDS UPDATED INFORMATIONN TO BACKEND.
                       SizedBox(
-                          width: double.infinity, // Span the whole screen
+                          width: double.infinity, // Span the whole screen.
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
@@ -330,7 +288,8 @@ class EventEditPageState extends State<EventEditPage> {
                                   foregroundColor: Colors.black),
                               // When the button is pressed, do this:
                               onPressed: () async {
-                                // Send event info to backend
+                                // Send event information to backend.
+                                // Send to Edit Event URL.
                                 var create = await eventInfo(
                                     _title.text,
                                     _location.text,
@@ -345,7 +304,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     'https://grinsync.com/api/editEvent');
 
                                 if (create.runtimeType == String) {
-                                  // Show error message - INVALID INPUT OR MISSING INFO
+                                  // Show error messages from backend. 
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -355,12 +314,12 @@ class EventEditPageState extends State<EventEditPage> {
                                           child: ListBody(
                                             children: <Widget>[
                                               Text('$create'),
-                                              Text('Please edit event details.')
+                                              const Text('Please edit event details.')
                                             ],
                                           ),
                                         ),
 
-                                        // Allow user to exit out of error message
+                                        // Allow user to exit out of error message.
                                         actions: <Widget>[
                                           TextButton(
                                             child: const Text('Okay'),
@@ -374,7 +333,9 @@ class EventEditPageState extends State<EventEditPage> {
                                   );
                                 }
 
-                                // Otherwise, event info was successfully sent to backend; reload page
+                                // Otherwise, event information was successfully sent to backend
+                                // Give success message.
+                                // TODO: Refresh the page.
                                 else {
                                   Fluttertoast.showToast(
                                       msg: 'Event Edited Successfully!',
