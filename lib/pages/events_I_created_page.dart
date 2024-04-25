@@ -10,10 +10,11 @@ class EventsICreatedPage extends StatefulWidget {
 }
 
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
-  late List<Event> myEvents;
+  late List<Event> myEvents; // List of events created by the user
 
+  // Get events created by the user from the backend
   Future<void> loadEvents() async {
-    myEvents = await getMyEvents();
+    myEvents = await getMyEvents(); // function in get_events.dart
   }
 
   @override
@@ -27,6 +28,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
+      // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
           future: loadEvents(),
           builder: (context, snapshot) {
@@ -85,7 +87,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                           ],
                         );
                       } else {
-                        return EventCardPlain(event: myEvents[index]);
+                        return EventCardPlain(event: myEvents[index]); // EventCardPlain is an event card Widget in get_events.dart
                       }
                     },
                   ),

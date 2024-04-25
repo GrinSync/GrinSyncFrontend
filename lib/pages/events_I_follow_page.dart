@@ -10,10 +10,11 @@ class EventsIFollowPage extends StatefulWidget {
 }
 
 class _EventsIFollowPageState extends State<EventsIFollowPage> {
-  late List<Event> events;
+  late List<Event> events; // List of events followed by the user
 
+  // Get events followed by the user from the backend
   Future<void> loadEvents() async {
-    events = await getLikedEvents();
+    events = await getLikedEvents(); // function in get_events.dart
   }
 
   @override
@@ -27,6 +28,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
+      // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
           future: loadEvents(),
           builder: (context, snapshot) {
@@ -85,7 +87,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                           ],
                         );
                       } else {
-                        return EventCardFavoritable(event: events[index]);
+                        return EventCardFavoritable(event: events[index]); // EventCardFavoritable is a custom widget that displays an event with a favorite button
                       }
                     },
                   ),
