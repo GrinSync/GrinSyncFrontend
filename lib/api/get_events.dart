@@ -46,30 +46,43 @@ class EventCardFavoritable extends StatelessWidget {
                   'Location: ${event.location}\nStarts at: ${timeFormat(event.start)}',
                   style: TextStyle(fontSize: 15, color: Colors.grey[700])),
               isThreeLine: true,
-              trailing: isLoggedIn()
-                  ? IconButton(
+              trailing: IconButton(
                       icon: value
                           ? Icon(Icons.favorite,
                               color: Theme.of(context).colorScheme.primary)
                           : Icon(Icons.favorite_border,
                               color: Theme.of(context).colorScheme.primary),
                       onPressed: () {
-                        toggleLikeEvent(event.id);
-                        event.isFavoited = !value;
-                        favorited.value = !value;
-                        Fluttertoast.showToast(
-                            msg: value
-                                ? 'Unsaved successfully'
-                                : 'Saved successfully',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.grey[800],
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                        if (isLoggedIn()) {
+                          // Update the event's favorited status in the database
+                          toggleLikeEvent(event.id);
+                          // Update the event's favorited status in the frontend (for the purpose of displaying the right icon without having to pull from the database again)
+                          event.isFavoited = !value;
+                          favorited.value = !value;
+                          // Show a toast message to confirm the event is saved or unsaved
+                          Fluttertoast.showToast(
+                              msg: value
+                                  ? 'Unsaved successfully'
+                                  : 'Saved successfully',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey[800],
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          // If the user is not logged in, show a toast message to prompt the user to log in
+                          Fluttertoast.showToast(
+                              msg: 'Please log in to save events',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey[800],
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       },
-                    )
-                  : null,
+                    ),
               onTap: () {
                 Navigator.push(
                   context,
