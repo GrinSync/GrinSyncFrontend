@@ -16,8 +16,10 @@ class EventDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = event.host == USER.value?.id; // Check if the event is created by the current user
-    var favorited = ValueNotifier(event.isFavoited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+    bool isCreatedByThisUser = event.host ==
+        USER.value?.id; // Check if the event is created by the current user
+    var favorited = ValueNotifier(event
+        .isFavoited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
 
     // Function to confirm deletion of the event
     // delete the event if confirmed
@@ -80,9 +82,11 @@ class EventDetailsPage extends StatelessWidget {
                   valueListenable: favorited,
                   builder: (context, value, child) {
                     return IconButton(
-                        icon: value // Show filled heart if the event is favorited, otherwise show empty heart
-                            ? Icon(Icons.favorite, color: Colors.white)
-                            : Icon(Icons.favorite_border, color: Colors.white),
+                        icon:
+                            value // Show filled heart if the event is favorited, otherwise show empty heart
+                                ? Icon(Icons.favorite, color: Colors.white)
+                                : Icon(Icons.favorite_border,
+                                    color: Colors.white),
                         tooltip: value ? 'Unsave the event' : 'Save the event',
                         onPressed: () {
                           // Update the event's favorited status in the database
@@ -114,7 +118,8 @@ class EventDetailsPage extends StatelessWidget {
             children: <Widget>[
               Row(children: [
                 Flexible(
-                    child: Text(event.title ?? 'Null title', // Show the event's title
+                    child: Text(
+                        event.title ?? 'Null title', // Show the event's title
                         style: const TextStyle(
                             fontFamily: 'Helvetica',
                             fontSize: 30,
@@ -124,8 +129,7 @@ class EventDetailsPage extends StatelessWidget {
               const Text('Host',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(
-                event.hostName
-                    .toString(),
+                event.hostName.toString(),
                 style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
               ),
               const Text('Location',
@@ -159,6 +163,10 @@ class EventDetailsPage extends StatelessWidget {
               Wrap(
                 children: buildTags(context),
               ),
+
+              // if (event.nextRepeat != null)
+
+              // TO-DO: Nam - Page routing for next recurring event
 
               // some space
               const SizedBox(height: 50),
@@ -234,3 +242,21 @@ class EventDetailsPage extends StatelessWidget {
     return allCards;
   }
 }
+
+// Widget buildNextRecurringEventCard(BuildContext context) {
+
+//   Future<List<Event>> allUpcomingEvents = getUpcomingEvents();
+
+//   return Card.outlined(
+//                   shape: RoundedRectangleBorder(
+//                       side: BorderSide(
+//                           color: Theme.of(context).colorScheme.primary,
+//                           width: 3.0),
+//                       borderRadius: BorderRadius.circular(5.0)),
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(8.0),
+//                     child: Text("Next recurring event is on ${allUpcomingEvents.singleWhere((element) => element.id == id}",
+//                         style: TextStyle(fontSize: 16)),
+//                   ),
+//                 );
+// }
