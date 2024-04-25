@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test_app/main.dart';
+import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() {
@@ -16,10 +16,7 @@ void main() {
   testWidgets('Test the event creation populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(const MyApp());
-
-    // Tap on the create icon once on the home screen
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpWidget(const UserEventCreationPage());
 
     // Rebuild the widget after the state has changed.
     await tester.pump();
