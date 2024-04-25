@@ -52,6 +52,23 @@ class CalendarPage extends StatefulWidget {
 class CalendarPageState extends State<CalendarPage> {
   final CalendarController calendarController = CalendarController();
 
+  /// Initializes empty list of event
+  late List<Event> allEvents = <Event>[];
+
+  /// Declares a future function call to load all events with the API call
+  late Future<void> loadEventsFuture;
+
+  /// Future function to load all events
+  Future<void> loadEvents() async {
+    allEvents = await getAllEvents();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadEventsFuture = loadEvents();
+  }
+
   void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       calendarController.selectedDate = null;
@@ -61,6 +78,7 @@ class CalendarPageState extends State<CalendarPage> {
   /// Detects whether an event card is being tapped on
   /// and routes the user to the Event Details page
   void calendarTapped(CalendarTapDetails details) {
+    // If the element being tapped on is an appointment, or an event card in other words
     if (details.targetElement == CalendarElement.appointment) {
       // Get the first and only appointment object that is being tapped on
       Appointment event = details.appointments!.first;
@@ -77,44 +95,28 @@ class CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  /// Initializes empty list of event
-  late List<Event> allEvents = <Event>[];
-
-  /// Declares a future function call to load all events with the API call
-  late Future<void> loadEventsFuture;
-
-  Future<void> loadEvents() async {
-    allEvents = await getAllEvents();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadEventsFuture = loadEvents();
-  }
-
   /// Gets the data for all the events by mapping fields from the Json responses
   /// to the fields that can be converted to calendar-readable format
   List<Appointment> getAllAppointmentData() {
     List<Appointment> allAppointments = <Appointment>[];
 
     for (int index = 0; index < allEvents.length; index++) {
+      // Extract information from each event
       int eventID = allEvents[index].id;
       String title = allEvents[index].title ?? "";
       String description = allEvents[index].description ?? "";
       String startTime = allEvents[index].start ?? "";
       String endTime = allEvents[index].end ?? "";
-      // String location = allEvents[index].location ?? "";
-      // bool studentsOnly = allEvents[index].studentsOnly ?? true;
+      String location = allEvents[index].location ?? "";
       // List<EventTags> tags = allEvents[index].tags;
 
-      // if (studentsOnly)
-
+      // Map each extracted information to a field in the calendar appointment object
       Appointment apt = Appointment(
         id: eventID,
+        // parse a string time and convert into a DateTime object
         startTime: DateTime.parse(startTime),
         endTime: DateTime.parse(endTime),
-        // location: location,
+        location: location,
         subject: title,
         notes: description,
         startTimeZone:
