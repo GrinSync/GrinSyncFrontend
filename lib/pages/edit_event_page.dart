@@ -51,6 +51,8 @@ class EventEditPageState extends State<EventEditPage> {
       _tags = [];
     }
     _id = event.id;
+    _repeatDate = TextEditingController();
+    _repeat = "";
     super.initState();
   } // initState
 
