@@ -71,24 +71,24 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ],
           ),
-          DropdownButton(
-            value: searchMode,
-            items: <DropdownMenuItem<int>>[
-              const DropdownMenuItem(
-                child: Text('Search Events'),
-                value: 0,
-              ),
-              const DropdownMenuItem(
-                child: Text('Search Users'),
-                value: 1,
-              ),
-            ],
-            onChanged: (int? value) {
-              setState(() {
-                searchMode = value!;
-              });
-            },
-          ),
+          // DropdownButton(
+          //   value: searchMode,
+          //   items: <DropdownMenuItem<int>>[
+          //     const DropdownMenuItem(
+          //       child: Text('Search Events'),
+          //       value: 0,
+          //     ),
+          //     const DropdownMenuItem(
+          //       child: Text('Search Users'),
+          //       value: 1,
+          //     ),
+          //   ],
+          //   onChanged: (int? value) {
+          //     setState(() {
+          //       searchMode = value!;
+          //     });
+          //   },
+          // ),
           // Expanded(
           //   child: ValueListenableBuilder<List<Event>?>(
           //     valueListenable: searchResults,
