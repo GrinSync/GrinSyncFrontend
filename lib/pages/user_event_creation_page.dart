@@ -210,8 +210,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
 // Everything is wrapped in a container with child content being scrollable.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
           body: SingleChildScrollView(
               child: Container(
                   padding: const EdgeInsets.all(8.0),
@@ -440,7 +439,6 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                 },
                                 child: const Text('Create Event') // Button title
                                 ))
-                      ])))),
-    );
+                      ]))));
   } // build
 } // EventCreationPageState
