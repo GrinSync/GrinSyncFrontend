@@ -109,6 +109,7 @@ class EventDetailsPage extends StatelessWidget {
                   })
           ]),
       body: Container(
+        decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
         alignment: Alignment.topLeft,
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
