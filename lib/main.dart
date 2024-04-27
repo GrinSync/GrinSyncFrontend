@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/tags.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/pages/event_creation_page.dart';
 import 'package:flutter_test_app/pages/home_page.dart';
@@ -10,7 +11,12 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await setLoginStatus();
+
+  // set global variables 
+  await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
+  await setAllTags(); // this function will set the ALLTAGS global variable to a string of all tags separated by commas
+
+  // run the app
   runApp(const MyApp());
 }
 
