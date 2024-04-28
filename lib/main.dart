@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test_app/api/tags.dart';
+import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/pages/event_creation_page.dart';
 import 'package:flutter_test_app/pages/home_page.dart';
@@ -11,8 +15,21 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-
-  // set global variables 
+  const secureStorage = FlutterSecureStorage();
+  // if key not exists return null
+  final encryptionKeyString = await secureStorage.read(key: 'key');
+  if (encryptionKeyString == null) {
+    final key = Hive.generateSecureKey();
+    await secureStorage.write(
+      key: 'key',
+      value: base64UrlEncode(key),
+    );
+  }
+  final key = await secureStorage.read(key: 'key');
+  final encryptionKeyUint8List = base64Url.decode(key!);
+  print('Encryption key Uint8List: $encryptionKeyUint8List');
+  await Hive.openBox(tokenBox, encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+  
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await setAllTags(); // this function will set the ALLTAGS global variable to a string of all tags separated by commas
 

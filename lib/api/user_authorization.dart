@@ -22,9 +22,8 @@ Future<dynamic> userAuthentication(String username, String password) async {
     Map json = jsonDecode(result.body);
     String token = json['token'];
     var box = await Hive.openBox(tokenBox);
-    // TODO: Encrypt this box!
     box.put('token', token); // save token in box
-    box.close();
+    // box.close();
     User? user = await getUser(token);
     return user;
   } else {
@@ -52,7 +51,6 @@ Future<User?> getUser(String token) async {
 Future<void> setLoginStatus() async {
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
   if (token == null) {
     USER.value = null;
   } else {

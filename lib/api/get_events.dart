@@ -209,7 +209,7 @@ String timeFormat(String? timeString) {
 Future<void> deleteEvent(int eventId) async {
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -234,7 +234,7 @@ Future<void> deleteEvent(int eventId) async {
 Future<void> toggleLikeEvent(int eventId) async {
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -260,7 +260,7 @@ Future<List<Event>> getAllEvents() async {
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -292,7 +292,7 @@ Future<List<Event>> getUpcomingEvents() async {
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -323,7 +323,7 @@ Future<List<Event>> getMyEvents() async {
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -350,7 +350,7 @@ Future<List<Event>> getLikedEvents() async {
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -376,7 +376,7 @@ Future<List<Event>> searchEvents(String query) async {
 
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -399,7 +399,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers;
   if (token == null) {
     headers = {};
