@@ -187,53 +187,66 @@ class CalendarPageState extends State<CalendarPage> {
               // If there are events, show the events
             } else {
               return Scaffold(
+                  appBar: PreferredSize(
+                      preferredSize: const Size.fromHeight(30),
+                      child: AppBar(
+                        title: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.filter_alt,
+                            size: 30,
+                          ),
+                        ),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      )),
                   // Return the actual calendar
                   body: SfCalendar(
-                controller: calendarController,
-                onViewChanged: calendarViewChanged,
-                onTap: calendarTapped,
-                view: CalendarView.day, // default view of the calendar
-                firstDayOfWeek:
-                    7, // default first day of the week set to Sunday
-                minDate: DateTime(2023, 08, 14, 0, 0, 0),
-                maxDate: DateTime(2025, 05, 25, 0, 0, 0),
-                allowedViews: [
-                  CalendarView.day,
-                  CalendarView.week,
-                  CalendarView.month,
-                ], // the calendar only allows three views - discussed in previous milestones
-                allowViewNavigation: true,
-                showNavigationArrow: true,
-                viewNavigationMode: ViewNavigationMode.none,
-                monthViewSettings: const MonthViewSettings(
-                  dayFormat: 'EEE',
-                  monthCellStyle: MonthCellStyle(),
-                  appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
-                  appointmentDisplayCount: 4,
-                  showAgenda: true,
-                  agendaViewHeight: 200,
-                  agendaStyle: AgendaStyle(),
-                  navigationDirection: MonthNavigationDirection.horizontal,
-                ),
-                timeSlotViewSettings: const TimeSlotViewSettings(
-                  timeInterval: Duration(minutes: 30),
-                  timeFormat: "hh:mm",
-                  timeIntervalHeight: 50,
-                  timeIntervalWidth: 25,
-                  minimumAppointmentDuration: Duration(minutes: 15),
-                  dateFormat: 'd',
-                  dayFormat: 'EEE',
-                  // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
-                ),
-                showDatePickerButton: true,
-                showTodayButton: true,
-                blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
-                dataSource: EventDataSource(
-                    getAllAppointmentData()), // get the event data
-                appointmentTextStyle: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                ),
-              ));
+                    controller: calendarController,
+                    onViewChanged: calendarViewChanged,
+                    onTap: calendarTapped,
+                    view: CalendarView.day, // default view of the calendar
+                    firstDayOfWeek:
+                        7, // default first day of the week set to Sunday
+                    minDate: DateTime(2023, 08, 14, 0, 0, 0),
+                    maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                    allowedViews: [
+                      CalendarView.day,
+                      CalendarView.week,
+                      CalendarView.month,
+                    ], // the calendar only allows three views - discussed in previous milestones
+                    allowViewNavigation: true,
+                    showNavigationArrow: true,
+                    viewNavigationMode: ViewNavigationMode.none,
+                    monthViewSettings: const MonthViewSettings(
+                      dayFormat: 'EEE',
+                      monthCellStyle: MonthCellStyle(),
+                      appointmentDisplayMode:
+                          MonthAppointmentDisplayMode.indicator,
+                      appointmentDisplayCount: 4,
+                      showAgenda: true,
+                      agendaViewHeight: 200,
+                      agendaStyle: AgendaStyle(),
+                      navigationDirection: MonthNavigationDirection.horizontal,
+                    ),
+                    timeSlotViewSettings: const TimeSlotViewSettings(
+                      timeInterval: Duration(minutes: 30),
+                      timeFormat: "hh:mm",
+                      timeIntervalHeight: 50,
+                      timeIntervalWidth: 25,
+                      minimumAppointmentDuration: Duration(minutes: 15),
+                      dateFormat: 'd',
+                      dayFormat: 'EEE',
+                      // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
+                    ),
+                    showDatePickerButton: true,
+                    showTodayButton: true,
+                    blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
+                    dataSource: EventDataSource(
+                        getAllAppointmentData()), // get the event data
+                    appointmentTextStyle: TextStyle(
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ));
             }
           }
         });
