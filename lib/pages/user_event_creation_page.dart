@@ -217,7 +217,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                        visible: false,
+                        visible: _studentOrgs.isNotEmpty,
                         child: DropdownButton<String>(
                             hint: const Text(
                                 'Select a Student Org to be Linked to your Event'),
