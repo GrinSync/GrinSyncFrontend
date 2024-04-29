@@ -41,7 +41,7 @@ class Event {
       end: json['end'],
       description: json['description'],
       studentsOnly: json['studentsOnly'],
-      tags: json['tags'],
+      tags: (json['tags'] as List<dynamic>).cast<String>(),
       isFavoited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
     );

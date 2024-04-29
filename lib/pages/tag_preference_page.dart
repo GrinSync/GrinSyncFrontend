@@ -43,11 +43,9 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                   } else {
                     selectedTags.remove(tag);
                   }
-                  print(PREFERREDTAGS); 
                   updatePrefferedTags(selectedTags); 
-                  //getPrefferedTags();
-                  //selectedTags = List<String>.from(PREFERREDTAGS);
                   PREFERREDTAGS = List<String>.from(selectedTags);
+                  print(PREFERREDTAGS); 
                 });
               },
             ),

@@ -67,9 +67,9 @@ Future<void> updatePrefferedTags(selectedTags) async {
   var url = Uri.parse('https://grinsync.com/api/updateInterestedTags');
   var result = await http.post(url, headers: headers, body: {'tags': selectedTags.isEmpty? '':selectedTags.join(';')});
 
-    if (result.statusCode == 200) {
-    print('Tag Preferences Updated');
-  } else {
-    print('Failed to update tag preferences');
-  }
+  //   if (result.statusCode == 200) {
+  //   print('Tag Preferences Updated');
+  // } else {
+  //   print('Failed to update tag preferences');
+  // }
 }
