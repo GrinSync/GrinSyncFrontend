@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/global.dart';
 
 // HomePage shows user a list of events
 
@@ -12,9 +13,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(null); // A list of upcoming events as a ValueNotifier
+  List<String> tagList = PREFERREDTAGS; // get the preferred tags from the global variable
 
   Future<void> loadEvents() async {
-    upcomingEvents.value = await getUpcomingEvents();
+    upcomingEvents.value = await getUpcomingEvents(tagList);
   }
 
   @override
