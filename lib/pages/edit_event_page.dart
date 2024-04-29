@@ -25,6 +25,7 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String>? _tags;
+  late List<String>? _tagsList;
   late String? _tagsString;
   late String? _repeat;
   late final TextEditingController _repeatDate;
@@ -42,14 +43,14 @@ class EventEditPageState extends State<EventEditPage> {
     _endDate = TextEditingController(text: event.end);
     _description = TextEditingController(text: event.description);
     _studentsOnly = event.studentsOnly;
-    _tagsString = event.tags;
+    _tagsList = event.tags;
     // If there are tags, split them into a list of strings. 
-    if (_tagsString != "") {
-      _tags = _tagsString?.split(",");
-    } else {
-      // Otherwise, keep the list empty. 
-      _tags = [];
-    }
+    // if (_tagsString != "") {
+    //   _tags = _tagsString?.split(",");
+    // } else {
+    //   // Otherwise, keep the list empty. 
+    //   _tags = [];
+    // }
     _id = event.id;
     _repeatDate = TextEditingController();
     _repeat = "";
@@ -68,7 +69,7 @@ class EventEditPageState extends State<EventEditPage> {
     _repeatDate.dispose();
     _studentsOnly = null;
     _tags = [];
-    _tagsString = "";
+    _tagsList = [];
     _repeat = "";
     super.dispose();
   } // dispose
@@ -152,7 +153,7 @@ class EventEditPageState extends State<EventEditPage> {
     }
 
     // Update variable to send tags to backend; create a comma-separated string
-    _tagsString = _tags?.join(',');
+    _tagsString = _tagsList?.join(';');
   } // showMultiSelect
 
 // Build UI of widget.
