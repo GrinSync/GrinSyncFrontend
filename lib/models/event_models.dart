@@ -9,7 +9,7 @@ class Event {
   String? end;
   String? description;
   bool? studentsOnly;
-  String? tags;
+  List<String>? tags;
   bool isFavoited;
   int? nextRepeat;
 
@@ -41,7 +41,7 @@ class Event {
       end: json['end'],
       description: json['description'],
       studentsOnly: json['studentsOnly'],
-      tags: 'Tags are commented out in event_models to be fixed after a consistent type has been decided',//json['tags'],
+      tags: json['tags'],
       isFavoited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
     );

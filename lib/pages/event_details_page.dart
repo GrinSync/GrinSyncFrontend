@@ -218,11 +218,11 @@ class EventDetailsPage extends StatelessWidget {
   List<Card> buildTags(BuildContext context) {
     List<Card> allCards = <Card>[]; // List to store the tags as Card widgets
 
-    String? tags = event.tags;
+     List<String>? tags = event.tags;
 
-    // If the tags are not null, split the tags by comma and add each tag as a Card widget to the list
+    // // If the tags are not null, split the tags by comma and add each tag as a Card widget to the list
     if (tags != null) {
-      List<String> allTags = tags.split(',');
+      List<String> allTags = tags;
 
       // For each tag, create a Card widget with the tag as the text
       for (String tag in allTags) {
