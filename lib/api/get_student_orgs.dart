@@ -22,4 +22,8 @@ Future<void> getStudentOrgs() async {
   for (var jsonTag in jsonDecode(result.body)) {
     STUDENTORGS.add(jsonTag['name']);
   }
+
+  for (var jsonTag in jsonDecode(result.body)) {
+    ORGIDS.add(jsonTag['id']);
+  }
 }
