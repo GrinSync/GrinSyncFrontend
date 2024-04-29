@@ -216,8 +216,9 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                       // Arrange children vertically.
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-                        DropdownButton<String>(
+                        Visibility(
+                        visible: false,
+                        child: DropdownButton<String>(
                             hint: const Text(
                                 'Select a Student Org to be Linked to your Event'),
                             items: _studentOrgs,
@@ -228,9 +229,9 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                 _org = newValue;
                               });
                             }),
-      
+                        ),
                         const SizedBox(height: 10),
-
+                        
                         // EVENT TITLE BOX DISPLAYS HERE. 
                         TextField(
                           controller: _title,
