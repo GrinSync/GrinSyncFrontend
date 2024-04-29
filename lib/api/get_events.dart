@@ -285,8 +285,9 @@ Future<List<Event>> getAllEvents() async {
   return allEvents;
 }
 
-Future<List<Event>> getUpcomingEvents() async {
+Future<List<Event>> getUpcomingEvents(tagList) async {
   List<Event> allEvents = [];
+
 
   //print('Connecting...');
 
@@ -300,7 +301,7 @@ Future<List<Event>> getUpcomingEvents() async {
     headers = {'Authorization': 'Token $token'};
   }
   //print('Fetching events...');
-  var url = Uri.parse('https://grinsync.com/api/upcoming');
+  var url = Uri.parse('https://grinsync.com/api/upcoming?tags=${tagList.join(';')}');
   var result = await https.get(url, headers: headers);
 
   //print('Parsing JSON response...');
@@ -420,4 +421,27 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
     searchedEvents.add(newEvent);
   }
   return searchedEvents;
+}
+
+Future<Event?> getEventByID(eventID) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri.parse('https://grinsync.com/api/getEvent?id=$eventID');
+  var result = await https.get(url, headers: headers);
+
+  if (result.statusCode == 200) {
+    var json = jsonDecode(result.body);
+    Event event = Event.fromJson(json);
+    return event;
+  } else {
+    return null;
+  }
+
 }
