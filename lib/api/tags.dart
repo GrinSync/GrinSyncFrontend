@@ -34,7 +34,7 @@ Future<void> getPrefferedTags() async {
     // headers = {};
     PREFERREDTAGS = ALLTAGS;
   } else { // if the user is logged in, get the preferred tags from the server
-    headers = {'Authorization ': 'Token $token'};
+    headers = {'Authorization' : 'Token $token'};
     var url = Uri.parse('https://grinsync.com/api/getUserTags');
     var result = await http.get(url, headers: headers);
 
@@ -52,3 +52,24 @@ Future<void> getPrefferedTags() async {
 }
 
 
+// Update the preferred tags of the user
+
+Future<void> updatePrefferedTags(selectedTags) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri.parse('https://grinsync.com/api/updateInterestedTags');
+  var result = await http.post(url, headers: headers, body: {'tags': selectedTags.isEmpty? '':selectedTags.join(',')});
+
+    if (result.statusCode == 200) {
+    print('Tag Preferences Updated');
+  } else {
+    print('Failed to update tag preferences');
+  }
+}

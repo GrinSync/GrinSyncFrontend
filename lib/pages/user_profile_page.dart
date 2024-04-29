@@ -5,6 +5,7 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/events_I_follow_page.dart';
+import 'package:flutter_test_app/pages/tag_preference_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user = USER.value; // Get the User object from the USER ValueNotifier in global.dart to display the user's information
@@ -77,6 +78,17 @@ class UserProfilePage extends StatelessWidget {
               child: const Text('Settings', style: TextStyle(fontSize: 20)),
               onPressed: () {
                 // TODO: implement setting page and functionality
+              },
+            ),
+            // Tag Preferences button
+            TextButton(
+              child: const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => TagPreferencePage()),
+                );
               },
             ),
             Expanded(child: SizedBox()),
