@@ -201,7 +201,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     }
 
     // Update variable to send tags to backend; create a comma-separated string.
-    _tagsString = _tags.join(',');
+    _tagsString = _tags.join(';');
   } // showMultiSelect
 
 // Build UI of widget. 
