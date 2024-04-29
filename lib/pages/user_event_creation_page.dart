@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
+import 'package:flutter_test_app/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
@@ -174,20 +175,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   // showMultiSelect function allows users to multiselect event tags.
   void showMultiSelect() async {
     // This is the list of event tags.
-    final List<String> items = [
-      'Fee Required',
-      'RSVP Required',
-      'Food/Drinks Provided',
-      'Athletic',
-      'Cultural',
-      'Academic',
-      'Study Break',
-      'Hosted by SEPCs',
-      'Hosted by Student Orgs',
-      'Hosted by CAs',
-      'Hosted by Admin',
-      'Off Campus'
-    ];
+    final List<String> items = ALLTAGS;
 
     final List<String>? results = await showDialog(
         context: context,

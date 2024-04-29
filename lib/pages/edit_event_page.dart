@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
+import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -123,20 +124,7 @@ class EventEditPageState extends State<EventEditPage> {
   // showMultiSelect function to allow users to multiselect event tags
   void showMultiSelect() async {
     // List of event tags
-    final List<String> items = [
-      'Fee Required',
-      'RSVP Required',
-      'Food/Drinks Provided',
-      'Athletic',
-      'Cultural',
-      'Academic',
-      'Study Break',
-      'Hosted by SEPCs',
-      'Hosted by Student Orgs',
-      'Hosted by CAs',
-      'Hosted by Admin',
-      'Off Campus'
-    ];
+    final List<String> items = ALLTAGS;
 
     final List<String>? results = await showDialog(
         context: context,
