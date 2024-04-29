@@ -41,7 +41,7 @@ class Event {
       end: json['end'],
       description: json['description'],
       studentsOnly: json['studentsOnly'],
-      tags: json['tags'],
+      tags: 'Tags are commented out in event_models to be fixed after a consistent type has been decided',//json['tags'],
       isFavoited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
     );

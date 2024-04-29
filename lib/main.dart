@@ -33,7 +33,8 @@ void main() async {
   BOX = await Hive.openBox(tokenBox, encryptionCipher: HiveAesCipher(encryptionKeyUint8List)); // save the box in a global variable
   
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
-  await setAllTags(); // this function will set the ALLTAGS global variable to a string of all tags separated by commas
+  await getAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
+  await getPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
 
   // run the app
   runApp(const MyApp());
