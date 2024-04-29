@@ -8,3 +8,4 @@ ValueNotifier<User?> USER = ValueNotifier<User?>(null); //please don't change th
 
 List<String> ALLTAGS = []; // this will be a string of all tags separated by commas
 List<String> PREFERREDTAGS = []; // this will be a string of all preferred tags separated by commas
+List<String> STUDENTORGS = []; // this list will contain 
