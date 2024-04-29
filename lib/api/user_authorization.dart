@@ -64,7 +64,7 @@ bool isLoggedIn() {
 }
 
 Future<dynamic> registerUser(String firstName, String lastName, String email,
-    String password, SingingCharacter? accType) async {
+    String password, String confirmPassword, SingingCharacter? accType) async {
   String account;
   switch (accType) {
     case SingingCharacter.student:
@@ -83,6 +83,9 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
     'password': password,
     'type': account
   };
+  if(confirmPassword != password){
+    return null;
+  }
   var url =
       Uri.parse('https://grinsync.com/api/create/user'); // url to send info
   var res = await http.post(url, body: data);
