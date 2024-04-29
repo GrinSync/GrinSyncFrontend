@@ -291,6 +291,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     _repeatDate.text,
                                     _studentsOnly,
                                     _tagsString,
+                                    null,
                                     _id,
                                     'https://grinsync.com/api/editEvent');
 

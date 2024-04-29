@@ -122,7 +122,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   // dispose function does the cleanup tasks.
   @override
   void dispose() {
-    // _orgId.dispose(); TODO: Uncomment when we implement student orgs.
+    _org = null;
     _title.dispose();
     _location.dispose();
     _description.dispose();
@@ -132,7 +132,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _studentsOnly = null;
     _tags = [];
     _tagsString = "";
-    _repeat = "";
+    _repeat = null;
     super.dispose();
   } // dispose
 
@@ -403,6 +403,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       _repeatDate.text,
                                       _studentsOnly,
                                       _tagsString,
+                                      _org,
                                       -1,
                                       'https://grinsync.com/api/create/event');
       

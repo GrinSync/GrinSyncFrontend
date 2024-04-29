@@ -15,6 +15,7 @@ Future eventInfo(
     String userEndRepeat,
     bool? userStudentOnly,
     String? userTags,
+    String? org,
     int eventId,
     String userUrl) async {
   if (userStudentOnly == null) return; // Error check
@@ -56,6 +57,9 @@ Future eventInfo(
   // If the event ID is a valid ID, set the backend variable to the event ID
   if (eventId >= 0) {
     body['id'] = eventId.toString();
+  }
+  if (org != null) {
+    body['org_id'] = org;
   }
 
   // TODO: Ask Bradley what this does
