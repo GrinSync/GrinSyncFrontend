@@ -123,8 +123,26 @@ class EventDetailsPage extends StatelessWidget {
                         event.title ?? 'Null title', // Show the event's title
                         style: const TextStyle(
                             fontFamily: 'Helvetica',
-                            fontSize: 30,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold))),
+                const SizedBox(
+                  width: 15,
+                ),
+                if (event.studentsOnly ?? false)
+                  Card.outlined(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 3.0),
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Students Only",
+                          style:
+                              TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
+                    ),
+                  )
               ]),
               // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
               const Text('Host',

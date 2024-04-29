@@ -23,7 +23,7 @@ class Event {
     this.start,
     this.end,
     this.description,
-    this.studentsOnly,
+    this.studentsOnly = false,
     this.tags,
     this.isFavoited = false,
     this.nextRepeat,

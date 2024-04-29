@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
+import 'package:flutter_test_app/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
@@ -79,7 +81,7 @@ class UserEventCreationPage extends StatefulWidget {
 
 // The state class to manage mutable state data and the widget's lifecycle for event creation page.
 class UserEventCreationPageState extends State<UserEventCreationPage> {
-  // late final TextEditingController _orgId; TODO: Uncomment when we implement student orgs.
+  late String? _org;
   late final TextEditingController _title;
   late final TextEditingController _location;
   late final TextEditingController _startDate;
@@ -90,11 +92,13 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   late String _tagsString; // This string is a conversion of the list above to a comma-separated string.
   late String? _repeat;
   late final TextEditingController _repeatDate;
+  late List<DropdownMenuItem<String>> _studentOrgs;
 
   // initState function initializes all of the late final variables from above. 
   @override
   void initState() {
-    // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs.
+    _org = null; 
+    super.initState();
     _title = TextEditingController();
     _location = TextEditingController();
     _startDate = TextEditingController();
@@ -105,7 +109,14 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _tagsString = "";
     _repeat = null;
     _repeatDate = TextEditingController();
-    super.initState();
+    _studentOrgs = List.generate(STUDENTORGS.length,
+                                (index) => DropdownMenuItem(
+                                  value: STUDENTORGS[index],
+                                  child: Text(STUDENTORGS[index],
+                                  ),
+                                ),
+                                );
+    
   } // initState
 
   // dispose function does the cleanup tasks.
@@ -174,20 +185,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   // showMultiSelect function allows users to multiselect event tags.
   void showMultiSelect() async {
     // This is the list of event tags.
-    final List<String> items = [
-      'Fee Required',
-      'RSVP Required',
-      'Food/Drinks Provided',
-      'Athletic',
-      'Cultural',
-      'Academic',
-      'Study Break',
-      'Hosted by SEPCs',
-      'Hosted by Student Orgs',
-      'Hosted by CAs',
-      'Hosted by Admin',
-      'Off Campus'
-    ];
+    final List<String> items = ALLTAGS;
 
     final List<String>? results = await showDialog(
         context: context,
@@ -203,7 +201,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     }
 
     // Update variable to send tags to backend; create a comma-separated string.
-    _tagsString = _tags.join(',');
+    _tagsString = _tags.join(';');
   } // showMultiSelect
 
 // Build UI of widget. 
@@ -218,6 +216,22 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                       // Arrange children vertically.
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Visibility(
+                        visible: _studentOrgs.isNotEmpty,
+                        child: DropdownButton<String>(
+                            hint: const Text(
+                                'Select a Student Org to be Linked to your Event'),
+                            items: _studentOrgs,
+                            isExpanded: true,
+                            value: _org,
+                            onChanged: (newValue) {
+                              setState(() {
+                                _org = newValue;
+                              });
+                            }),
+                        ),
+                        const SizedBox(height: 10),
+                        
                         // EVENT TITLE BOX DISPLAYS HERE. 
                         TextField(
                           controller: _title,

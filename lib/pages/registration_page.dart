@@ -160,6 +160,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                         _lastName.text,
                         _email.text,
                         _password.text,
+                        _confirmPassword.text,
                         _character);
                     if (auth == null) {
                       showDialog(

@@ -12,6 +12,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_test_app/pages/search_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/global.dart';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ void main() async {
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await getAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
   await getPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
+  await getStudentOrgs(); // this function will set the STUDENTORGS global variable to a list of student org ids that the user is linked with 
 
   // run the app
   runApp(const MyApp());
@@ -52,7 +54,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    BOX.close(); // close the box when the app is closed
+    Hive.close();
     super.dispose();
   }
 
