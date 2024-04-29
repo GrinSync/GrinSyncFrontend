@@ -209,6 +209,8 @@ class CalendarPageState extends State<CalendarPage> {
                         7, // default first day of the week set to Sunday
                     minDate: DateTime(2023, 08, 14, 0, 0, 0),
                     maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                    // headerHeight: 0,
+                    // viewHeaderHeight: 0,
                     allowedViews: [
                       CalendarView.day,
                       CalendarView.week,

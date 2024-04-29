@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/events_I_follow_page.dart';
@@ -88,6 +89,16 @@ class UserProfilePage extends StatelessWidget {
                   context,
                   CupertinoPageRoute(
                     builder: (context) => TagPreferencePage()),
+                );
+              },
+            ),
+            TextButton(
+              child: const Text('Connect to a Student Org', style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const ConnectOrgPage()),
                 );
               },
             ),

@@ -23,7 +23,7 @@ class Event {
     this.start,
     this.end,
     this.description,
-    this.studentsOnly,
+    this.studentsOnly = false,
     this.tags,
     this.isFavoited = false,
     this.nextRepeat,
@@ -41,7 +41,8 @@ class Event {
       end: json['end'],
       description: json['description'],
       studentsOnly: json['studentsOnly'],
-      tags: 'Tags are commented out in event_models to be fixed after a consistent type has been decided',//json['tags'],
+      tags:
+          'Tags are commented out in event_models to be fixed after a consistent type has been decided', //json['tags'],
       isFavoited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
     );

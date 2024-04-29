@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    BOX.close(); // close the box when the app is closed
+    Hive.close();
     super.dispose();
   }
 
