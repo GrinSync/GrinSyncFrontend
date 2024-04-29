@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_test_app/global.dart';
 
 // This event card allows user to like the event if they are logged in.
 // Use the other card 'EventCardPlain' when the user doesn't need to
@@ -207,9 +208,8 @@ String timeFormat(String? timeString) {
 }
 
 Future<void> deleteEvent(int eventId) async {
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
-  //box.close();
+  var token = BOX.get('token');
+
   Map<String, String> headers;
   if (token == null) {
     headers = {};
@@ -232,8 +232,8 @@ Future<void> deleteEvent(int eventId) async {
 }
 
 Future<void> toggleLikeEvent(int eventId) async {
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -258,8 +258,8 @@ Future<List<Event>> getAllEvents() async {
 
   // print('Connecting...');
 
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -290,8 +290,8 @@ Future<List<Event>> getUpcomingEvents() async {
 
   //print('Connecting...');
 
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -321,8 +321,8 @@ Future<List<Event>> getUpcomingEvents() async {
 Future<List<Event>> getMyEvents() async {
   List<Event> myEvents = [];
 
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -348,8 +348,8 @@ Future<List<Event>> getMyEvents() async {
 Future<List<Event>> getLikedEvents() async {
   List<Event> likedEvents = [];
 
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -374,8 +374,8 @@ Future<List<Event>> getLikedEvents() async {
 Future<List<Event>> searchEvents(String query) async {
   List<Event> searchResults = [];
 
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {
@@ -397,8 +397,8 @@ Future<List<Event>> searchEvents(String query) async {
 
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   //box.close();
   Map<String, String> headers;
   if (token == null) {

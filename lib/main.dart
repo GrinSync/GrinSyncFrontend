@@ -11,10 +11,12 @@ import 'package:flutter_test_app/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_test_app/pages/search_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/global.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+
   const secureStorage = FlutterSecureStorage();
   // if key not exists return null
   final encryptionKeyString = await secureStorage.read(key: 'key');
@@ -28,7 +30,7 @@ void main() async {
   final key = await secureStorage.read(key: 'key');
   final encryptionKeyUint8List = base64Url.decode(key!);
   print('Encryption key Uint8List: $encryptionKeyUint8List');
-  await Hive.openBox(tokenBox, encryptionCipher: HiveAesCipher(encryptionKeyUint8List));
+  BOX = await Hive.openBox(tokenBox, encryptionCipher: HiveAesCipher(encryptionKeyUint8List)); // save the box in a global variable
   
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await setAllTags(); // this function will set the ALLTAGS global variable to a string of all tags separated by commas
@@ -46,6 +48,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  @override
+  void dispose() {
+    BOX.close(); // close the box when the app is closed
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

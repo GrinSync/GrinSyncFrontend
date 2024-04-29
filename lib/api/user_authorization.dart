@@ -21,8 +21,8 @@ Future<dynamic> userAuthentication(String username, String password) async {
   if (result.statusCode == 200) {
     Map json = jsonDecode(result.body);
     String token = json['token'];
-    var box = await Hive.openBox(tokenBox);
-    box.put('token', token); // save token in box
+    // var box = await Hive.openBox(tokenBox);
+    BOX.put('token', token); // save token in box
     // box.close();
     User? user = await getUser(token);
     return user;
@@ -49,8 +49,8 @@ Future<User?> getUser(String token) async {
 // if the user is logged in, set USER to the current user
 // if the user is not logged in, set USER to null
 Future<void> setLoginStatus() async {
-  var box = await Hive.openBox(tokenBox);
-  var token = box.get('token');
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
   if (token == null) {
     USER.value = null;
   } else {
@@ -105,8 +105,8 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
 
 // Calling this function logs the user out
 Future<void> logout() async {
-  var box = await Hive.openBox(tokenBox);
-  box.delete('token'); // save token in box
+  //var box = await Hive.openBox(tokenBox);
+  BOX.delete('token'); // save token in box
   // box.close(); //box will be closed in setLoginStatus
   setLoginStatus(); // sets the global variable USER to null
 
