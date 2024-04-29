@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/constants.dart';
 
-
 Future<void> setAllTags() async {
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
@@ -15,7 +14,7 @@ Future<void> setAllTags() async {
   } else {
     headers = {'Authorization': 'Token $token'};
   }
-  
+
   var url = Uri.parse('https://grinsync.com/api/getAllTags');
   var result = await http.get(url, headers: headers);
   print(result.body);
