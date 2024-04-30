@@ -43,6 +43,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   dropdown_search: ^5.0.6
   share_plus: ^9.0.0
+  widgets_to_image: any
 
 dev_dependencies:
   flutter_test:
