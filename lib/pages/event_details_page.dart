@@ -6,6 +6,7 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 
 //TODO: show student only events
 
@@ -210,7 +211,8 @@ class EventDetailsPage extends StatelessWidget {
                       }),
                 ),
 
-              const SizedBox(height: 15),
+              if (isCreatedByThisUser)
+                const SizedBox(height: 15),
 
               // Delete button
               if (isCreatedByThisUser)
@@ -226,6 +228,24 @@ class EventDetailsPage extends StatelessWidget {
                         confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
                       }),
                 ),
+              
+              if (isCreatedByThisUser)
+                const SizedBox(height: 15),
+
+              // Share button
+              SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                          foregroundColor: Colors.black),
+                      child: const Text('Share Event'),
+                      onPressed: () {
+                        Share.share(
+                            'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
+                      }),
+                ),
+
             ],
           ),
         ),
