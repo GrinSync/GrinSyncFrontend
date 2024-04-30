@@ -13,7 +13,7 @@ Future<void> setStudentOrgs() async {
     var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
     var result = await http.get(url, headers: headers);
 
-    // result.body is a list of maps with 'id', 'name', 'email', 'description', 'is_active', 'last_login', 'password', 'studentLeaders' (after jsonDecoding)
+    // result.body is a list of maps with int'id', String'name', String'email', String'description', Bool'is_active', 'last_login', String'password', List<int>'studentLeaders' (after jsonDecoding)
     for (var jsonOrg in jsonDecode(result.body)) {
       STUDENTORGS.add(jsonOrg['name']);
       ORGIDS.add(jsonOrg['id']);
@@ -21,6 +21,7 @@ Future<void> setStudentOrgs() async {
   }
 }
 
+// performed at times such as logging out
 clearOrgs() {
   STUDENTORGS.clear();
   ORGIDS.clear();
