@@ -187,18 +187,21 @@ class CalendarPageState extends State<CalendarPage> {
               // If there are events, show the events
             } else {
               return Scaffold(
-                  appBar: PreferredSize(
-                      preferredSize: const Size.fromHeight(30),
-                      child: AppBar(
-                        title: IconButton(
+                  appBar: AppBar(
+                        title: const Text(
+                          'Calendar',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        actions: [IconButton(
                           onPressed: () {},
                           icon: const Icon(
                             Icons.filter_alt,
                             size: 30,
                           ),
-                        ),
+                        )],
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                      )),
+                        foregroundColor: Colors.white,
+                      ),
                   // Return the actual calendar
                   body: SfCalendar(
                     controller: calendarController,

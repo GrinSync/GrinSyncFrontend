@@ -16,110 +16,117 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // display info
-            const SizedBox(height: 8),
-            // User's first name and last name
-            Text('${user?.firstName} ${user?.lastName}',
-                style: const TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Helvetica')),
-            // User's email
-            Text(' ${user?.email}',
-                style: TextStyle(fontSize: 15, color: Colors.grey[600])),
-
-            // display buttons
-            const Divider(
-              color: Colors.black,
-            ),
-            // Edit Profile button
-            TextButton(
-              child: const Text('Edit Profile', style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                // TODO: implement edit profile page
-              },
-            ),
-            // Events I Created button
-            TextButton(
-              child: const Text('Events I Created',
-                  style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => EventsICreatedPage()));
-              },
-            ),
-            // Events I Follow button
-            TextButton(
-              child:
-                  const Text('Events I Follow', style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => EventsIFollowPage()));
-              },
-            ),
-            // Users/Orgs I Follow button
-            TextButton(
-              child: const Text('Users/Orgs I Follow',
-                  style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                // TODO: implement users/orgs I follow page
-              },
-            ),
-            // Settings button
-            TextButton(
-              child: const Text('Settings', style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                // TODO: implement setting page and functionality
-              },
-            ),
-            // Tag Preferences button
-            TextButton(
-              child:
-                  const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => TagPreferencePage()),
-                );
-              },
-            ),
-            TextButton(
-              child: const Text('Connect to a Student Org',
-                  style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => const ConnectOrgPage()),
-                );
-              },
-            ),
-            Expanded(child: SizedBox()),
-            // Logout button
-            ElevatedButton(
-              child: const Text('Logout', style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // display info
+              const SizedBox(height: 8),
+              // User's first name and last name
+              Text('${user?.firstName} ${user?.lastName}',
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Helvetica')),
+              // User's email
+              Text(' ${user?.email}',
+                  style: TextStyle(fontSize: 15, color: Colors.grey[600])),
+      
+              // display buttons
+              const Divider(
+                color: Colors.black,
               ),
-              onPressed: () async {
-                await logout(); // Call the logout function from user_authorization.dart
-              },
-            ),
-          ]),
+              // Edit Profile button
+              TextButton(
+                child: const Text('Edit Profile', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  // TODO: implement edit profile page
+                },
+              ),
+              // Events I Created button
+              TextButton(
+                child: const Text('Events I Created',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => EventsICreatedPage()));
+                },
+              ),
+              // Events I Follow button
+              TextButton(
+                child:
+                    const Text('Events I Follow', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => EventsIFollowPage()));
+                },
+              ),
+              // Users/Orgs I Follow button
+              TextButton(
+                child: const Text('Users/Orgs I Follow',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  // TODO: implement users/orgs I follow page
+                },
+              ),
+              // Settings button
+              TextButton(
+                child: const Text('Settings', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  // TODO: implement setting page and functionality
+                },
+              ),
+              // Tag Preferences button
+              TextButton(
+                child:
+                    const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => TagPreferencePage()),
+                  );
+                },
+              ),
+              TextButton(
+                child: const Text('Connect to a Student Org',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => const ConnectOrgPage()),
+                  );
+                },
+              ),
+              Expanded(child: SizedBox()),
+              // Logout button
+              ElevatedButton(
+                child: const Text('Logout', style: TextStyle(fontSize: 20)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () async {
+                  await logout(); // Call the logout function from user_authorization.dart
+                },
+              ),
+            ]),
+      ),
     );
   }
 }
