@@ -24,7 +24,7 @@ class EventCardFavoritable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var favorited = ValueNotifier(event.isFavoited);
+    var favorited = ValueNotifier(event.isFavorited);
 
     return ValueListenableBuilder(
         valueListenable: favorited,
@@ -58,7 +58,7 @@ class EventCardFavoritable extends StatelessWidget {
                     // Update the event's favorited status in the database
                     toggleLikeEvent(event.id);
                     // Update the event's favorited status in the frontend (for the purpose of displaying the right icon without having to pull from the database again)
-                    event.isFavoited = !value;
+                    event.isFavorited = !value;
                     favorited.value = !value;
                     // Show a toast message to confirm the event is saved or unsaved
                     Fluttertoast.showToast(

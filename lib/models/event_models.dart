@@ -10,7 +10,7 @@ class Event {
   String? description;
   bool? studentsOnly;
   List<String>? tags;
-  bool isFavoited;
+  bool isFavorited;
   int? nextRepeat;
 
   Event({
@@ -25,7 +25,7 @@ class Event {
     this.description,
     this.studentsOnly = false,
     this.tags,
-    this.isFavoited = false,
+    this.isFavorited = false,
     this.nextRepeat,
   });
 
@@ -42,7 +42,7 @@ class Event {
       description: json['description'],
       studentsOnly: json['studentsOnly'],
       tags: (json['tags'] as List<dynamic>).cast<String>(),
-      isFavoited: json['isFavorited'],
+      isFavorited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
     );
   }
