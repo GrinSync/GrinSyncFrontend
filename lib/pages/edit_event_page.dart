@@ -25,9 +25,8 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _endDate;
   late final TextEditingController _description;
   late bool? _studentsOnly;
-  late List<String>? _tags;
   late List<String>? _tagsList;
-  late String? _tagsString;
+  late String?_tagsString;
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late final int _id;
@@ -45,13 +44,7 @@ class EventEditPageState extends State<EventEditPage> {
     _description = TextEditingController(text: event.description);
     _studentsOnly = event.studentsOnly;
     _tagsList = event.tags;
-    // If there are tags, split them into a list of strings. 
-    // if (_tagsString != "") {
-    //   _tags = _tagsString?.split(",");
-    // } else {
-    //   // Otherwise, keep the list empty. 
-    //   _tags = [];
-    // }
+    _tagsString = "";
     _id = event.id;
     _repeatDate = TextEditingController();
     _repeat = "";
@@ -69,7 +62,6 @@ class EventEditPageState extends State<EventEditPage> {
     _endDate.dispose();
     _repeatDate.dispose();
     _studentsOnly = null;
-    _tags = [];
     _tagsList = [];
     _repeat = "";
     super.dispose();
@@ -136,7 +128,7 @@ class EventEditPageState extends State<EventEditPage> {
     // Update UI
     if (results != null) {
       setState(() {
-        _tags = results;
+        _tagsList = results;
       });
     }
 
@@ -260,7 +252,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                       // DISPLAY CHOSEN EVENT TAGS.
                       Wrap(
-                        children: _tags!
+                        children: _tagsList!
                             .map((e) => Chip(
                                   label: Text(e),
                                 ))

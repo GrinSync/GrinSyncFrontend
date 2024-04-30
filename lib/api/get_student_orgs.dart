@@ -10,14 +10,9 @@ Future<void> getStudentOrgs() async {
     headers = {};
   } else {
     headers = {'Authorization': 'Token $token'};
-  }
-
-  print(headers);
-
-  var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
+    var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
   var result = await http.get(url, headers: headers);
-  
-  // parse the json response and create a string of all tags with commas in between
+   // parse the json response and create a string of all tags with commas in between
   // result.body is a list of maps with tag names, ids, and selectDefault values (after jsonDecoding)
   for (var jsonTag in jsonDecode(result.body)) {
     STUDENTORGS.add(jsonTag['name']);
@@ -26,4 +21,8 @@ Future<void> getStudentOrgs() async {
   for (var jsonTag in jsonDecode(result.body)) {
     ORGIDS.add(jsonTag['id']);
   }
+  }
+
+  
+ 
 }
