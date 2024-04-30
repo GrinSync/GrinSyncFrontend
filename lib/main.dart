@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test_app/api/tags.dart';
@@ -123,13 +124,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndexOnHomePage = 0;
-  final List<String> _titles = [
-    'Upcoming Events',
-    'Search',
-    'Create an Event',
-    'Calendar',
-    'My Profile'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -160,82 +154,61 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        foregroundColor: Colors.white, // white text color
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(_titles[selectedIndexOnHomePage],
-            style: TextStyle(fontWeight: FontWeight.w800)),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                child:
-                    currentPage, //one of the five pages depending on the navigation bar item selected
+        // now each page implements their own app bar
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: currentPage, //one of the five pages depending on the navigation bar item selected
               ),
-            ),
-            SafeArea(
-              bottom:
-                  false, // this removes the gap between the navigation bar and the bottom (maybe there are better solutions)
-              child: NavigationBar(
-                  animationDuration: const Duration(milliseconds: 300),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  indicatorColor: Colors.white,
-                  shadowColor: Colors.white,
-                  destinations: const [
-                    NavigationDestination(
-                      icon: Icon(Icons.home),
-                      label: 'Home',
+                    SizedBox(
+                      height: 110,
+                      child: NavigationBar(
+                      animationDuration: const Duration(milliseconds: 300),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      indicatorColor: Colors.white,
+                      shadowColor: Colors.white,
+                      destinations: const [
+                        NavigationDestination(
+                          icon: Icon(Icons.home),
+                          label: 'Home',
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.search),
+                          label: 'Search',
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.add),
+                          label: 'Create',
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.calendar_month),
+                          label: 'Calendar',
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.person),
+                          label: 'Profile',
+                        ),
+                      ],
+                      selectedIndex: selectedIndexOnHomePage,
+                      onDestinationSelected: (value) {
+                        setState(() {
+                          selectedIndexOnHomePage = value;
+                        });
+                      }),
                     ),
-                    NavigationDestination(
-                      icon: Icon(Icons.search),
-                      label: 'Search',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.add),
-                      label: 'Create',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.calendar_month),
-                      label: 'Calendar',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.person),
-                      label: 'Profile',
-                    ),
-                  ],
-                  selectedIndex: selectedIndexOnHomePage,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndexOnHomePage = value;
-                    });
-                  }),
-            )
-          ],
-        ),
-      ),
+                    SizedBox(
+                      height: 20,
+                      child: Container(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
+                    ]
+              )
+          ),
     );
   }
 }

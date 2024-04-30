@@ -285,26 +285,21 @@ Future<List<Event>> getAllEvents() async {
   return allEvents;
 }
 
-Future<List<Event>> getUpcomingEvents(tagList) async {
+Future<List<Event>> getUpcomingEvents(tagList, stduentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
 
-  //print('Connecting...');
-
-  // var box = await Hive.openBox(tokenBox);
   var token = BOX.get('token');
-  //box.close();
+
   Map<String, String> headers;
   if (token == null) {
     headers = {};
   } else {
     headers = {'Authorization': 'Token $token'};
   }
-  //print('Fetching events...');
+
   var url =
       Uri.parse('https://grinsync.com/api/upcoming?tags=${tagList.join(';')}');
   var result = await https.get(url, headers: headers);
-
-  //print('Parsing JSON response...');
 
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
@@ -313,7 +308,15 @@ Future<List<Event>> getUpcomingEvents(tagList) async {
     allEvents.add(newEvent);
   }
 
-  //print('Returning events...');
+  // filter the events based on the user's preferences
+  if (stduentOnly) {
+    // only show studentOnly events
+    allEvents = allEvents.where((event) => event.studentsOnly == true).toList(); // list.where returns a new list with only the elements that satisfy the condition
+  }
+  if (intersectionFilter) {
+    // only show events that have all selected tags
+    allEvents = allEvents.where((event) => tagList.every((tag) => event.tags!.contains(tag))).toList(); // list.every returns true if all elements satisfy the condition
+  }
 
   return allEvents;
 }
@@ -372,29 +375,7 @@ Future<List<Event>> getLikedEvents() async {
   return likedEvents;
 }
 
-Future<List<Event>> searchEvents(String query) async {
-  List<Event> searchResults = [];
 
-  // var box = await Hive.openBox(tokenBox);
-  var token = BOX.get('token');
-  //box.close();
-  Map<String, String> headers;
-  if (token == null) {
-    headers = {};
-  } else {
-    headers = {'Authorization': 'Token $token'};
-  }
-
-  var url = Uri.parse('https://grinsync.com/api/search?query=$query');
-  var result = await https.get(url, headers: headers);
-
-  for (var jsonEvent in jsonDecode(result.body)) {
-    Event newEvent = Event.fromJson(jsonEvent);
-    searchResults.add(newEvent);
-  }
-
-  return searchResults;
-}
 
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
@@ -421,6 +402,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   return searchedEvents;
 }
 
+// need to check with Brian
 Future<Event?> getEventByID(eventID) async {
   var token = BOX.get('token');
 
