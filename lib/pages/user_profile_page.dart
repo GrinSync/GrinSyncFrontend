@@ -51,6 +51,20 @@ class UserProfilePage extends StatelessWidget {
                   // TODO: implement edit profile page
                 },
               ),
+              // Tag Preferences button
+              TextButton(
+                child:
+                    const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => TagPreferencePage()),
+                  );
+                },
+              ),
+
+              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+
               // Events I Created button
               TextButton(
                 child: const Text('Events I Created',
@@ -73,6 +87,9 @@ class UserProfilePage extends StatelessWidget {
                           builder: (context) => EventsIFollowPage()));
                 },
               ),
+
+              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+
               // Users/Orgs I Follow button
               TextButton(
                 child: const Text('Users/Orgs I Follow',
@@ -88,17 +105,6 @@ class UserProfilePage extends StatelessWidget {
               //     // TODO: implement setting page and functionality
               //   },
               // ),
-              // Tag Preferences button
-              TextButton(
-                child:
-                    const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => TagPreferencePage()),
-                  );
-                },
-              ),
               // My affiliated Student Orgs button
               TextButton(
                 child: const Text('Student Organizations I Lead',
