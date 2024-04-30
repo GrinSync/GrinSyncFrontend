@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/search_results_page.dart';
@@ -13,8 +16,9 @@ class _SearchPageState extends State<SearchPage> {
   late TextEditingController _query =
       TextEditingController(); //text box for search
   int searchMode = 0; // 0 for search event, 1 for search user
-  Future<List<Event>?>? _eventSearchResults;
-  Future<List<User>?>? _userSearchResults;
+  ValueNotifier eventSearchResults = ValueNotifier<List<Event>?>(null);
+  //ValueNotifier<List<User>?>? _userSearchResults;
+  late List<Event> events;
 
   @override
   void initState() {
@@ -22,87 +26,140 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
-  Future<void> search() async {
-    if (searchMode == 0) {
-      setState(() {
-        _eventSearchResults = searchEvents(_query.text);
-      });
-    } else {
-      // search for users
+  Future<void> searchEvents() async {
+    if (_query.text.isEmpty) {
+      return;
     }
+    eventSearchResults.value = await getSearchedEvents(_query.text);
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _query,
-                  autocorrect: true,
-                  decoration: InputDecoration(
-                    prefixIcon: searchMode == 0
-                        ? const Icon(Icons.event)
-                        : const Icon(Icons.person),
-                    labelText: searchMode == 0
-                        ? 'Search for Events'
-                        : 'Search for Users',
-                    hintText: 'Enter a keyword',
-                    border: const OutlineInputBorder(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Search',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _query,
+                    autocorrect: false,
+                    decoration: InputDecoration(
+                      prefixIcon: searchMode == 0
+                          ? const Icon(Icons.event)
+                          : const Icon(Icons.person),
+                      labelText: searchMode == 0
+                          ? 'Search for Events'
+                          : 'Search for Users',
+                      hintText: 'Enter a keyword',
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SearchResultsPage(todo: _query.text)),
-                  );
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           SearchResultsPage(todo: _query.text)),
+                    // );
+                    if (_query.text.isNotEmpty) {
+                      if (searchMode == 0)
+                        setState(() {
+                          searchEvents();
+                        });
+                    } else {
+                      //searchUsers();
+                    }
+                  },
+                ),
+              ],
+            ),
+            // DropdownButton(
+            //   value: searchMode,
+            //   items: <DropdownMenuItem<int>>[
+            //     const DropdownMenuItem(
+            //       child: Text('Search Events'),
+            //       value: 0,
+            //     ),
+            //     const DropdownMenuItem(
+            //       child: Text('Search Users'),
+            //       value: 1,
+            //     ),
+            //   ],
+            //   onChanged: (int? value) {
+            //     setState(() {
+            //       searchMode = value!;
+            //     });
+            //   },
+            // ),
+            SizedBox(height: 10),
+            Expanded(
+              child: _query.text.isEmpty? 
+              const Center(
+                child: Text('Search Something...'),
+              ) 
+              :FutureBuilder(
+                future: searchMode == 0? searchEvents() : null,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Search Something...'),
+                    );
+                  } else {
+                    return ValueListenableBuilder(
+                      valueListenable: searchMode == 0? eventSearchResults : eventSearchResults, //userSearchResults will be added later
+                      builder: (context, searchResult, child) {
+                        return ListView.builder(
+                          itemCount: searchResult.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == searchResult.length) {
+                                return Column(
+                                  children: [
+                                    Divider(color: Colors.grey[400]),
+                                    Text('--End of Search Result--',
+                                        style:
+                                            TextStyle(color: Colors.grey[600])),
+                                    Text('Event Count: ${searchResult.length}',
+                                        style:
+                                            TextStyle(color: Colors.grey[600])),
+                                  ],
+                                );
+                              } else {
+                                return isLoggedIn()
+                                    ? EventCardFavoritable(
+                                        event: searchResult[index])
+                                    : EventCardPlain(event: searchResult[index]);
+                              }
+                          },
+                        );
+                      }
+                    );
+                  }
                 },
               ),
-            ],
-          ),
-          // DropdownButton(
-          //   value: searchMode,
-          //   items: <DropdownMenuItem<int>>[
-          //     const DropdownMenuItem(
-          //       child: Text('Search Events'),
-          //       value: 0,
-          //     ),
-          //     const DropdownMenuItem(
-          //       child: Text('Search Users'),
-          //       value: 1,
-          //     ),
-          //   ],
-          //   onChanged: (int? value) {
-          //     setState(() {
-          //       searchMode = value!;
-          //     });
-          //   },
-          // ),
-          // Expanded(
-          //   child: ValueListenableBuilder<List<Event>?>(
-          //     valueListenable: searchResults,
-          //     builder: (context, value, child) {
-          //       if (value == null) {
-          //         return Expanded(child: SizedBox());
-          //       } else {
-          //         return FutureBuilder(
-          //           future: search,
-          //           builder: builder
-          //           );
-          //       }
-          //     },
-          //   ),
-          //   )
-        ],
+        ),
+          ],
+        ),
       ),
     );
   }
