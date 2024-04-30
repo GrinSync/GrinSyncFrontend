@@ -27,9 +27,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> searchEvents() async {
-    if (_query.text.isEmpty) {
-      return;
-    }
     eventSearchResults.value = await getSearchedEvents(_query.text);
   }
 
