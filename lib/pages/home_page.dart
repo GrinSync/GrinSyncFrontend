@@ -5,6 +5,8 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/global.dart';
+import 'package:flutter_test_app/api/tags.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // HomePage shows user a list of events
 
@@ -16,8 +18,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Future? _loadEventsFuture; // Future to load events
   ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(null); // A list of upcoming events as a ValueNotifier
-  List<String> availableTags = ALLTAGS; // get all tags from the global variable
-  List<String> selectedTags = PREFERREDTAGS; // get the preferred tags from the global variable
+  List<String> availableTags = getAllTags(); // get all tags from the global variable
+  List<String> selectedTags = isLoggedIn()? getPreferredTags():getAllTags(); // get the preferred tags from the global variable only if logged in
   bool stduentOnly = false; // show only studentOnly events
   bool intersectionFilter = false; // show events that have all selected tags
 
@@ -61,14 +63,17 @@ class _HomePageState extends State<HomePage> {
                                 setState(() {
                                   if (selected) {
                                     selectedTags.add(tag);
+                                    print(selectedTags);
                                   } else {
                                     selectedTags.remove(tag);
+                                    print(selectedTags);
                                   }
                                 });
                               },
                               );
                           }).toList(),
                           ),
+                          // show the studentOnly checkbox only if the user is logged in and is a student
                           if (isLoggedIn() && USER.value?.type == "STU") // show the studentOnly filter only if the user is logged in and is a student
                             CheckboxListTile(
                               title: Text('Show student only events'),
@@ -79,6 +84,7 @@ class _HomePageState extends State<HomePage> {
                                 });
                               },
                             ),
+                            // show the intersection filter
                           CheckboxListTile(
                             title: Text('Match all tags'),
                             value: intersectionFilter, 
@@ -88,16 +94,33 @@ class _HomePageState extends State<HomePage> {
                               });
                             },
                             ),
+                        // button to deselect all tags
+                        ElevatedButton(
+                          child: Text('Deselect all tags'),
+                          onPressed: () {
+                            setState(() {
+                              selectedTags = [];
+                            });
+                          },
+                          ),
                         Row(
                           children: [
-                            ElevatedButton(
-                              child: Text('Revert to preferred tags'),
-                              onPressed: () {
-                                setState(() {
-                                  selectedTags = List<String>.from(PREFERREDTAGS);
-                                });
-                              },
-                              ),
+                              ElevatedButton(
+                                child: Text('Revert to default tags'),
+                                onPressed: () {
+                                  if (isLoggedIn()) {
+                                    setState(() {
+                                      selectedTags = getPreferredTags();
+                                    });
+                                  } else {
+                                    setState(() {
+                                      // if the user is not logged in, set the preferred tags to all tags
+                                      selectedTags = getAllTags();
+                                    });
+                                  }
+                                  
+                                },
+                                ),
                               SizedBox(width: 10.0),  
                             ElevatedButton(
                               child: Text('Apply Filters'),
