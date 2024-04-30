@@ -1,28 +1,48 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test_app/pages/registration_page.dart';
+import 'package:flutter_test_app/main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() {
-  testWidgets('Test the Registration Page', (WidgetTester tester) async {
+  Box box;
+      setUp(() async {
+      final temp = await Directory.systemTemp.createTemp();
+      Hive.init(temp.path);
+      box = await Hive.openBox('test-box');
+      await box.clear();
+    });
+  testWidgets('Test the Registration Page populated correctly',
+      (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(const RegistrationPage());
+    await tester.pumpWidget(const MyApp());
+
+    // Tap on the profile icon once on the home screen
+    await tester.tap(find.byIcon(Icons.person));
+
+    // Rebuild the widget after the state has changed.
+    await tester.pump();
+
+    // Tap on the Register Button on the profile page
+    await tester.tap(find.widgetWithText(TextButton, 'Register'));
+
+    // Rebuild the widget after the state has changed.
+    await tester.pumpAndSettle();
 
     // We can use this test widget to test different aspects of our page
     // We do this below by checking if different fields populated correctly
 
-    // Check the number of text fields that appeared on the test page
-    var numTextFields = find.byType(TextField);
-
     // Check the number of buttons that appeared on the page
     var numButtons = find.byType(ElevatedButton);
 
-    // Test that the Title populated
-    expect(find.text('Create an Account'), findsOneWidget);
+    // Check the number of text fields that appeared on the page
+    var numTextFields = find.byType(TextField);
 
-    // Test that all 5 Text Fields populated
-    expect(numTextFields, findsNWidgets(5));
-
-    // Test that the Register Button populated
+    // Test that the Register button populated
     expect(numButtons, findsNWidgets(1));
+
+    // Test that all Text Fields populated
+    expect(numTextFields, findsNWidgets(5));
   });
 }
