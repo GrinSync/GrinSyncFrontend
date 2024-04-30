@@ -80,8 +80,6 @@ class _SearchPageState extends State<SearchPage> {
                         setState(() {
                           searchEvents();
                         });
-                    } else {
-                      //searchUsers();
                     }
                   },
                 ),
