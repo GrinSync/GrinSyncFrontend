@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/global.dart';
 
-Future<void> getAllTags() async {
+Future<void> setAllTags() async {
   var token = BOX.get('token');
 
   Map<String, String> headers;
@@ -26,7 +26,7 @@ Future<void> getAllTags() async {
   // print(ALLTAGS);
 }
 
-Future<void> getPrefferedTags() async {
+Future<void> setPrefferedTags() async {
   var token = BOX.get('token');
 
   Map<String, String> headers;
@@ -53,7 +53,6 @@ Future<void> getPrefferedTags() async {
 
 
 // Update the preferred tags of the user
-
 Future<void> updatePrefferedTags(selectedTags) async {
   var token = BOX.get('token');
 
