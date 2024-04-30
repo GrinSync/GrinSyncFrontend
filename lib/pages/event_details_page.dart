@@ -239,7 +239,14 @@ class EventDetailsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 172, 28),
                           foregroundColor: Colors.black),
-                      child: const Text('Share Event'),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.share, size: 20,),
+                          SizedBox(width: 5.0),
+                          Text('Share Event'),
+                        ],
+                      ),
                       onPressed: () {
                         Share.share(
                             'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
