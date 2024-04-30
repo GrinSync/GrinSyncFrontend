@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
+import 'package:flutter_test_app/api/tags.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/registration_page.dart';
@@ -25,6 +27,11 @@ Future<dynamic> userAuthentication(String username, String password) async {
     BOX.put('token', token); // save token in box
     // box.close();
     User? user = await getUser(token);
+
+    // initialize the preferred tags and student orgs
+    await setPrefferedTags();
+    await setStudentOrgs();
+
     return user;
   } else {
     return 'Login Failed';
@@ -112,6 +119,8 @@ Future<void> logout() async {
   BOX.delete('token'); // save token in box
   // box.close(); //box will be closed in setLoginStatus
   setLoginStatus(); // sets the global variable USER to null
+  clearPrefferedTags(); // clears the preferred tags
+  clearOrgs(); // clears the student orgs
 
   // show a message
   Fluttertoast.showToast(

@@ -45,11 +45,6 @@ Future<void> setPrefferedTags() async {
     for (var jsonTag in jsonDecode(result.body)) {
       PREFERREDTAGS.add(jsonTag['name']);
     }
-
-    // if the user has not selected preferred tags, set the preferred tags to all tags
-    if (PREFERREDTAGS.isEmpty) {
-      PREFERREDTAGS = ALLTAGS;
-    }
   }
 }
 
@@ -74,4 +69,8 @@ Future<void> updatePrefferedTags(selectedTags) async {
   // } else {
   //   print('Failed to update tag preferences');
   // }
+}
+
+clearPrefferedTags() {
+  PREFERREDTAGS.clear();
 }

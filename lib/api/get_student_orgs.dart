@@ -20,3 +20,8 @@ Future<void> setStudentOrgs() async {
     }
   }
 }
+
+clearOrgs() {
+  STUDENTORGS.clear();
+  ORGIDS.clear();
+}
