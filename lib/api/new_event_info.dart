@@ -59,7 +59,7 @@ Future eventInfo(
     body['id'] = eventId.toString();
   }
   if (org != null) {
-    body['org_id'] = org;
+    body['orgName'] = org;
   }
 
   // TODO: Ask Bradley what this does
@@ -73,9 +73,11 @@ Future eventInfo(
   var url = Uri.parse(userUrl);
   // URL to send event info
   var result = await https.post(url, body: body, headers: headers);
+  print(result.body);
 
   // If the edit/create event can be successful but something is wrong with user input, return the reason why
   var json = jsonDecode(result.body);
+  
   if (json.containsKey('error')) {
     return json['error'];
   }

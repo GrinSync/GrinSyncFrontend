@@ -3,7 +3,7 @@ class Event {
   String? title;
   int host;
   String? hostName;
-  String? org;
+  int? org;
   String? location;
   String? start;
   String? end;
