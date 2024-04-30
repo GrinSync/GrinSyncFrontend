@@ -65,7 +65,7 @@ Future eventInfo(
   // TODO: Ask Bradley what this does
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  box.close();
+  //box.close();
   Map<String, String> headers = {'Authorization': 'Token $token'};
 
   // Send info to the URL the user provides
