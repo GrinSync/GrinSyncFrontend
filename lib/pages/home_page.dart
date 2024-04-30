@@ -14,13 +14,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future? _loadEventsFuture; // Future to load events
   ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(null); // A list of upcoming events as a ValueNotifier
   List<String> availableTags = ALLTAGS; // get all tags from the global variable
   List<String> selectedTags = PREFERREDTAGS; // get the preferred tags from the global variable
   bool stduentOnly = false; // show only studentOnly events
   bool intersectionFilter = false; // show events that have all selected tags
 
+  @override
+  void initState() {
+    super.initState();
+    _loadEventsFuture = loadEvents();
+  }
+
   Future<void> loadEvents() async {
+    print('Loading events');
     upcomingEvents.value = await getUpcomingEvents(selectedTags, stduentOnly, intersectionFilter);
   }
 
@@ -112,7 +120,7 @@ class _HomePageState extends State<HomePage> {
       ), 
       // Original home page starting from here (tag menu added above)
       body: FutureBuilder(
-          future: loadEvents(),
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {

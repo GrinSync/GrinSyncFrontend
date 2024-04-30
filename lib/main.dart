@@ -40,6 +40,7 @@ void main() async {
   await setAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
   await setPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
   await setStudentOrgs(); // this function will set the STUDENTORGS global variable to a list of student org ids that the user is linked with
+  print('All Init Functions Completed');
 
   // run the app
   runApp(const MyApp());
