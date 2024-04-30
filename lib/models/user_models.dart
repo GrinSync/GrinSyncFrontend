@@ -1,25 +1,35 @@
 class User {
   String? token;
-  int id;
+  int? id;
   String? username;
   String? firstName;
   String? lastName;
   String? email;
+  String? type;
+  //List<String>? interestedTags; // commented out because it is not used as of now. Also, it should only be used for other users (current user's interested tags are stored in PREFERREDTAGS in global.dart)
+  List<int>? childOrgs;
 
   User(
       {this.token,
-      this.id = -1,
-      this.username,
+      this.id,
       this.firstName,
       this.lastName,
-      this.email});
+      this.email,
+      this.type,
+      //this.interestedTags,
+      this.childOrgs
+      });
 
   factory User.fromJson(json) {
     return User(
-        username: json['username'],
         id: json['id'],
         firstName: json['first_name'],
         lastName: json['last_name'],
-        email: json['email']);
+        email: json['email'],
+        type: json['type'],
+        // interestedTags: (json['interested_tags'] as List<dynamic>).cast<String>(),
+        childOrgs: (json['childOrgs'] as List<dynamic>).cast<int>()
+        );
+
   }
 }
