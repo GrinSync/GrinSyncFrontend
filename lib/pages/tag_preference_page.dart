@@ -33,13 +33,15 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
           itemCount: availableTags.length + additionalItemNumber,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return Text(
-                'Select tags for homepage feed:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Helvetica')
-              );
+              return Text('Select tags for homepage feed:',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Helvetica'));
             } else if (index == 1) {
               return ListTile(
-                title: Text('Select all', style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text('Select all',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: IconButton(
                   icon: Icon(Icons.check),
                   onPressed: () {
@@ -53,7 +55,8 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
               );
             } else if (index == 2) {
               return ListTile(
-                title: Text('Deselect all', style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text('Deselect all',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
@@ -66,28 +69,28 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                 ),
               );
             } else {
-          final tag = availableTags[index-additionalItemNumber];
-          final isSelected = selectedTags.contains(tag);
-          
-          return ListTile(
-            title: Text(tag),
-            trailing: Checkbox(
-        value: isSelected,
-        onChanged: (selected) {
-          setState(() {
-            if (selected!) {
-              selectedTags.add(tag);
-            } else {
-              selectedTags.remove(tag);
+              final tag = availableTags[index - additionalItemNumber];
+              final isSelected = selectedTags.contains(tag);
+
+              return ListTile(
+                title: Text(tag),
+                trailing: Checkbox(
+                  value: isSelected,
+                  onChanged: (selected) {
+                    setState(() {
+                      if (selected!) {
+                        selectedTags.add(tag);
+                      } else {
+                        selectedTags.remove(tag);
+                      }
+                      updatePrefferedTags(selectedTags);
+                      PREFERREDTAGS = List<String>.from(selectedTags);
+                      print(PREFERREDTAGS);
+                    });
+                  },
+                ),
+              );
             }
-            updatePrefferedTags(selectedTags); 
-            PREFERREDTAGS = List<String>.from(selectedTags);
-            print(PREFERREDTAGS); 
-          });
-        },
-            ),
-          );
-        }
           },
         ),
       ),

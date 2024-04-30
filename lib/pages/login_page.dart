@@ -185,9 +185,10 @@ class _LoginPage extends State<LoginPage> {
                           // );
                           Navigator.pop(context);
                           Fluttertoast.showToast(
-                              msg: "Login Successful",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,);
+                            msg: "Login Successful",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
                         }
                       },
                       child: const Text('Log in')),

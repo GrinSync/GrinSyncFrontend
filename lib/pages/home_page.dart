@@ -12,8 +12,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(null); // A list of upcoming events as a ValueNotifier
-  List<String> tagList = PREFERREDTAGS; // get the preferred tags from the global variable
+  ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(
+      null); // A list of upcoming events as a ValueNotifier
+  List<String> tagList =
+      PREFERREDTAGS; // get the preferred tags from the global variable
 
   Future<void> loadEvents() async {
     upcomingEvents.value = await getUpcomingEvents(tagList);
@@ -54,7 +56,8 @@ class _HomePageState extends State<HomePage> {
             // if the connection is done, show the events
           } else {
             return ValueListenableBuilder(
-                valueListenable: upcomingEvents, // Listens to the upcomingEvents ValueNotifier to rebuild the page when the events are (re)loaded
+                valueListenable:
+                    upcomingEvents, // Listens to the upcomingEvents ValueNotifier to rebuild the page when the events are (re)loaded
                 builder: (context, eventList, child) {
                   return Container(
                     padding: EdgeInsets.all(8.0),

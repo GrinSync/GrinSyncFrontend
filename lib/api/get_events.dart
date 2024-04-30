@@ -48,42 +48,42 @@ class EventCardFavoritable extends StatelessWidget {
                   style: TextStyle(fontSize: 15, color: Colors.grey[700])),
               isThreeLine: true,
               trailing: IconButton(
-                      icon: value
-                          ? Icon(Icons.favorite,
-                              color: Theme.of(context).colorScheme.primary)
-                          : Icon(Icons.favorite_border,
-                              color: Theme.of(context).colorScheme.primary),
-                      onPressed: () {
-                        if (isLoggedIn()) {
-                          // Update the event's favorited status in the database
-                          toggleLikeEvent(event.id);
-                          // Update the event's favorited status in the frontend (for the purpose of displaying the right icon without having to pull from the database again)
-                          event.isFavoited = !value;
-                          favorited.value = !value;
-                          // Show a toast message to confirm the event is saved or unsaved
-                          Fluttertoast.showToast(
-                              msg: value
-                                  ? 'Unsaved successfully'
-                                  : 'Saved successfully',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey[800],
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          // If the user is not logged in, show a toast message to prompt the user to log in
-                          Fluttertoast.showToast(
-                              msg: 'Please log in to save events',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey[800],
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      },
-                    ),
+                icon: value
+                    ? Icon(Icons.favorite,
+                        color: Theme.of(context).colorScheme.primary)
+                    : Icon(Icons.favorite_border,
+                        color: Theme.of(context).colorScheme.primary),
+                onPressed: () {
+                  if (isLoggedIn()) {
+                    // Update the event's favorited status in the database
+                    toggleLikeEvent(event.id);
+                    // Update the event's favorited status in the frontend (for the purpose of displaying the right icon without having to pull from the database again)
+                    event.isFavoited = !value;
+                    favorited.value = !value;
+                    // Show a toast message to confirm the event is saved or unsaved
+                    Fluttertoast.showToast(
+                        msg: value
+                            ? 'Unsaved successfully'
+                            : 'Saved successfully',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey[800],
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else {
+                    // If the user is not logged in, show a toast message to prompt the user to log in
+                    Fluttertoast.showToast(
+                        msg: 'Please log in to save events',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey[800],
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -288,7 +288,6 @@ Future<List<Event>> getAllEvents() async {
 Future<List<Event>> getUpcomingEvents(tagList) async {
   List<Event> allEvents = [];
 
-
   //print('Connecting...');
 
   // var box = await Hive.openBox(tokenBox);
@@ -301,7 +300,8 @@ Future<List<Event>> getUpcomingEvents(tagList) async {
     headers = {'Authorization': 'Token $token'};
   }
   //print('Fetching events...');
-  var url = Uri.parse('https://grinsync.com/api/upcoming?tags=${tagList.join(';')}');
+  var url =
+      Uri.parse('https://grinsync.com/api/upcoming?tags=${tagList.join(';')}');
   var result = await https.get(url, headers: headers);
 
   //print('Parsing JSON response...');
@@ -405,9 +405,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   if (token == null) {
     headers = {};
   } else {
-    headers = {
-      'Authorization': 'Token $token'
-    };
+    headers = {'Authorization': 'Token $token'};
   }
   var url = Uri.parse('https://grinsync.com/api/search?query=$keyword');
   var result = await https.get(url, headers: headers);
@@ -443,5 +441,4 @@ Future<Event?> getEventByID(eventID) async {
   } else {
     return null;
   }
-
 }

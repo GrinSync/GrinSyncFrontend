@@ -26,7 +26,7 @@ class EventEditPageState extends State<EventEditPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String>? _tagsList;
-  late String?_tagsString;
+  late String? _tagsString;
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late final int _id;
@@ -166,7 +166,9 @@ class EventEditPageState extends State<EventEditPage> {
                             border: OutlineInputBorder()),
                       ),
 
-                      const SizedBox(height: 10), // This is the gap in between text fields.
+                      const SizedBox(
+                          height:
+                              10), // This is the gap in between text fields.
 
                       // EVENT LOCATION BOX DISPLAYS HERE.
                       TextField(
@@ -225,7 +227,7 @@ class EventEditPageState extends State<EventEditPage> {
                             border: OutlineInputBorder(),
                             alignLabelWithHint: true,
                             icon: Icon(Icons.summarize_outlined)),
-                      ),   
+                      ),
 
                       const SizedBox(height: 10),
 
@@ -288,7 +290,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     'https://grinsync.com/api/editEvent');
 
                                 if (create.runtimeType == String) {
-                                  // Show error messages from backend. 
+                                  // Show error messages from backend.
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -298,7 +300,8 @@ class EventEditPageState extends State<EventEditPage> {
                                           child: ListBody(
                                             children: <Widget>[
                                               Text('$create'),
-                                              const Text('Please edit event details.')
+                                              const Text(
+                                                  'Please edit event details.')
                                             ],
                                           ),
                                         ),

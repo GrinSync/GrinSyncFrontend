@@ -10,11 +10,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late TextEditingController _query = TextEditingController(); //text box for search
+  late TextEditingController _query =
+      TextEditingController(); //text box for search
   int searchMode = 0; // 0 for search event, 1 for search user
   Future<List<Event>?>? _eventSearchResults;
   Future<List<User>?>? _userSearchResults;
-
 
   @override
   void initState() {
@@ -31,9 +31,6 @@ class _SearchPageState extends State<SearchPage> {
       // search for users
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +59,12 @@ class _SearchPageState extends State<SearchPage> {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                                 builder: (context) => SearchResultsPage(todo: _query.text)),
-                          );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SearchResultsPage(todo: _query.text)),
+                  );
                 },
               ),
             ],
@@ -97,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
           //         return Expanded(child: SizedBox());
           //       } else {
           //         return FutureBuilder(
-          //           future: search, 
+          //           future: search,
           //           builder: builder
           //           );
           //       }

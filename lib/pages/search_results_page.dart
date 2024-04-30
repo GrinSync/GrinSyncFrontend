@@ -9,6 +9,7 @@ class Todo {
 
   const Todo(this.keyword);
 }
+
 class SearchResultsPage extends StatefulWidget {
   const SearchResultsPage({super.key, required this.todo});
   final String todo;
@@ -29,6 +30,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     k = widget.todo;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,42 +77,42 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               );
               // if the connection is done, show the events
             } else {
-            return ValueListenableBuilder(
-                valueListenable: allEvents,
-                builder: (context, eventList, child) {
-                  return Scaffold(
-                    body: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: RefreshIndicator(
-                        onRefresh: loadEvents,
-                        child: ListView.builder(
-                          itemCount: eventList!.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == eventList.length) {
-                              return Column(
-                                children: [
-                                  Divider(color: Colors.grey[400]),
-                                  Text('--End of All Events--',
-                                      style:
-                                          TextStyle(color: Colors.grey[600])),
-                                  Text('Event Count: ${eventList.length}',
-                                      style:
-                                          TextStyle(color: Colors.grey[600])),
-                                ],
-                              );
-                            } else {
-                              return isLoggedIn()
-                                  ? EventCardFavoritable(
-                                      event: eventList[index])
-                                  : EventCardPlain(event: eventList[index]);
-                            }
-                          },
+              return ValueListenableBuilder(
+                  valueListenable: allEvents,
+                  builder: (context, eventList, child) {
+                    return Scaffold(
+                      body: Container(
+                        padding: EdgeInsets.all(8.0),
+                        child: RefreshIndicator(
+                          onRefresh: loadEvents,
+                          child: ListView.builder(
+                            itemCount: eventList!.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == eventList.length) {
+                                return Column(
+                                  children: [
+                                    Divider(color: Colors.grey[400]),
+                                    Text('--End of All Events--',
+                                        style:
+                                            TextStyle(color: Colors.grey[600])),
+                                    Text('Event Count: ${eventList.length}',
+                                        style:
+                                            TextStyle(color: Colors.grey[600])),
+                                  ],
+                                );
+                              } else {
+                                return isLoggedIn()
+                                    ? EventCardFavoritable(
+                                        event: eventList[index])
+                                    : EventCardPlain(event: eventList[index]);
+                              }
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                });
-          }
+                    );
+                  });
+            }
           }),
     );
   }

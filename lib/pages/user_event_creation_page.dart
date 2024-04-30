@@ -21,7 +21,7 @@ class MultiSelectState extends State<MultiSelect> {
   // Here is the list to hold selected items.
   final List<String> selectedItems = [];
 
-  // This function is called when item is selected or unselected. 
+  // This function is called when item is selected or unselected.
   void itemChange(String item, bool isSelected) {
     setState(() {
       if (isSelected) {
@@ -62,7 +62,7 @@ class MultiSelectState extends State<MultiSelect> {
           ),
         ),
         actions: [
-          // Cancel and submit button actions. 
+          // Cancel and submit button actions.
           TextButton(onPressed: cancel, child: const Text('Cancel')),
           ElevatedButton(
             onPressed: submit,
@@ -89,15 +89,16 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   late final TextEditingController _description;
   late bool? _studentsOnly;
   late List<String> _tags;
-  late String _tagsString; // This string is a conversion of the list above to a comma-separated string.
+  late String
+      _tagsString; // This string is a conversion of the list above to a comma-separated string.
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late List<DropdownMenuItem<String>> _studentOrgs;
 
-  // initState function initializes all of the late final variables from above. 
+  // initState function initializes all of the late final variables from above.
   @override
   void initState() {
-    _org = null; 
+    _org = null;
     super.initState();
     _title = TextEditingController();
     _location = TextEditingController();
@@ -109,14 +110,15 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _tagsString = "";
     _repeat = null;
     _repeatDate = TextEditingController();
-    _studentOrgs = List.generate(STUDENTORGS.length,
-                                (index) => DropdownMenuItem(
-                                  value: STUDENTORGS[index],
-                                  child: Text(STUDENTORGS[index],
-                                  ),
-                                ),
-                                );
-    
+    _studentOrgs = List.generate(
+      STUDENTORGS.length,
+      (index) => DropdownMenuItem(
+        value: STUDENTORGS[index],
+        child: Text(
+          STUDENTORGS[index],
+        ),
+      ),
+    );
   } // initState
 
   // dispose function does the cleanup tasks.
@@ -193,7 +195,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
           return MultiSelect(elements: items);
         });
 
-    // Update UI. 
+    // Update UI.
     if (results != null) {
       setState(() {
         _tags = results;
@@ -204,19 +206,19 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _tagsString = _tags.join(';');
   } // showMultiSelect
 
-// Build UI of widget. 
+// Build UI of widget.
 // Everything is wrapped in a container with child content being scrollable.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SingleChildScrollView(
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      // Arrange children vertically.
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Visibility(
+        body: SingleChildScrollView(
+            child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                    // Arrange children vertically.
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Visibility(
                         visible: _studentOrgs.isNotEmpty,
                         child: DropdownButton<String>(
                             hint: const Text(
@@ -229,231 +231,234 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                 _org = newValue;
                               });
                             }),
-                        ),
-                        const SizedBox(height: 10),
-                        
-                        // EVENT TITLE BOX DISPLAYS HERE. 
-                        TextField(
-                          controller: _title,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.create),
-                              labelText: 'Event Title',
-                              hintText: 'Enter the title of your event',
-                              border: OutlineInputBorder()),
-                        ),
-      
-                        const SizedBox(height: 10), // This is the gap in between text fields.
-      
-                        // EVENT LOCATION BOX DISPLAYS HERE.
-                        TextField(
-                          controller: _location,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.location_on_outlined),
-                              labelText: 'Location',
-                              hintText: 'Enter the location of your event',
-                              border: OutlineInputBorder()),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // EVENT START TIME BOX DISPLAYS HERE.
-                        TextField(
-                          controller: _startDate,
-                          readOnly: true, // Don't ask for text keyboard input.
-                          onTap: () => selectDateTime(context, _startDate),
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.access_time),
-                              labelText: 'Event Starts...',
-                              hintText:
-                                  'Pick the starting date & time of your event',
-                              border: OutlineInputBorder()),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // EVENT END TIME BOX DISPLAYS HERE.
-                        TextField(
-                          controller: _endDate,
-                          readOnly: true,
-                          onTap: () => selectDateTime(context, _endDate),
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.access_time_filled),
-                              labelText: 'Event Ends...',
-                              hintText:
-                                  'Pick the ending date & time of your event',
-                              border: OutlineInputBorder()),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // EVENT DESCRIPTION BOX DISPLAYS HERE.
-                        TextField(
-                          controller: _description,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                              labelText: 'Description',
-                              hintText: 'Enter a description of your event',
-                              border: OutlineInputBorder(),
-                              alignLabelWithHint: true,
-                              icon: Icon(Icons.summarize_outlined)),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // REPEATING EVENT OPTIONS DISPLAYS HERE.
-                        const Text('How Often Does Your Event Repeat?:'),
-      
-                        DropdownButton(
-                            hint: const Text(
-                                'Select Repeating Event Customization'),
-                            items: const [
-                              DropdownMenuItem(
-                                  value: "None", child: Text("None")),
-                              DropdownMenuItem(
-                                  value: "Daily", child: Text("Daily")),
-                              DropdownMenuItem(
-                                  value: "Weekly", child: Text("Weekly")),
-                              DropdownMenuItem(
-                                  value: "Monthly", child: Text("Monthly")),
-                            ],
-                            isExpanded: true,
-                            value: _repeat,
-                            onChanged: (newValue) {
-                              setState(() {
-                                _repeat = newValue;
-                              });
-                            }),
-      
-                        const SizedBox(height: 10),
-      
-                        // END REPEAT DATE DISPLAYS HERE.
-                        TextField(
-                          controller: _repeatDate,
-                          readOnly: true,
-                          onTap: () => selectDateTime(context, _repeatDate),
-                          decoration: const InputDecoration(
-                              labelText: 'End Repeat...',
-                              hintText:
-                                  'Pick the ending date for your repeating events',
-                              border: OutlineInputBorder()),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // STUDENTS ONLY TAG CHECKBOX DISPLAYS HERE.
-                        CheckboxListTile(
-                          title: const Text("Student-Only Event?"),
-                          value: _studentsOnly,
+                      ),
+                      const SizedBox(height: 10),
+
+                      // EVENT TITLE BOX DISPLAYS HERE.
+                      TextField(
+                        controller: _title,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.create),
+                            labelText: 'Event Title',
+                            hintText: 'Enter the title of your event',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(
+                          height:
+                              10), // This is the gap in between text fields.
+
+                      // EVENT LOCATION BOX DISPLAYS HERE.
+                      TextField(
+                        controller: _location,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.location_on_outlined),
+                            labelText: 'Location',
+                            hintText: 'Enter the location of your event',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // EVENT START TIME BOX DISPLAYS HERE.
+                      TextField(
+                        controller: _startDate,
+                        readOnly: true, // Don't ask for text keyboard input.
+                        onTap: () => selectDateTime(context, _startDate),
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.access_time),
+                            labelText: 'Event Starts...',
+                            hintText:
+                                'Pick the starting date & time of your event',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // EVENT END TIME BOX DISPLAYS HERE.
+                      TextField(
+                        controller: _endDate,
+                        readOnly: true,
+                        onTap: () => selectDateTime(context, _endDate),
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.access_time_filled),
+                            labelText: 'Event Ends...',
+                            hintText:
+                                'Pick the ending date & time of your event',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // EVENT DESCRIPTION BOX DISPLAYS HERE.
+                      TextField(
+                        controller: _description,
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                            labelText: 'Description',
+                            hintText: 'Enter a description of your event',
+                            border: OutlineInputBorder(),
+                            alignLabelWithHint: true,
+                            icon: Icon(Icons.summarize_outlined)),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // REPEATING EVENT OPTIONS DISPLAYS HERE.
+                      const Text('How Often Does Your Event Repeat?:'),
+
+                      DropdownButton(
+                          hint: const Text(
+                              'Select Repeating Event Customization'),
+                          items: const [
+                            DropdownMenuItem(
+                                value: "None", child: Text("None")),
+                            DropdownMenuItem(
+                                value: "Daily", child: Text("Daily")),
+                            DropdownMenuItem(
+                                value: "Weekly", child: Text("Weekly")),
+                            DropdownMenuItem(
+                                value: "Monthly", child: Text("Monthly")),
+                          ],
+                          isExpanded: true,
+                          value: _repeat,
                           onChanged: (newValue) {
                             setState(() {
-                              _studentsOnly = newValue;
+                              _repeat = newValue;
                             });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // EVENT TAGS BUTTON DISPLAYS HERE.
-                        ElevatedButton(
-                            onPressed: showMultiSelect,
-                            child: const Text('Select your Event Type')),
-      
-                        const SizedBox(height: 10),
-      
-                        // DISPLAY CHOSEN EVENT TAGS BELOW THE BUTTON.
-                        Wrap(
-                          children: _tags
-                              .map((e) => Chip(
-                                    label: Text(e),
-                                  ))
-                              .toList(),
-                        ),
-      
-                        const SizedBox(height: 10),
-      
-                        // CREATE EVENT BUTTON SENDS INFORMATION TO BACKEND
-                        SizedBox(
-                            width: double.infinity, // Span the whole screen.
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 143, 28),
-                                    foregroundColor: Colors.black),
-                                // When the button is pressed, do this:
-                                onPressed: () async {
-                                  // Send event info to backend.
-                                  // There is no event ID yet, so send -1 for that variable.
-                                  // Send to the Create Event URL. 
-                                  var create = await eventInfo(
-                                      _title.text,
-                                      _location.text,
-                                      _startDate.text,
-                                      _endDate.text,
-                                      _description.text,
-                                      _repeat,
-                                      _repeatDate.text,
-                                      _studentsOnly,
-                                      _tagsString,
-                                      _org,
-                                      -1,
-                                      'https://grinsync.com/api/create/event');
-      
-                                  if (create.runtimeType == String) {
-                                    // Show error messages from the backend.
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Event Creation Error'),
-                                          content: SingleChildScrollView(
-                                            child: ListBody(
-                                              children: <Widget>[
-                                                Text('$create'),
-                                                const Text('Please edit event details.')
-                                              ],
-                                            ),
-                                          ),
-      
-                                          // Allow user to exit out of error message.
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('Okay'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-      
-                                  // Otherwise, event info was successfully sent to backend.
-                                  // Show success message.
-                                  // TODO: Reload the page. 
-                                  else {
-                                    Fluttertoast.showToast(
-                                        msg: 'Event Created Successfully!',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.grey[300],
-                                        textColor: Colors.black,
-                                        fontSize: 16.0);
-                                  }
-                                },
-                                child: const Text('Create Event') // Button title
+                          }),
+
+                      const SizedBox(height: 10),
+
+                      // END REPEAT DATE DISPLAYS HERE.
+                      TextField(
+                        controller: _repeatDate,
+                        readOnly: true,
+                        onTap: () => selectDateTime(context, _repeatDate),
+                        decoration: const InputDecoration(
+                            labelText: 'End Repeat...',
+                            hintText:
+                                'Pick the ending date for your repeating events',
+                            border: OutlineInputBorder()),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // STUDENTS ONLY TAG CHECKBOX DISPLAYS HERE.
+                      CheckboxListTile(
+                        title: const Text("Student-Only Event?"),
+                        value: _studentsOnly,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _studentsOnly = newValue;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // EVENT TAGS BUTTON DISPLAYS HERE.
+                      ElevatedButton(
+                          onPressed: showMultiSelect,
+                          child: const Text('Select your Event Type')),
+
+                      const SizedBox(height: 10),
+
+                      // DISPLAY CHOSEN EVENT TAGS BELOW THE BUTTON.
+                      Wrap(
+                        children: _tags
+                            .map((e) => Chip(
+                                  label: Text(e),
                                 ))
-                      ]))));
+                            .toList(),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // CREATE EVENT BUTTON SENDS INFORMATION TO BACKEND
+                      SizedBox(
+                          width: double.infinity, // Span the whole screen.
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 143, 28),
+                                  foregroundColor: Colors.black),
+                              // When the button is pressed, do this:
+                              onPressed: () async {
+                                // Send event info to backend.
+                                // There is no event ID yet, so send -1 for that variable.
+                                // Send to the Create Event URL.
+                                var create = await eventInfo(
+                                    _title.text,
+                                    _location.text,
+                                    _startDate.text,
+                                    _endDate.text,
+                                    _description.text,
+                                    _repeat,
+                                    _repeatDate.text,
+                                    _studentsOnly,
+                                    _tagsString,
+                                    _org,
+                                    -1,
+                                    'https://grinsync.com/api/create/event');
+
+                                if (create.runtimeType == String) {
+                                  // Show error messages from the backend.
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title:
+                                            const Text('Event Creation Error'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text('$create'),
+                                              const Text(
+                                                  'Please edit event details.')
+                                            ],
+                                          ),
+                                        ),
+
+                                        // Allow user to exit out of error message.
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+
+                                // Otherwise, event info was successfully sent to backend.
+                                // Show success message.
+                                // TODO: Reload the page.
+                                else {
+                                  Fluttertoast.showToast(
+                                      msg: 'Event Created Successfully!',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.grey[300],
+                                      textColor: Colors.black,
+                                      fontSize: 16.0);
+                                }
+                              },
+                              child: const Text('Create Event') // Button title
+                              ))
+                    ]))));
   } // build
 } // EventCreationPageState

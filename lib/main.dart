@@ -31,12 +31,14 @@ void main() async {
   final key = await secureStorage.read(key: 'key');
   final encryptionKeyUint8List = base64Url.decode(key!);
   print('Encryption key Uint8List: $encryptionKeyUint8List');
-  BOX = await Hive.openBox(tokenBox, encryptionCipher: HiveAesCipher(encryptionKeyUint8List)); // save the box in a global variable
-  
+  BOX = await Hive.openBox(tokenBox,
+      encryptionCipher: HiveAesCipher(
+          encryptionKeyUint8List)); // save the box in a global variable
+
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await setAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
   await setPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
-  await setStudentOrgs(); // this function will set the STUDENTORGS global variable to a list of student org ids that the user is linked with 
+  await setStudentOrgs(); // this function will set the STUDENTORGS global variable to a list of student org ids that the user is linked with
 
   // run the app
   runApp(const MyApp());

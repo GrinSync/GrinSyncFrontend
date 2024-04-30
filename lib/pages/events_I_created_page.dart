@@ -87,7 +87,9 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                           ],
                         );
                       } else {
-                        return EventCardPlain(event: myEvents[index]); // EventCardPlain is an event card Widget in get_events.dart
+                        return EventCardPlain(
+                            event: myEvents[
+                                index]); // EventCardPlain is an event card Widget in get_events.dart
                       }
                     },
                   ),

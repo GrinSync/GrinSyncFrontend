@@ -83,7 +83,7 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
     'password': password,
     'type': account
   };
-  if(confirmPassword != password){
+  if (confirmPassword != password) {
     return null;
   }
   var url =

@@ -16,8 +16,9 @@ class EventDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = (event.host ==
-        USER.value?.id) || (ORGIDS.contains(event.host)); // Check if the event is created by the current user
+    bool isCreatedByThisUser = (event.host == USER.value?.id) ||
+        (ORGIDS.contains(
+            event.host)); // Check if the event is created by the current user
     var favorited = ValueNotifier(event
         .isFavoited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
 
@@ -236,7 +237,7 @@ class EventDetailsPage extends StatelessWidget {
   List<Card> buildTags(BuildContext context) {
     List<Card> allCards = <Card>[]; // List to store the tags as Card widgets
 
-     List<String>? tags = event.tags;
+    List<String>? tags = event.tags;
 
     // // If the tags are not null, split the tags by comma and add each tag as a Card widget to the list
     if (tags != null) {

@@ -4,7 +4,7 @@ import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 
-/// Creates a stateless page that decides whether to show the Guest or User Event Creation Page based on logged in status. 
+/// Creates a stateless page that decides whether to show the Guest or User Event Creation Page based on logged in status.
 // This page that does not have a state since it does not need to be modified.
 // This page isn't actually seen by users. It just exists behind the scenes
 // and redirects to the proper page that users will see depending on whether they

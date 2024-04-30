@@ -14,10 +14,11 @@ class ConnectOrgPage extends StatefulWidget {
 class _ConnectOrgPage extends State<ConnectOrgPage> {
   /// Initializes empty list of event
   late List<String> allOrgs = <String>[];
-  
+
   Future<void> loadOrgs() async {
     allOrgs = await getAllOrgs(); // function in get_events.dart
   }
+
   /// Initialize variables to store email and password for the login page
   @override
   void initState() {
@@ -34,13 +35,13 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.white,
-        ),
-          body: FutureBuilder(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      body: FutureBuilder(
           future: loadOrgs(),
-          builder:  (context, snapshot) {
+          builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -81,15 +82,14 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                 // if there are events, show the events
               } else {
                 return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownSearch<String>(
-                    items: allOrgs,
-                  )
-                );
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownSearch<String>(
+                      items: allOrgs,
+                    ));
               }
             }
           }),
-        );
+    );
   }
 }
 
@@ -105,7 +105,7 @@ Future<List<String>> getAllOrgs() async {
 
   var url = Uri.parse('https://grinsync.com/api/getAllOrgs');
   var result = await http.get(url, headers: headers);
-  
+
   // parse the json response and create a string of all tags with commas in between
   // result.body is a list of maps with tag names, ids, and selectDefault values (after jsonDecoding)
   for (var jsonTag in jsonDecode(result.body)) {

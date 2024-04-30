@@ -77,7 +77,7 @@ Future eventInfo(
 
   // If the edit/create event can be successful but something is wrong with user input, return the reason why
   var json = jsonDecode(result.body);
-  
+
   if (json.containsKey('error')) {
     return json['error'];
   }
