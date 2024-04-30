@@ -71,6 +71,14 @@ Future<void> updatePrefferedTags(selectedTags) async {
   // }
 }
 
+getAllTags() {
+  return List<String>.from(ALLTAGS);
+}
+
+getPreferredTags() {
+  return List<String>.from(PREFERREDTAGS);
+}
+
 clearPrefferedTags() {
   PREFERREDTAGS.clear();
 }
