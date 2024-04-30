@@ -8,7 +8,7 @@ import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 
-//TODO: show student only events
+
 
 class EventDetailsPage extends StatelessWidget {
   final Event event; // Event to show details of as a field of the class
@@ -21,7 +21,7 @@ class EventDetailsPage extends StatelessWidget {
         (ORGIDS.contains(
             event.host)); // Check if the event is created by the current user
     var favorited = ValueNotifier(event
-        .isFavoited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+        .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
 
     // Function to confirm deletion of the event
     // delete the event if confirmed
@@ -80,35 +80,15 @@ class EventDetailsPage extends StatelessWidget {
           actions: [
             // Show favorite button if user is logged in
             if (isLoggedIn())
-              ValueListenableBuilder(
-                  valueListenable: favorited,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ValueListenableBuilder(
+                  valueListenable: favorited, 
                   builder: (context, value, child) {
-                    return IconButton(
-                        icon:
-                            value // Show filled heart if the event is favorited, otherwise show empty heart
-                                ? Icon(Icons.favorite, color: Colors.white)
-                                : Icon(Icons.favorite_border,
-                                    color: Colors.white),
-                        tooltip: value ? 'Unsave the event' : 'Save the event',
-                        onPressed: () {
-                          // Update the event's favorited status in the database
-                          toggleLikeEvent(event.id);
-                          // Update the event's favorited status in the frontend
-                          event.isFavoited = !value;
-                          favorited.value = !value;
-                          // Show a toast message to confirm the event is saved or unsaved
-                          Fluttertoast.showToast(
-                              msg: value
-                                  ? 'Unsaved successfully'
-                                  : 'Saved successfully',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey[800],
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        });
-                  })
+                    return value? Icon(Icons.favorite, color: Colors.white) : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary);
+                  }
+                ),
+              )
           ]),
       body: Container(
         decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
@@ -134,15 +114,15 @@ class EventDetailsPage extends StatelessWidget {
                   Card.outlined(
                     shape: RoundedRectangleBorder(
                         side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 3.0),
+                            color: Colors.lightBlue[400]!,
+                            width: 2.0),
                         borderRadius: BorderRadius.circular(5.0)),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Colors.lightBlue[50],
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text("Students Only",
                           style:
-                              TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
+                              TextStyle(fontSize: 12, fontFamily: 'Helvetica', color: Colors.lightBlue[800])),
                     ),
                   )
               ]),
@@ -193,44 +173,46 @@ class EventDetailsPage extends StatelessWidget {
               const SizedBox(height: 50),
 
               // Buttons from here
-              // Edit button
-              if (isCreatedByThisUser)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                          foregroundColor: Colors.black),
-                      child: const Text('Edit Event'),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    EventEditPage(event: event)));
-                      }),
-                ),
 
-              if (isCreatedByThisUser)
-                const SizedBox(height: 15),
-
-              // Delete button
-              if (isCreatedByThisUser)
+              // Like button
+              if (isLoggedIn())
                 SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white),
-                      child: const Text('Delete'),
-                      onPressed: () {
-                        confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
-                      }),
-                ),
-              
-              if (isCreatedByThisUser)
-                const SizedBox(height: 15),
+                    width: double.infinity,
+                    child: ValueListenableBuilder(
+                      valueListenable: favorited,
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.pink[400],
+                                foregroundColor: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(value? Icons.favorite : Icons.favorite_border, size: 20,),
+                                SizedBox(width: 5.0),
+                                Text(value? 'Unsave Event' :'Save Event'),
+                              ],
+                            ),
+                            onPressed: () {
+                              toggleLikeEvent(event.id);
+                              event.isFavorited = !event.isFavorited;
+                              favorited.value = !favorited.value;
+                              Fluttertoast.showToast(
+                                  msg: event.isFavorited
+                                      ? 'Saved successfully'
+                                      : 'Unsaved successfully',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            });
+                      }
+                    ),
+                  ),
+
+              const SizedBox(height: 10),
 
               // Share button
               SizedBox(
@@ -252,6 +234,46 @@ class EventDetailsPage extends StatelessWidget {
                             'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
                       }),
                 ),
+
+                if (isCreatedByThisUser)
+                const SizedBox(height: 10),
+
+              // Edit button
+              if (isCreatedByThisUser)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                          foregroundColor: Colors.black),
+                      child: const Text('Edit Event'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    EventEditPage(event: event)));
+                      }),
+                ),
+
+              if (isCreatedByThisUser)
+                const SizedBox(height: 10),
+
+              // Delete button
+              if (isCreatedByThisUser)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor: Colors.white),
+                      child: const Text('Delete'),
+                      onPressed: () {
+                        confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
+                      }),
+                ),
+
 
             ],
           ),
