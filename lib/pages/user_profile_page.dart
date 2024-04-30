@@ -6,6 +6,7 @@ import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/events_I_follow_page.dart';
+import 'package:flutter_test_app/pages/orgs_I_lead_page.dart';
 import 'package:flutter_test_app/pages/tag_preference_page.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -29,7 +30,6 @@ class UserProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // display info
-              const SizedBox(height: 8),
               // User's first name and last name
               Text('${user?.firstName} ${user?.lastName}',
                   style: const TextStyle(
@@ -82,12 +82,12 @@ class UserProfilePage extends StatelessWidget {
                 },
               ),
               // Settings button
-              TextButton(
-                child: const Text('Settings', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  // TODO: implement setting page and functionality
-                },
-              ),
+              // TextButton(
+              //   child: const Text('Settings', style: TextStyle(fontSize: 20)),
+              //   onPressed: () {
+              //     // TODO: implement setting page and functionality
+              //   },
+              // ),
               // Tag Preferences button
               TextButton(
                 child:
@@ -99,6 +99,19 @@ class UserProfilePage extends StatelessWidget {
                   );
                 },
               ),
+              // My affiliated Student Orgs button
+              TextButton(
+                child: const Text('Student Organizations I Lead',
+                    style: TextStyle(fontSize: 20)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) =>  MyOrgsPage())
+                  );
+                }
+              ),
+
+              // Connect to a Student Org button
               TextButton(
                 child: const Text('Connect to a Student Org',
                     style: TextStyle(fontSize: 20)),
