@@ -27,7 +27,6 @@ class MyOrgsPage extends StatelessWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
         padding: const EdgeInsets.all(8.0),
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(),
