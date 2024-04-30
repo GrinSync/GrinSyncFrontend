@@ -28,7 +28,7 @@ void main() {
     // We can use this test widget to test different aspects of our page
     // We do this below by checking if different fields populated correctly
 
-    // Check the number of text fields that appeared on the page
+    // Check the number of text widgets that appeared on the page
     var numText = find.byType(Text);
 
     var numButton = find.byType(TextButton);
