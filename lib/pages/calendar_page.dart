@@ -187,16 +187,16 @@ class CalendarPageState extends State<CalendarPage> {
               icon: const Icon(Icons.filter_alt),
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem(
-                  child: Text(filterOptions.preferences.label),
                   value: filterOptions.preferences,
+                  child: Text(filterOptions.preferences.label),
                 ),
                 PopupMenuItem(
-                  child: Text(filterOptions.created.label),
                   value: filterOptions.created,
+                  child: Text(filterOptions.created.label),
                 ),
                 PopupMenuItem(
-                  child: Text(filterOptions.followed.label),
                   value: filterOptions.followed,
+                  child: Text(filterOptions.followed.label),
                 ),
               ],
               // Set the state and reload the page (a stateful builder)
