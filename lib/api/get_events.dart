@@ -199,9 +199,9 @@ String timeFormat(String? timeString) {
     default:
   }
 
-  // String hour = dateTimeObj.hour.toString();
-  // String minute = dateTimeObj.minute.toString();
-
+  // Example of full timeString: 2024-04-30 06:00"
+  // We extract the entire substring for HH:MM instead of extracting it from the DateTime object
+  // If extract from the DateTime object, it will look like: "6:0"
   String time = timeString.substring(11, 16);
 
   return '${time} ${month} ${day}, ${year}';
@@ -285,7 +285,55 @@ Future<List<Event>> getAllEvents() async {
   return allEvents;
 }
 
-Future<List<Event>> getUpcomingEvents(tagList, stduentOnly, intersectionFilter) async {
+Future<List<Event>> getAllEventsByPreferences(
+    tagList, studentOnly, intersectionFilter) async {
+  List<Event> allEvents = [];
+
+  // print('Connecting...');
+
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
+  //box.close();
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+  print('Fetching events...');
+  var url = Uri.parse('https://grinsync.com/api/getAll');
+  var result = await https.get(url, headers: headers);
+
+  // print('Parsing JSON response...');
+
+  // parse the json response and create a list of Event objects
+  // result.body is a list of maps with event information
+  for (var jsonEvent in jsonDecode(result.body)) {
+    Event newEvent = Event.fromJson(jsonEvent);
+    allEvents.add(newEvent);
+  }
+
+  // print('Returning events...');
+
+  // filter the events based on the user's preferences
+  if (studentOnly) {
+    // only show studentOnly events
+    allEvents = allEvents
+        .where((event) => event.studentsOnly == true)
+        .toList(); // list.where returns a new list with only the elements that satisfy the condition
+  }
+  if (intersectionFilter) {
+    // only show events that have all selected tags
+    allEvents = allEvents
+        .where((event) => tagList.every((tag) => event.tags!.contains(tag)))
+        .toList(); // list.every returns true if all elements satisfy the condition
+  }
+
+  return allEvents;
+}
+
+Future<List<Event>> getUpcomingEvents(
+    tagList, studentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
 
   var token = BOX.get('token');
@@ -309,13 +357,17 @@ Future<List<Event>> getUpcomingEvents(tagList, stduentOnly, intersectionFilter) 
   }
 
   // filter the events based on the user's preferences
-  if (stduentOnly) {
+  if (studentOnly) {
     // only show studentOnly events
-    allEvents = allEvents.where((event) => event.studentsOnly == true).toList(); // list.where returns a new list with only the elements that satisfy the condition
+    allEvents = allEvents
+        .where((event) => event.studentsOnly == true)
+        .toList(); // list.where returns a new list with only the elements that satisfy the condition
   }
   if (intersectionFilter) {
     // only show events that have all selected tags
-    allEvents = allEvents.where((event) => tagList.every((tag) => event.tags!.contains(tag))).toList(); // list.every returns true if all elements satisfy the condition
+    allEvents = allEvents
+        .where((event) => tagList.every((tag) => event.tags!.contains(tag)))
+        .toList(); // list.every returns true if all elements satisfy the condition
   }
 
   return allEvents;
@@ -374,8 +426,6 @@ Future<List<Event>> getLikedEvents() async {
 
   return likedEvents;
 }
-
-
 
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];

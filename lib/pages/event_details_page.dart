@@ -8,8 +8,6 @@ import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 
-
-
 class EventDetailsPage extends StatelessWidget {
   final Event event; // Event to show details of as a field of the class
 
@@ -83,11 +81,13 @@ class EventDetailsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ValueListenableBuilder(
-                  valueListenable: favorited, 
-                  builder: (context, value, child) {
-                    return value? Icon(Icons.favorite, color: Colors.white) : Icon(Icons.favorite_border, color: Theme.of(context).colorScheme.primary);
-                  }
-                ),
+                    valueListenable: favorited,
+                    builder: (context, value, child) {
+                      return value
+                          ? Icon(Icons.favorite, color: Colors.white)
+                          : Icon(Icons.favorite_border,
+                              color: Theme.of(context).colorScheme.primary);
+                    }),
               )
           ]),
       body: Container(
@@ -114,15 +114,16 @@ class EventDetailsPage extends StatelessWidget {
                   Card.outlined(
                     shape: RoundedRectangleBorder(
                         side: BorderSide(
-                            color: Colors.lightBlue[400]!,
-                            width: 2.0),
+                            color: Colors.lightBlue[400]!, width: 2.0),
                         borderRadius: BorderRadius.circular(5.0)),
                     color: Colors.lightBlue[50],
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text("Students Only",
-                          style:
-                              TextStyle(fontSize: 12, fontFamily: 'Helvetica', color: Colors.lightBlue[800])),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'Helvetica',
+                              color: Colors.lightBlue[800])),
                     ),
                   )
               ]),
@@ -177,8 +178,8 @@ class EventDetailsPage extends StatelessWidget {
               // Like button
               if (isLoggedIn())
                 SizedBox(
-                    width: double.infinity,
-                    child: ValueListenableBuilder(
+                  width: double.infinity,
+                  child: ValueListenableBuilder(
                       valueListenable: favorited,
                       builder: (context, value, child) {
                         return ElevatedButton(
@@ -188,9 +189,14 @@ class EventDetailsPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(value? Icons.favorite : Icons.favorite_border, size: 20,),
+                                Icon(
+                                  value
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  size: 20,
+                                ),
                                 SizedBox(width: 5.0),
-                                Text(value? 'Unsave Event' :'Save Event'),
+                                Text(value ? 'Unsave Event' : 'Save Event'),
                               ],
                             ),
                             onPressed: () {
@@ -208,35 +214,36 @@ class EventDetailsPage extends StatelessWidget {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                             });
-                      }
-                    ),
-                  ),
+                      }),
+                ),
 
               const SizedBox(height: 10),
 
               // Share button
               SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                          foregroundColor: Colors.black),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.share, size: 20,),
-                          SizedBox(width: 5.0),
-                          Text('Share Event'),
-                        ],
-                      ),
-                      onPressed: () {
-                        Share.share(
-                            'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
-                      }),
-                ),
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                        foregroundColor: Colors.black),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.share,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5.0),
+                        Text('Share Event'),
+                      ],
+                    ),
+                    onPressed: () {
+                      Share.share(
+                          'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
+                    }),
+              ),
 
-                if (isCreatedByThisUser)
-                const SizedBox(height: 10),
+              if (isCreatedByThisUser) const SizedBox(height: 10),
 
               // Edit button
               if (isCreatedByThisUser)
@@ -256,8 +263,7 @@ class EventDetailsPage extends StatelessWidget {
                       }),
                 ),
 
-              if (isCreatedByThisUser)
-                const SizedBox(height: 10),
+              if (isCreatedByThisUser) const SizedBox(height: 10),
 
               // Delete button
               if (isCreatedByThisUser)
@@ -273,8 +279,6 @@ class EventDetailsPage extends StatelessWidget {
                         confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
                       }),
                 ),
-
-
             ],
           ),
         ),
