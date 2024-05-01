@@ -28,7 +28,7 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
         foregroundColor: Colors.white,
       ),
       body: Container(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
         child: ListView.builder(
           itemCount: availableTags.length + additionalItemNumber,
           itemBuilder: (context, index) {

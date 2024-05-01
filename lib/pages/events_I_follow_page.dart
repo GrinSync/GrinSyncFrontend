@@ -72,7 +72,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                 // if there are events, show the events
               } else {
                 return Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                   child: ListView.builder(
                     itemCount: events.length + 1,
                     itemBuilder: (context, index) {
