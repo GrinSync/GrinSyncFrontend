@@ -11,10 +11,10 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_test_app/global.dart';
 
-// This event card allows user to like the event if they are logged in.
-// Use the other card 'EventCardPlain' when the user doesn't need to
-// favorite the event when you show them.
-// This is used on home page and (should be used on) search event page (when Bradley implements it).
+/// This event card allows user to like the event if they are logged in.
+/// Use the other card 'EventCardPlain' when the user doesn't need to
+/// favorite the event when you show them.
+/// This is used on home page and search page.
 class EventCardFavoritable extends StatelessWidget {
   const EventCardFavoritable({
     super.key,
@@ -98,9 +98,8 @@ class EventCardFavoritable extends StatelessWidget {
   }
 }
 
-// This event card is used to show events on the home page when the user
-// is not logged in or in the user's own list (e.g. in events I created
-// page)
+/// This event card is used to show events on the home page when the user
+/// is not logged in or in the user's own list (e.g. in events I created page)
 class EventCardPlain extends StatelessWidget {
   const EventCardPlain({
     super.key,
@@ -142,7 +141,7 @@ class EventCardPlain extends StatelessWidget {
   }
 }
 
-/// This function formats the time string to a more readable format (YYYY-MM-DD HH:MM)
+/// Formats the time string to a more readable format (YYYY-MM-DD HH:MM)
 String timeFormat(String? timeString) {
   if (timeString == null) {
     return 'Null time';
@@ -199,9 +198,9 @@ String timeFormat(String? timeString) {
     default:
   }
 
-  // String hour = dateTimeObj.hour.toString();
-  // String minute = dateTimeObj.minute.toString();
-
+  // Example of full timeString: 2024-04-30 06:00"
+  // We extract the entire substring for HH:MM instead of extracting it from the DateTime object
+  // If extract from the DateTime object, it will look like: "6:0"
   String time = timeString.substring(11, 16);
 
   return '${time} ${month} ${day}, ${year}';
@@ -253,6 +252,7 @@ Future<void> toggleLikeEvent(int eventId) async {
   }
 }
 
+/// Gets all event from the backend
 Future<List<Event>> getAllEvents() async {
   List<Event> allEvents = [];
 
@@ -285,7 +285,57 @@ Future<List<Event>> getAllEvents() async {
   return allEvents;
 }
 
-Future<List<Event>> getUpcomingEvents(tagList, stduentOnly, intersectionFilter) async {
+/// Gets all events filtered by studentsOnly and selected tags
+Future<List<Event>> getAllEventsByPreferences(
+    tagList, studentOnly, intersectionFilter) async {
+  List<Event> allEvents = [];
+
+  // print('Connecting...');
+
+  // var box = await Hive.openBox(tokenBox);
+  var token = BOX.get('token');
+  //box.close();
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+  print('Fetching events...');
+  var url = Uri.parse('https://grinsync.com/api/getAll');
+  var result = await https.get(url, headers: headers);
+
+  // print('Parsing JSON response...');
+
+  // parse the json response and create a list of Event objects
+  // result.body is a list of maps with event information
+  for (var jsonEvent in jsonDecode(result.body)) {
+    Event newEvent = Event.fromJson(jsonEvent);
+    allEvents.add(newEvent);
+  }
+
+  // print('Returning events...');
+
+  // filter the events based on the user's preferences
+  if (studentOnly) {
+    // only show studentOnly events
+    allEvents = allEvents
+        .where((event) => event.studentsOnly == true)
+        .toList(); // list.where returns a new list with only the elements that satisfy the condition
+  }
+  if (intersectionFilter) {
+    // only show events that have all selected tags
+    allEvents = allEvents
+        .where((event) => tagList.every((tag) => event.tags!.contains(tag)))
+        .toList(); // list.every returns true if all elements satisfy the condition
+  }
+
+  return allEvents;
+}
+
+/// Get all upcoming events filtered by studentsOnly and selected tags
+Future<List<Event>> getUpcomingEvents(
+    tagList, studentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
 
   var token = BOX.get('token');
@@ -309,19 +359,23 @@ Future<List<Event>> getUpcomingEvents(tagList, stduentOnly, intersectionFilter) 
   }
 
   // filter the events based on the user's preferences
-  if (stduentOnly) {
+  if (studentOnly) {
     // only show studentOnly events
-    allEvents = allEvents.where((event) => event.studentsOnly == true).toList(); // list.where returns a new list with only the elements that satisfy the condition
+    allEvents = allEvents
+        .where((event) => event.studentsOnly == true)
+        .toList(); // list.where returns a new list with only the elements that satisfy the condition
   }
   if (intersectionFilter) {
     // only show events that have all selected tags
-    allEvents = allEvents.where((event) => tagList.every((tag) => event.tags!.contains(tag))).toList(); // list.every returns true if all elements satisfy the condition
+    allEvents = allEvents
+        .where((event) => tagList.every((tag) => event.tags!.contains(tag)))
+        .toList(); // list.every returns true if all elements satisfy the condition
   }
 
   return allEvents;
 }
 
-// this function gets the events created by the current user (assuming the user is logged in)
+/// Gets all events created by the current user (assuming the user is logged in)
 Future<List<Event>> getMyEvents() async {
   List<Event> myEvents = [];
 
@@ -348,7 +402,7 @@ Future<List<Event>> getMyEvents() async {
   return myEvents;
 }
 
-// this function gets the events followed by the current user (assuming the user is logged in)
+/// Gets all events followed by the current user (assuming the user is logged in)
 Future<List<Event>> getLikedEvents() async {
   List<Event> likedEvents = [];
 
@@ -375,8 +429,7 @@ Future<List<Event>> getLikedEvents() async {
   return likedEvents;
 }
 
-
-
+/// Gets all searched events by query keyword
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
   // var box = await Hive.openBox(tokenBox);
@@ -402,7 +455,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   return searchedEvents;
 }
 
-// need to check with Brian
+/// Gets an event by ID
 Future<Event?> getEventByID(eventID) async {
   var token = BOX.get('token');
 

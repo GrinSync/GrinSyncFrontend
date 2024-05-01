@@ -8,6 +8,20 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/global.dart';
+import 'package:flutter_test_app/api/tags.dart';
+
+/// Enum for the filter options for the calendar page
+enum filterOptions {
+  preferences("By your preferences"),
+  created("By your events"),
+  followed("By events you follow");
+
+  // Have a label for each of the filter
+  const filterOptions(this.label);
+  final String label;
+}
 
 class _AppointmentDataSource extends CalendarDataSource {
   _AppointmentDataSource(List<Appointment> source) {
@@ -52,21 +66,44 @@ class CalendarPage extends StatefulWidget {
 class CalendarPageState extends State<CalendarPage> {
   final CalendarController calendarController = CalendarController();
 
-  /// Initializes empty list of event
+  /// List of all events that will be displayed on the calendar page
   late List<Event> allEvents = <Event>[];
 
-  /// Declares a future function call to load all events with the API call
+  /// The label of the current filtering option
+  String currentFilter =
+      filterOptions.followed.label; // defaulted to user's own agenda
+
+  /// List of user's preferred tags if logged in
+  List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
+
+  /// Boolean check for whether the user is a student
+  bool studentsOnly = (isLoggedIn() && USER.value?.type == "STU");
+
+  /// Boolean check for whether the user wants to filter only events that match ALL of their preferred tags
+  bool intersectionFilter = false;
+
+  /// Future function call to load all events with the API call
   late Future<void> loadEventsFuture;
 
   /// Future function to load all events
-  Future<void> loadEvents() async {
-    allEvents = await getAllEvents();
+  Future<void> loadEvents(filterOptions option) async {
+    // Reload calendar events depending on the filter option
+    switch (option) {
+      case filterOptions.preferences:
+        allEvents = await getAllEventsByPreferences(
+            selectedTags, studentsOnly, intersectionFilter);
+      case filterOptions.created:
+        allEvents = await getMyEvents();
+      case filterOptions.followed:
+        allEvents = await getLikedEvents();
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    loadEventsFuture = loadEvents();
+    // defaulted to user's own agenda
+    loadEventsFuture = loadEvents(filterOptions.followed);
   }
 
   void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -135,36 +172,60 @@ class CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-                        title: const Text(
-                          'Calendar',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        actions: [IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.filter_alt,
-                            size: 30,
-                          ),
-                        )],
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Colors.white,
-                      ),
-      body: FutureBuilder(
+        // Shows an app bar above the calendar page separate from the future builder
+        appBar: AppBar(
+          title: const Text(
+            'Calendar',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          actions: [
+            // The label of the current filter
+            Text(currentFilter),
+            // A pop up menu button
+            PopupMenuButton(
+              icon: const Icon(Icons.filter_alt),
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  child: Text(filterOptions.preferences.label),
+                  value: filterOptions.preferences,
+                ),
+                PopupMenuItem(
+                  child: Text(filterOptions.created.label),
+                  value: filterOptions.created,
+                ),
+                PopupMenuItem(
+                  child: Text(filterOptions.followed.label),
+                  value: filterOptions.followed,
+                ),
+              ],
+              // Set the state and reload the page (a stateful builder)
+              // depending on the selected filter option
+              onSelected: (filterOptions option) {
+                setState(() {
+                  loadEventsFuture = loadEvents(option);
+                  currentFilter = option.label;
+                });
+              },
+            ),
+          ],
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
+        ),
+        body: FutureBuilder(
           future: loadEventsFuture,
           builder: (context, snapshot) {
             // If the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text('Preparing the calendar for you...'),
-                  ],
-                ),
+              return const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Center(child: Text('Preparing the calendar for you...')),
+                ],
               );
-      
+
               // If there is an error, show an error message and a button to try again
             } else if (snapshot.hasError) {
               return Column(
@@ -175,14 +236,14 @@ class CalendarPageState extends State<CalendarPage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        loadEvents();
+                        loadEvents(filterOptions.followed);
                       });
                     },
                     child: const Text('Try again'),
                   ),
                 ],
               );
-      
+
               // If the connection is done, show the events
             } else {
               // If there are no events, show a message
@@ -190,72 +251,69 @@ class CalendarPageState extends State<CalendarPage> {
                 return Scaffold(
                   body: Container(
                     padding: EdgeInsets.all(8.0),
-                    child: RefreshIndicator(
-                      onRefresh: loadEvents,
-                      child: Center(
-                        child: ListView(
-                          children: [const Text('No events to show here')],
-                        ),
+                    child: Center(
+                      child: ListView(
+                        children: [const Text('No events to show here')],
                       ),
                     ),
                   ),
                 );
-      
+
                 // If there are events, show the events
               } else {
-                // Return the actual calendar
-                return SfCalendar(
-                      controller: calendarController,
-                      onViewChanged: calendarViewChanged,
-                      onTap: calendarTapped,
-                      view: CalendarView.day, // default view of the calendar
-                      firstDayOfWeek:
-                          7, // default first day of the week set to Sunday
-                      minDate: DateTime(2023, 08, 14, 0, 0, 0),
-                      maxDate: DateTime(2025, 05, 25, 0, 0, 0),
-                      // headerHeight: 0,
-                      // viewHeaderHeight: 0,
-                      allowedViews: [
-                        CalendarView.day,
-                        CalendarView.week,
-                        CalendarView.month,
-                      ], // the calendar only allows three views - discussed in previous milestones
-                      allowViewNavigation: true,
-                      showNavigationArrow: true,
-                      viewNavigationMode: ViewNavigationMode.none,
-                      monthViewSettings: const MonthViewSettings(
-                        dayFormat: 'EEE',
-                        monthCellStyle: MonthCellStyle(),
-                        appointmentDisplayMode:
-                            MonthAppointmentDisplayMode.indicator,
-                        appointmentDisplayCount: 4,
-                        showAgenda: true,
-                        agendaViewHeight: 200,
-                        agendaStyle: AgendaStyle(),
-                        navigationDirection: MonthNavigationDirection.horizontal,
-                      ),
-                      timeSlotViewSettings: const TimeSlotViewSettings(
-                        timeInterval: Duration(minutes: 30),
-                        timeFormat: "hh:mm",
-                        timeIntervalHeight: 50,
-                        timeIntervalWidth: 25,
-                        minimumAppointmentDuration: Duration(minutes: 15),
-                        dateFormat: 'd',
-                        dayFormat: 'EEE',
-                        // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
-                      ),
-                      showDatePickerButton: true,
-                      showTodayButton: true,
-                      blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
-                      dataSource: EventDataSource(
-                          getAllAppointmentData()), // get the event data
-                      appointmentTextStyle: TextStyle(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    );
+                return Scaffold(
+                  // Return the actual calendar
+                  body: SfCalendar(
+                    controller: calendarController,
+                    onViewChanged: calendarViewChanged,
+                    onTap: calendarTapped,
+                    view: CalendarView.day, // default view of the calendar
+                    firstDayOfWeek:
+                        7, // first day of the week defaulted to Sunday
+                    minDate: DateTime(2023, 08, 14, 0, 0, 0),
+                    maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                    allowedViews: [
+                      CalendarView.day,
+                      CalendarView.week,
+                      CalendarView.month,
+                    ], // the calendar only allows three views - discussed in previous milestones
+                    allowViewNavigation: true,
+                    showNavigationArrow: true,
+                    viewNavigationMode: ViewNavigationMode.none,
+                    monthViewSettings: const MonthViewSettings(
+                      dayFormat: 'EEE',
+                      monthCellStyle: MonthCellStyle(),
+                      appointmentDisplayMode:
+                          MonthAppointmentDisplayMode.indicator,
+                      appointmentDisplayCount: 4,
+                      showAgenda: true,
+                      agendaViewHeight: 200,
+                      agendaStyle: AgendaStyle(),
+                      navigationDirection: MonthNavigationDirection.horizontal,
+                    ),
+                    timeSlotViewSettings: const TimeSlotViewSettings(
+                      timeInterval: Duration(minutes: 30),
+                      timeFormat: "hh:mm",
+                      timeIntervalHeight: 50,
+                      timeIntervalWidth: 25,
+                      minimumAppointmentDuration: Duration(minutes: 15),
+                      dateFormat: 'd',
+                      dayFormat: 'EEE',
+                      // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
+                    ),
+                    showDatePickerButton: true,
+                    showTodayButton: true,
+                    blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
+                    dataSource: EventDataSource(
+                        getAllAppointmentData()), // get the event data
+                    appointmentTextStyle: TextStyle(
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                );
               }
             }
-          }),
-    );
+          },
+        ));
   }
 } // CalendarPageState
