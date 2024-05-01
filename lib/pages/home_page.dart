@@ -47,95 +47,113 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => showModalBottomSheet(
               context: context,
               builder: (context) => StatefulBuilder(
-                builder: (context, setState) => Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Wrap(
-                          spacing: 5.0, 
-                          runSpacing: 5.0,
-                          children: availableTags.map((tag) {
-                            return FilterChip(
-                              label: Text(tag),
-                              selected: selectedTags.contains(tag),
-                              onSelected: (selected) {
-                                setState(() {
-                                  if (selected) {
-                                    selectedTags.add(tag);
-                                    print(selectedTags);
-                                  } else {
-                                    selectedTags.remove(tag);
-                                    print(selectedTags);
-                                  }
-                                });
-                              },
-                              );
-                          }).toList(),
-                          ),
-                          // show the studentOnly checkbox only if the user is logged in and is a student
-                          if (isLoggedIn() && USER.value?.type == "STU") // show the studentOnly filter only if the user is logged in and is a student
+                builder: (context, setState) => SafeArea(
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Wrap(
+                            spacing: 5.0, 
+                            runSpacing: 5.0,
+                            children: availableTags.map((tag) {
+                              return FilterChip(
+                                backgroundColor: Colors.white,
+                                checkmarkColor: Theme.of(context).colorScheme.primary,
+                                label: Text(tag),
+                                selected: selectedTags.contains(tag),
+                                onSelected: (selected) {
+                                  setState(() {
+                                    if (selected) {
+                                      selectedTags.add(tag);
+                                      print(selectedTags);
+                                    } else {
+                                      selectedTags.remove(tag);
+                                      print(selectedTags);
+                                    }
+                                  });
+                                },
+                                );
+                            }).toList(),
+                            ),
+                            // show the studentOnly checkbox only if the user is logged in and is a student
+                            if (isLoggedIn() && USER.value?.type == "STU") // show the studentOnly filter only if the user is logged in and is a student
+                              CheckboxListTile(
+                                title: Text('Show student only events'),
+                                value: stduentOnly,
+                                onChanged: (value) {
+                                  setState(() {
+                                    stduentOnly = value!;
+                                  });
+                                },
+                              ),
+                              // show the intersection filter
                             CheckboxListTile(
-                              title: Text('Show student only events'),
-                              value: stduentOnly,
+                              title: Text('Match all tags'),
+                              value: intersectionFilter, 
                               onChanged: (value) {
                                 setState(() {
-                                  stduentOnly = value!;
+                                  intersectionFilter = value!;
                                 });
                               },
-                            ),
-                            // show the intersection filter
-                          CheckboxListTile(
-                            title: Text('Match all tags'),
-                            value: intersectionFilter, 
-                            onChanged: (value) {
+                              ),
+                          
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  ),
+                                  child: Text('Revert to default tags'),
+                                  onPressed: () {
+                                    if (isLoggedIn()) {
+                                      setState(() {
+                                        selectedTags = getPreferredTags();
+                                      });
+                                    } else {
+                                      setState(() {
+                                        // if the user is not logged in, set the preferred tags to all tags
+                                        selectedTags = getAllTags();
+                                      });
+                                    }
+                                    
+                                  },
+                                  ),
+                                SizedBox(width: 10.0),  
+                              // button to deselect all tags
+                          ElevatedButton(
+                            child: Text('Deselect all tags'),
+                            style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  ),
+                            onPressed: () {
                               setState(() {
-                                intersectionFilter = value!;
+                                selectedTags = [];
                               });
                             },
                             ),
-                        // button to deselect all tags
-                        ElevatedButton(
-                          child: Text('Deselect all tags'),
-                          onPressed: () {
-                            setState(() {
-                              selectedTags = [];
-                            });
-                          },
+                            ],
                           ),
-                        Row(
-                          children: [
-                              ElevatedButton(
-                                child: Text('Revert to default tags'),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor: Colors.white),
+                                child: Text('Apply Filters'),
                                 onPressed: () {
-                                  if (isLoggedIn()) {
-                                    setState(() {
-                                      selectedTags = getPreferredTags();
-                                    });
-                                  } else {
-                                    setState(() {
-                                      // if the user is not logged in, set the preferred tags to all tags
-                                      selectedTags = getAllTags();
-                                    });
-                                  }
-                                  
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    _loadEventsFuture = loadEvents();
+                                  });
                                 },
-                                ),
-                              SizedBox(width: 10.0),  
-                            ElevatedButton(
-                              child: Text('Apply Filters'),
-                              onPressed: () {
-                                loadEvents();
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
+                              ),
+                          //SizedBox(height: 25.0),
+                        ],
                         ),
-                        SizedBox(height: 25.0),
-                      ],
-                      ),
-                  )
-                  )
+                    )
+                    ),
+                )
                 )
               ),
             )
@@ -166,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                     TextButton(
                       onPressed: () {
                         setState(() {
-                          loadEvents();
+                          _loadEventsFuture = loadEvents();
                         });
                       },
                       child: const Text('Try again'),
