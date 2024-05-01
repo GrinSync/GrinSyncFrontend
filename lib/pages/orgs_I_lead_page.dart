@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/org_details_page.dart';
+import 'package:flutter_test_app/models/org_models.dart';
 
 class MyOrgsPage extends StatelessWidget {
-  final List<String> studentOrgs = List<String>.from(STUDENTORGS);
+  final List<Org> studentOrgs = List<Org>.from(STUDENTORGS);
 
   // constructor
   MyOrgsPage({Key? key}) : super(key: key);
@@ -31,8 +32,8 @@ class MyOrgsPage extends StatelessWidget {
           itemCount: studentOrgs.length,
           itemBuilder: (context, index) {
             return ListTile(
-                title: Text(studentOrgs[index], style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-                subtitle: Text('[example@studentorg.grinnell.edu]', style: TextStyle(fontSize: 15)),
+                title: Text(studentOrgs[index].name ?? 'Null Org Name', style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
+                subtitle: Text(studentOrgs[index].email ?? 'Null Org Email', style: TextStyle(fontSize: 15)),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const OrgDetailsPage()));
                 },
