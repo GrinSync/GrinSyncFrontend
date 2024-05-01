@@ -26,22 +26,19 @@ class MyOrgsPage extends StatelessWidget {
             }),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.separated(
-          separatorBuilder: (context, index) => Divider(),
+      body: ListView.separated(
+          separatorBuilder: (context, index) => Divider(color: Colors.grey, height:0),
           itemCount: studentOrgs.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(studentOrgs[index], style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-              subtitle: Text('[example@studentorg.grinnell.edu]', style: TextStyle(fontSize: 15)),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const OrgDetailsPage()));
-              },
+                title: Text(studentOrgs[index], style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
+                subtitle: Text('[example@studentorg.grinnell.edu]', style: TextStyle(fontSize: 15)),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrgDetailsPage()));
+                },
             );
           },
         ),
-      ),
     );
   }
 }
