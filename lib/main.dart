@@ -85,6 +85,7 @@ class _MyAppState extends State<MyApp> {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
+            height: 30,
             iconTheme:
                 MaterialStateProperty.all(IconThemeData(color: Colors.black)),
             labelTextStyle: MaterialStateProperty.resolveWith((state) {
@@ -154,20 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-        // now each page implements their own app bar
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
+    return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: currentPage, //one of the five pages depending on the navigation bar item selected
               ),
-                    SizedBox(
-                      height: 110,
-                      child: NavigationBar(
+                    NavigationBar(
                       animationDuration: const Duration(milliseconds: 300),
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       indicatorColor: Colors.white,
@@ -200,16 +194,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           selectedIndexOnHomePage = value;
                         });
                       }),
-                    ),
-                    SizedBox(
-                      height: 20,
-                      child: Container(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    )
+                    // SizedBox(
+                    //   height: 50,
+                    //   child: Container(
+                    //     color: Colors.white, //Theme.of(context).colorScheme.primary,
+                    //   ),
+                    // )
                     ]
-              )
-          ),
     );
   }
 }
