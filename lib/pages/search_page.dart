@@ -43,6 +43,26 @@ class _SearchPageState extends State<SearchPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
+        // Remove the comment when we have the user search functionality
+        // actions:[
+        //   PopupMenuButton(
+        //     itemBuilder: (BuildContext context) => [
+        //       const PopupMenuItem(
+        //         child: Text('Search Events'),
+        //         value: 0,
+        //       ),
+        //       const PopupMenuItem(
+        //         child: Text('Search Users'),
+        //         value: 1,
+        //       ),
+        //     ],
+        //     onSelected: (int value) {
+        //       setState(() {
+        //         searchMode = value;
+        //       });
+        //     },
+        //   ),
+        // ]
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),
@@ -85,24 +105,6 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ],
             ),
-            // DropdownButton(
-            //   value: searchMode,
-            //   items: <DropdownMenuItem<int>>[
-            //     const DropdownMenuItem(
-            //       child: Text('Search Events'),
-            //       value: 0,
-            //     ),
-            //     const DropdownMenuItem(
-            //       child: Text('Search Users'),
-            //       value: 1,
-            //     ),
-            //   ],
-            //   onChanged: (int? value) {
-            //     setState(() {
-            //       searchMode = value!;
-            //     });
-            //   },
-            // ),
             SizedBox(height: 10),
             Expanded(
               child: _query.text.isEmpty? 
