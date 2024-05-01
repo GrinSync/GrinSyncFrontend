@@ -11,10 +11,10 @@ import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_test_app/global.dart';
 
-// This event card allows user to like the event if they are logged in.
-// Use the other card 'EventCardPlain' when the user doesn't need to
-// favorite the event when you show them.
-// This is used on home page and (should be used on) search event page (when Bradley implements it).
+/// This event card allows user to like the event if they are logged in.
+/// Use the other card 'EventCardPlain' when the user doesn't need to
+/// favorite the event when you show them.
+/// This is used on home page and search page.
 class EventCardFavoritable extends StatelessWidget {
   const EventCardFavoritable({
     super.key,
@@ -98,9 +98,8 @@ class EventCardFavoritable extends StatelessWidget {
   }
 }
 
-// This event card is used to show events on the home page when the user
-// is not logged in or in the user's own list (e.g. in events I created
-// page)
+/// This event card is used to show events on the home page when the user
+/// is not logged in or in the user's own list (e.g. in events I created page)
 class EventCardPlain extends StatelessWidget {
   const EventCardPlain({
     super.key,
@@ -142,7 +141,7 @@ class EventCardPlain extends StatelessWidget {
   }
 }
 
-/// This function formats the time string to a more readable format (YYYY-MM-DD HH:MM)
+/// Formats the time string to a more readable format (YYYY-MM-DD HH:MM)
 String timeFormat(String? timeString) {
   if (timeString == null) {
     return 'Null time';
@@ -253,6 +252,7 @@ Future<void> toggleLikeEvent(int eventId) async {
   }
 }
 
+/// Gets all event from the backend
 Future<List<Event>> getAllEvents() async {
   List<Event> allEvents = [];
 
@@ -285,6 +285,7 @@ Future<List<Event>> getAllEvents() async {
   return allEvents;
 }
 
+/// Gets all events filtered by studentsOnly and selected tags
 Future<List<Event>> getAllEventsByPreferences(
     tagList, studentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
@@ -332,6 +333,7 @@ Future<List<Event>> getAllEventsByPreferences(
   return allEvents;
 }
 
+/// Get all upcoming events filtered by studentsOnly and selected tags
 Future<List<Event>> getUpcomingEvents(
     tagList, studentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
@@ -373,7 +375,7 @@ Future<List<Event>> getUpcomingEvents(
   return allEvents;
 }
 
-// this function gets the events created by the current user (assuming the user is logged in)
+/// Gets all events created by the current user (assuming the user is logged in)
 Future<List<Event>> getMyEvents() async {
   List<Event> myEvents = [];
 
@@ -400,7 +402,7 @@ Future<List<Event>> getMyEvents() async {
   return myEvents;
 }
 
-// this function gets the events followed by the current user (assuming the user is logged in)
+/// Gets all events followed by the current user (assuming the user is logged in)
 Future<List<Event>> getLikedEvents() async {
   List<Event> likedEvents = [];
 
@@ -427,6 +429,7 @@ Future<List<Event>> getLikedEvents() async {
   return likedEvents;
 }
 
+/// Gets all searched events by query keyword
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
   // var box = await Hive.openBox(tokenBox);
@@ -452,7 +455,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   return searchedEvents;
 }
 
-// need to check with Brian
+/// Gets an event by ID
 Future<Event?> getEventByID(eventID) async {
   var token = BOX.get('token');
 
