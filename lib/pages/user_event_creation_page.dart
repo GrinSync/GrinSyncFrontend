@@ -3,6 +3,7 @@ import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_test_app/models/org_models.dart';
 
 // TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
 
@@ -113,9 +114,9 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _studentOrgs = List.generate(
       STUDENTORGS.length,
       (index) => DropdownMenuItem(
-        value: STUDENTORGS[index],
+        value: STUDENTORGS[index].name,
         child: Text(
-          STUDENTORGS[index],
+          STUDENTORGS[index].name ?? "No Org Name",
         ),
       ),
     );
