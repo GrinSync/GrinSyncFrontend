@@ -6,6 +6,7 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
@@ -154,8 +155,16 @@ class EventDetailsPage extends StatelessWidget {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Card(
                 color: Theme.of(context).colorScheme.secondaryContainer,
-                child: Padding(
+                child: Container(
                   padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2.0,
+                    ),
+                  ),
                   child: HtmlWidget(event.description ?? 'Null description', // Show the event's description
                       textStyle: const TextStyle(
                           fontSize: 15, fontFamily: 'Helvetica'),
@@ -303,12 +312,13 @@ class EventDetailsPage extends StatelessWidget {
         allCards.add(Card.outlined(
           shape: RoundedRectangleBorder(
               side: BorderSide(
-                  color: Theme.of(context).colorScheme.primary, width: 3.0),
+                  color: Theme.of(context).colorScheme.primary, width: 1.0),
               borderRadius: BorderRadius.circular(5.0)),
+          color: Theme.of(context).colorScheme.secondaryContainer,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(tag,
-                style: TextStyle(fontSize: 16, fontFamily: 'Helvetica')),
+                style: TextStyle(fontSize: 15, fontFamily: 'Helvetica', color: Colors.red[800])),
           ),
         ));
       }
