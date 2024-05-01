@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                             // show the studentOnly checkbox only if the user is logged in and is a student
                             if (isLoggedIn() && USER.value?.type == "STU") // show the studentOnly filter only if the user is logged in and is a student
                               CheckboxListTile(
-                                title: Text('Show student only events'),
+                                title: Text('Show students only events'),
                                 value: stduentOnly,
                                 onChanged: (value) {
                                   setState(() {
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               // show the intersection filter
                             CheckboxListTile(
-                              title: Text('Match all tags'),
+                              title: Text('Only show events with all tags selected'),
                               value: intersectionFilter, 
                               onChanged: (value) {
                                 setState(() {
