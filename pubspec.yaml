@@ -44,6 +44,7 @@ dependencies:
   dropdown_search: ^5.0.6
   share_plus: ^9.0.0
   widgets_to_image: any
+  flutter_widget_from_html_core: ^0.14.11
 
 dev_dependencies:
   flutter_test:

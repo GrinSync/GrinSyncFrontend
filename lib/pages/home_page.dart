@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                       upcomingEvents, // Listens to the upcomingEvents ValueNotifier to rebuild the page when the events are (re)loaded
                   builder: (context, eventList, child) {
                     return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                       child: RefreshIndicator(
                         onRefresh: loadEvents,
                         child: ListView.builder(

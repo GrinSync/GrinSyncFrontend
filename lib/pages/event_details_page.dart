@@ -7,6 +7,7 @@ import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final Event event; // Event to show details of as a field of the class
@@ -68,7 +69,7 @@ class EventDetailsPage extends StatelessWidget {
         },
       );
     }
-
+    // actual page
     return Scaffold(
       appBar: AppBar(
           foregroundColor: Colors.white,
@@ -155,10 +156,11 @@ class EventDetailsPage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondaryContainer,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(event.description ?? 'Null description',
-                      style: const TextStyle(
-                          fontSize: 16, fontFamily: 'Helvetica')),
+                  child: HtmlWidget(event.description ?? 'Null description', // Show the event's description
+                      textStyle: const TextStyle(
+                          fontSize: 15, fontFamily: 'Helvetica'),
                 ),
+                )
               ),
               const Text('Tags:',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
