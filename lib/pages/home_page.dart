@@ -34,6 +34,12 @@ class _HomePageState extends State<HomePage> {
     upcomingEvents.value = await getUpcomingEvents(selectedTags, stduentOnly, intersectionFilter);
   }
 
+  void refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,8 +223,8 @@ class _HomePageState extends State<HomePage> {
                               );
                             } else {
                               return isLoggedIn() // return different event cards based on user's login status
-                                  ? EventCardFavoritable(event: eventList[index])
-                                  : EventCardPlain(event: eventList[index]);
+                                  ? EventCardFavoritable(event: eventList[index], refreshParent: refresh)
+                                  : EventCardPlain(event: eventList[index], refreshParent: refresh,);
                             }
                           },
                         ),

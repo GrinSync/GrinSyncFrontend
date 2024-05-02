@@ -19,6 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   ValueNotifier eventSearchResults = ValueNotifier<List<Event>?>(null);
   //ValueNotifier<List<User>?>? _userSearchResults;
   late List<Event> events;
+  Future? _searchEventsFuture;
 
   @override
   void initState() {
@@ -28,6 +29,12 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> searchEvents() async {
     eventSearchResults.value = await getSearchedEvents(_query.text);
+  }
+
+  refresh() {
+    setState(() {
+      _searchEventsFuture = searchEvents();
+    });
   }
 
 
@@ -112,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Text('Search Something...'),
               ) 
               :FutureBuilder(
-                future: searchMode == 0? searchEvents() : null,
+                future: searchMode == 0? _searchEventsFuture : null, //userSearchResults will be added later
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -144,8 +151,8 @@ class _SearchPageState extends State<SearchPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: searchResult[index])
-                                    : EventCardPlain(event: searchResult[index]);
+                                        event: searchResult[index], refreshParent: refresh)
+                                    : EventCardPlain(event: searchResult[index], refreshParent: refresh);
                               }
                           },
                         );

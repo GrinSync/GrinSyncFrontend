@@ -10,11 +10,24 @@ class EventsIFollowPage extends StatefulWidget {
 }
 
 class _EventsIFollowPageState extends State<EventsIFollowPage> {
-  late List<Event> events; // List of events followed by the user
+  late List<Event> likedEvents; // List of events followed by the user
+  Future? _loadEventsFuture; // Future to load events
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEventsFuture = loadEvents();
+  }
 
   // Get events followed by the user from the backend
   Future<void> loadEvents() async {
-    events = await getLikedEvents(); // function in get_events.dart
+    likedEvents = await getLikedEvents(); // function in get_events.dart
+  }
+
+  void refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
   }
 
   @override
@@ -65,7 +78,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
               // if the connection is done, show the events
             } else {
               // if there are no events, show a message
-              if (events.isEmpty) {
+              if (likedEvents.isEmpty) {
                 return const Center(
                   child: Text("You are not following any events yet."),
                 );
@@ -74,22 +87,22 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                 return Container(
                   padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                   child: ListView.builder(
-                    itemCount: events.length + 1,
+                    itemCount: likedEvents.length + 1,
                     itemBuilder: (context, index) {
-                      if (index == events.length) {
+                      if (index == likedEvents.length) {
                         return Column(
                           children: [
                             Divider(color: Colors.grey[400]),
                             Text('--End of Your Saved Events--',
                                 style: TextStyle(color: Colors.grey[600])),
-                            Text('Event Count: ${events.length}',
+                            Text('Event Count: ${likedEvents.length}',
                                 style: TextStyle(color: Colors.grey[600])),
                           ],
                         );
                       } else {
                         return EventCardFavoritable(
-                            event: events[
-                                index]); // EventCardFavoritable is a custom widget that displays an event with a favorite button
+                            event: likedEvents[index],
+                            refreshParent: refresh,); // EventCardFavoritable is a custom widget that displays an event with a favorite button
                       }
                     },
                   ),

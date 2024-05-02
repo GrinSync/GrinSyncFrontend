@@ -21,6 +21,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   ValueNotifier allEvents = ValueNotifier<List<Event>?>(null);
   String k = '';
   late List<Event> events;
+  Future? _loadEventsFuture;
+
+
   Future<void> loadEvents() async {
     allEvents.value = await getSearchedEvents(k);
   }
@@ -29,6 +32,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   void initState() {
     k = widget.todo;
     super.initState();
+  }
+
+  refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
   }
 
   @override
@@ -43,7 +52,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder(
-          future: loadEvents(),
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -103,8 +112,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: eventList[index])
-                                    : EventCardPlain(event: eventList[index]);
+                                        event: eventList[index], refreshParent: refresh)
+                                    : EventCardPlain(event: eventList[index], refreshParent: refresh);
                               }
                             },
                           ),
