@@ -459,7 +459,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
 }
 
 /// Gets an event by ID
-Future<Event?> getEventByID(eventID) async {
+Future<Event> getEventByID(eventID) async {
   var token = BOX.get('token');
 
   Map<String, String> headers;
@@ -472,13 +472,13 @@ Future<Event?> getEventByID(eventID) async {
   var url = Uri.parse('https://grinsync.com/api/getEvent?id=$eventID');
   var result = await https.get(url, headers: headers);
 
-  print(result.body);
+  // print(result.body);
 
   if (result.statusCode == 200) {
     var json = jsonDecode(result.body);
     Event event = Event.fromJson(json);
     return event;
   } else {
-    return null;
+    return Event();
   }
 }
