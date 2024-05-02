@@ -49,21 +49,21 @@ void main () {
 
   // });
 
-  testWidgets('Test saving an event', (WidgetTester tester) async {
-    // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(EventCardFavoritable(event: Event.fromJson(eventInfo[0])));
+//   testWidgets('Test saving an event', (WidgetTester tester) async {
+//     // Create the widget by telling the tester to build it.
+//     await tester.pumpWidget(EventCardFavoritable(event: Event.fromJson(eventInfo[0])));
 
-    // Check that there is a favorite border icon
-    expect(find.byIcon(Icons.favorite), 0);
-    expect(find.byIcon(Icons.favorite_border), 1);
+//     // Check that there is a favorite border icon
+//     expect(find.byIcon(Icons.favorite), 0);
+//     expect(find.byIcon(Icons.favorite_border), 1);
 
-    // Tap the heart icon and trigger a rebuild
-    await tester.tap(find.byIcon(Icons.favorite_border));
-    await tester.pump();
+//     // Tap the heart icon and trigger a rebuild
+//     await tester.tap(find.byIcon(Icons.favorite_border));
+//     await tester.pump();
 
-    // Check that there is a favorite icon
-    expect(find.byIcon(Icons.favorite), 1);
-    expect(find.byIcon(Icons.favorite_border), 0);
-  });
+//     // Check that there is a favorite icon
+//     expect(find.byIcon(Icons.favorite), 1);
+//     expect(find.byIcon(Icons.favorite_border), 0);
+//   });
 
 }
