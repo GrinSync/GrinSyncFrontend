@@ -11,10 +11,23 @@ class EventsICreatedPage extends StatefulWidget {
 
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
   late List<Event> myEvents; // List of events created by the user
+  Future? _loadEventsFuture; // Future to load events
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEventsFuture = loadEvents();
+  }
 
   // Get events created by the user from the backend
   Future<void> loadEvents() async {
     myEvents = await getMyEvents(); // function in get_events.dart
+  }
+
+   void refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
   }
 
   @override
@@ -30,7 +43,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
-          future: loadEvents(),
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -88,8 +101,8 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                         );
                       } else {
                         return EventCardPlain(
-                            event: myEvents[
-                                index]); // EventCardPlain is an event card Widget in get_events.dart
+                            event: myEvents[index],
+                            refreshParent: refresh,); // EventCardPlain is an event card Widget in get_events.dart
                       }
                     },
                   ),
