@@ -70,8 +70,8 @@ class CalendarPageState extends State<CalendarPage> {
   late List<Event> allEvents = <Event>[];
 
   /// The label of the current filtering option
-  String currentFilter =
-      filterOptions.followed.label; // defaulted to user's own agenda
+  filterOptions currentFilter =
+      filterOptions.followed; // defaulted to user's own agenda
 
   /// List of user's preferred tags if logged in
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
@@ -83,7 +83,7 @@ class CalendarPageState extends State<CalendarPage> {
   bool intersectionFilter = false;
 
   /// Future function call to load all events with the API call
-  late Future<void> loadEventsFuture;
+  late Future<void> _loadEventsFuture;
 
   /// Future function to load all events
   Future<void> loadEvents(filterOptions option) async {
@@ -103,7 +103,14 @@ class CalendarPageState extends State<CalendarPage> {
   void initState() {
     super.initState();
     // defaulted to user's own agenda
-    loadEventsFuture = loadEvents(filterOptions.followed);
+    _loadEventsFuture = loadEvents(filterOptions.followed);
+  }
+
+  // refresh calendar with current filter
+  void refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents(currentFilter);
+    });
   }
 
   void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
@@ -126,7 +133,7 @@ class CalendarPageState extends State<CalendarPage> {
         MaterialPageRoute(
           builder: (context) => EventDetailsPage(
               // Look for the single event in the list that has a matching ID
-              event: allEvents.singleWhere((element) => element.id == id)),
+              eventID: id as int, refreshParent: refresh,),
         ),
       );
     }
@@ -181,7 +188,7 @@ class CalendarPageState extends State<CalendarPage> {
           centerTitle: true,
           actions: [
             // The label of the current filter
-            Text(currentFilter),
+            Text(currentFilter.label),
             // A pop up menu button
             PopupMenuButton(
               icon: const Icon(Icons.filter_alt),
@@ -203,8 +210,8 @@ class CalendarPageState extends State<CalendarPage> {
               // depending on the selected filter option
               onSelected: (filterOptions option) {
                 setState(() {
-                  loadEventsFuture = loadEvents(option);
-                  currentFilter = option.label;
+                  _loadEventsFuture = loadEvents(option);
+                  currentFilter = option;
                 });
               },
             ),
@@ -213,7 +220,7 @@ class CalendarPageState extends State<CalendarPage> {
           foregroundColor: Colors.white,
         ),
         body: FutureBuilder(
-          future: loadEventsFuture,
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // If the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
