@@ -23,33 +23,30 @@ class EventDetailsPage extends StatefulWidget {
 
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  late final Event event; // Event to show details of as a field of the class
+  Event event = Event(); // Event to show details of as a field of the class
+  Future? _loadEventFuture;
+
+  loadEvent() async {
+    event = await getEventByID(widget.eventID);
+  }
 
   // Init function to get the event by ID
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    getEventByID(widget.eventID).then((value) {
-      event = value!;
-    });
+    _loadEventFuture = loadEvent();
   }
 
   // refresh the event details page
   void refresh() {
-    getEventByID(widget.eventID).then((value) {
-      setState(() {
-        event = value!;
-      });
-    });
+    setState() {
+      _loadEventFuture = loadEvent();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = (event.host == USER.value?.id) ||
-        (ORGIDS.contains(
-            event.host)); // Check if the event is created by the current user
-    var favorited = ValueNotifier(event
-        .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+    
 
     // Function to confirm deletion of the event
     // delete the event if confirmed
@@ -101,228 +98,248 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     }
     // actual page
     return Scaffold(
-      appBar: AppBar(
-          foregroundColor: Colors.white,
-          title: const Text('Event Details',
-              style: TextStyle(fontWeight: FontWeight.w800)),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          actions: [
-            // Show favorite button if user is logged in
-            if (isLoggedIn())
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ValueListenableBuilder(
-                    valueListenable: favorited,
-                    builder: (context, value, child) {
-                      return value
-                          ? Icon(Icons.favorite, color: Colors.white)
-                          : Icon(Icons.favorite_border,
-                              color: Theme.of(context).colorScheme.primary);
-                    }),
-              )
-          ]),
-      body: Container(
-        decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
-        alignment: Alignment.topLeft,
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(children: [
-                Flexible(
-                    child: Text(
-                        event.title ?? 'Null title', // Show the event's title
-                        style: const TextStyle(
-                            fontFamily: 'Helvetica',
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold))),
-                const SizedBox(
-                  width: 15,
-                ),
-                if (event.studentsOnly ?? false)
-                  Card.outlined(
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: Colors.lightBlue[400]!, width: 2.0),
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.lightBlue[50],
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Students Only",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Helvetica',
-                              color: Colors.lightBlue[800])),
-                    ),
-                  )
-              ]),
-              // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
-              const Text('Host',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(
-                event.hostName.toString(),
-                style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
-              ),
-              const Text('Location',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.location ?? 'Null location',
-                  style:
-                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
-              const Text('Starts at',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(timeFormat(event.start),
-                  style:
-                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
-              const Text('Ends at',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(timeFormat(event.end),
-                  style:
-                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
-              const Text('Description:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Card(
-                color: Theme.of(context).colorScheme.secondaryContainer,
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: HtmlWidget(event.description ?? 'Null description', // Show the event's description
-                      textStyle: const TextStyle(
-                          fontSize: 15, fontFamily: 'Helvetica'),
-                ),
-                )
-              ),
-              const Text('Tags:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Wrap(
-                children: buildTags(context),
-              ),
-
-              // if (event.nextRepeat != null)
-
-              // TO-DO: Nam - Page routing for next recurring event
-
-              // some space
-              const SizedBox(height: 50),
-
-              // Buttons from here
-
-              // Like button
+      body: FutureBuilder(
+          future: _loadEventFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Error loading event'));
+            } else {
+      
+              bool isCreatedByThisUser = (event.host == USER.value?.id) ||
+          (ORGIDS.contains(
+              event.host)); // Check if the event is created by the current user
+      var favorited = ValueNotifier(event
+          .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+      
+            return Scaffold(
+              appBar: AppBar(
+            foregroundColor: Colors.white,
+            title: const Text('Event Details',
+                style: TextStyle(fontWeight: FontWeight.w800)),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            actions: [
+              // Show favorite button if user is logged in
               if (isLoggedIn())
-                SizedBox(
-                  width: double.infinity,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: ValueListenableBuilder(
                       valueListenable: favorited,
                       builder: (context, value, child) {
-                        return ElevatedButton(
+                        return value
+                            ? Icon(Icons.favorite, color: Colors.white)
+                            : Icon(Icons.favorite_border,
+                                color: Theme.of(context).colorScheme.primary);
+                      }),
+                )
+            ]),
+              body: Container(
+                decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(children: [
+                        Flexible(
+                            child: Text(
+                                event.title ?? 'Null title', // Show the event's title
+                                style: const TextStyle(
+                                    fontFamily: 'Helvetica',
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold))),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        if (event.studentsOnly ?? false)
+                          Card.outlined(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.lightBlue[400]!, width: 2.0),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            color: Colors.lightBlue[50],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Students Only",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Helvetica',
+                                      color: Colors.lightBlue[800])),
+                            ),
+                          )
+                      ]),
+                      // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
+                      const Text('Host',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Text(
+                        event.hostName.toString(),
+                        style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
+                      ),
+                      const Text('Location',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Text(event.location ?? 'Null location',
+                          style:
+                              const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                      const Text('Starts at',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Text(timeFormat(event.start),
+                          style:
+                              const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                      const Text('Ends at',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Text(timeFormat(event.end),
+                          style:
+                              const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+                      const Text('Description:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Card(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: HtmlWidget(event.description ?? 'Null description', // Show the event's description
+                              textStyle: const TextStyle(
+                                  fontSize: 15, fontFamily: 'Helvetica'),
+                        ),
+                        )
+                      ),
+                      const Text('Tags:',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                      Wrap(
+                        children: buildTags(context),
+                      ),
+              
+                      // if (event.nextRepeat != null)
+              
+                      // TO-DO: Nam - Page routing for next recurring event
+              
+                      // some space
+                      const SizedBox(height: 50),
+              
+                      // Buttons from here
+              
+                      // Like button
+                      if (isLoggedIn())
+                        SizedBox(
+                          width: double.infinity,
+                          child: ValueListenableBuilder(
+                              valueListenable: favorited,
+                              builder: (context, value, child) {
+                                return ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.pink[400],
+                                        foregroundColor: Colors.white),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          value
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          size: 20,
+                                        ),
+                                        SizedBox(width: 5.0),
+                                        Text(value ? 'Unsave Event' : 'Save Event'),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      toggleLikeEvent(event.id); // send request to backend
+                                      event.isFavorited = !event.isFavorited; // update the event object
+                                      favorited.value = !favorited.value; // update the ValueNotifier
+                                      Fluttertoast.showToast(
+                                          msg: event.isFavorited
+                                              ? 'Saved successfully'
+                                              : 'Unsaved successfully',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.grey[800],
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                        widget.refreshParent!(); // Notify the parent page to refresh the events
+                                    });
+                              }),
+                        ),
+              
+                      const SizedBox(height: 10),
+              
+                      // Share button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.pink[400],
-                                foregroundColor: Colors.white),
+                                backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                                foregroundColor: Colors.black),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
+                                  Icons.share,
                                   size: 20,
                                 ),
                                 SizedBox(width: 5.0),
-                                Text(value ? 'Unsave Event' : 'Save Event'),
+                                Text('Share Event'),
                               ],
                             ),
                             onPressed: () {
-                              toggleLikeEvent(event.id); // send request to backend
-                              event.isFavorited = !event.isFavorited; // update the event object
-                              favorited.value = !favorited.value; // update the ValueNotifier
-                              Fluttertoast.showToast(
-                                  msg: event.isFavorited
-                                      ? 'Saved successfully'
-                                      : 'Unsaved successfully',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.grey[800],
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                                widget.refreshParent!(); // Notify the parent page to refresh the events
-                            });
-                      }),
-                ),
-
-              const SizedBox(height: 10),
-
-              // Share button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                        foregroundColor: Colors.black),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.share,
-                          size: 20,
+                              Share.share(
+                                  'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
+                            }),
+                      ),
+              
+                      if (isCreatedByThisUser) const SizedBox(height: 10),
+              
+                      // Edit button
+                      if (isCreatedByThisUser)
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                                  foregroundColor: Colors.black),
+                              child: const Text('Edit Event'),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            EventEditPage(event: event, refreshParent: refresh)));
+                              }),
                         ),
-                        SizedBox(width: 5.0),
-                        Text('Share Event'),
-                      ],
-                    ),
-                    onPressed: () {
-                      Share.share(
-                          'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
-                    }),
+              
+                      if (isCreatedByThisUser) const SizedBox(height: 10),
+              
+                      // Delete button
+                      if (isCreatedByThisUser)
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Colors.white),
+                              child: const Text('Delete'),
+                              onPressed: () {
+                                confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
+                              }),
+                        ),
+                    ],
+                  ),
+                ),
               ),
-
-              if (isCreatedByThisUser) const SizedBox(height: 10),
-
-              // Edit button
-              if (isCreatedByThisUser)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                          foregroundColor: Colors.black),
-                      child: const Text('Edit Event'),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    EventEditPage(event: event, refreshParent: refresh)));
-                      }),
-                ),
-
-              if (isCreatedByThisUser) const SizedBox(height: 10),
-
-              // Delete button
-              if (isCreatedByThisUser)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white),
-                      child: const Text('Delete'),
-                      onPressed: () {
-                        confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
-                      }),
-                ),
-            ],
-          ),
-        ),
+            );
+            }
+          }
       ),
     );
   }
