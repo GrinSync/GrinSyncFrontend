@@ -19,8 +19,10 @@ class EventCardFavoritable extends StatelessWidget {
   const EventCardFavoritable({
     super.key,
     required this.event,
+    required this.refreshParent,
   });
   final Event event;
+  final VoidCallback refreshParent; // Function to notify the parent page to refresh the events, call it whenever a change happens (e.g. like event, delete event, edit event)
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +90,7 @@ class EventCardFavoritable extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => EventDetailsPage(event: event),
+                    builder: (context) => EventDetailsPage(eventID: event.id, refreshParent: refreshParent),
                   ),
                 );
               },
@@ -104,9 +106,10 @@ class EventCardPlain extends StatelessWidget {
   const EventCardPlain({
     super.key,
     required this.event,
+    required this.refreshParent,
   });
-
   final Event event;
+  final VoidCallback refreshParent; // Function to notify the parent page to refresh the events, call it whenever a change happens (e.g. like event, delete event, edit event)
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +136,7 @@ class EventCardPlain extends StatelessWidget {
               context,
               CupertinoPageRoute(
                 //go to event details page
-                builder: (context) => EventDetailsPage(event: event),
+                builder: (context) => EventDetailsPage(eventID: event.id, refreshParent: refreshParent),
               ));
         },
       ),
@@ -443,7 +446,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
   }
   var url = Uri.parse('https://grinsync.com/api/search?query=$keyword');
   var result = await https.get(url, headers: headers);
-  // print(result.body);
+  print(result.body);
   // print('Parsing JSON response...');
 
   // parse the json response and create a list of Event objects
@@ -468,6 +471,8 @@ Future<Event?> getEventByID(eventID) async {
 
   var url = Uri.parse('https://grinsync.com/api/getEvent?id=$eventID');
   var result = await https.get(url, headers: headers);
+
+  print(result.body);
 
   if (result.statusCode == 200) {
     var json = jsonDecode(result.body);
