@@ -10,10 +10,38 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-class EventDetailsPage extends StatelessWidget {
-  final Event event; // Event to show details of as a field of the class
+class EventDetailsPage extends StatefulWidget {
+  final int eventID; // ID of the event
+  final VoidCallback? refreshParent; // Function to notify the parent page to refresh the events, call it whenever a change happens (e.g. like event, delete event, edit event)
 
-  EventDetailsPage({required this.event});
+  EventDetailsPage({required this.eventID, required this.refreshParent});
+
+  @override
+  State<EventDetailsPage> createState() => _EventDetailsPageState();
+
+}
+
+
+class _EventDetailsPageState extends State<EventDetailsPage> {
+  late final Event event; // Event to show details of as a field of the class
+
+  // Init function to get the event by ID
+  @override
+  void initState() async {
+    super.initState();
+    getEventByID(widget.eventID).then((value) {
+      event = value!;
+    });
+  }
+
+  // refresh the event details page
+  void refresh() {
+    getEventByID(widget.eventID).then((value) {
+      setState(() {
+        event = value!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +89,7 @@ class EventDetailsPage extends StatelessWidget {
                       backgroundColor: Colors.grey[800],
                       textColor: Colors.white,
                       fontSize: 16.0);
+                    widget.refreshParent!(); // Notify the parent page to refresh the events
                   Navigator.of(context).pop(); // Dismiss the dialog
                   Navigator.of(context).pop(); // Dismiss the page
                 },
@@ -211,9 +240,9 @@ class EventDetailsPage extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              toggleLikeEvent(event.id);
-                              event.isFavorited = !event.isFavorited;
-                              favorited.value = !favorited.value;
+                              toggleLikeEvent(event.id); // send request to backend
+                              event.isFavorited = !event.isFavorited; // update the event object
+                              favorited.value = !favorited.value; // update the ValueNotifier
                               Fluttertoast.showToast(
                                   msg: event.isFavorited
                                       ? 'Saved successfully'
@@ -224,6 +253,7 @@ class EventDetailsPage extends StatelessWidget {
                                   backgroundColor: Colors.grey[800],
                                   textColor: Colors.white,
                                   fontSize: 16.0);
+                                widget.refreshParent!(); // Notify the parent page to refresh the events
                             });
                       }),
                 ),
@@ -270,7 +300,7 @@ class EventDetailsPage extends StatelessWidget {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
-                                    EventEditPage(event: event)));
+                                    EventEditPage(event: event, refreshParent: refresh)));
                       }),
                 ),
 
