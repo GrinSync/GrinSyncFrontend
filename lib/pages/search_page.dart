@@ -31,15 +31,6 @@ class _SearchPageState extends State<SearchPage> {
     eventSearchResults.value = await getSearchedEvents(_query.text);
   }
 
-  refresh() {
-    setState(() {
-      _searchEventsFuture = searchEvents();
-    });
-  }
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,8 +142,8 @@ class _SearchPageState extends State<SearchPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: searchResult[index], refreshParent: refresh)
-                                    : EventCardPlain(event: searchResult[index], refreshParent: refresh);
+                                        event: searchResult[index], refreshParent: ()=>{})
+                                    : EventCardPlain(event: searchResult[index], refreshParent: () => {});
                               }
                           },
                         );
