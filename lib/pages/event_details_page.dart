@@ -23,11 +23,11 @@ class EventDetailsPage extends StatefulWidget {
 
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  Event event = Event(); // Event to show details of as a field of the class
+  ValueNotifier<Event?> event = ValueNotifier<Event?>(null); // Event to show details of as a field of the class
   Future? _loadEventFuture;
 
   loadEvent() async {
-    event = await getEventByID(widget.eventID);
+    event.value = await getEventByID(widget.eventID);
   }
 
   // Init function to get the event by ID
@@ -77,7 +77,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
-                  deleteEvent(event.id); // Call deleteEvent
+                  deleteEvent(event.value!.id); // Call deleteEvent
                   Fluttertoast.showToast(
                       msg: 'Event deleted successfully',
                       toastLength: Toast.LENGTH_SHORT,
@@ -107,11 +107,10 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               return const Center(child: Text('Error loading event'));
             } else {
       
-              bool isCreatedByThisUser = (event.host == USER.value?.id) ||
+              bool isCreatedByThisUser = (event.value?.host == USER.value?.id) ||
           (ORGIDS.contains(
-              event.host)); // Check if the event is created by the current user
-      var favorited = ValueNotifier(event
-          .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+              event.value?.host)); // Check if the event is created by the current user
+      var favorited = ValueNotifier(event.value?.isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
       
             return Scaffold(
               appBar: AppBar(
