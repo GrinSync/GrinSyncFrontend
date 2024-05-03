@@ -307,6 +307,9 @@ class EventDetailsPage extends StatelessWidget {
     if (tags != null) {
       List<String> allTags = tags;
 
+      
+      // print(allTags); // tags here are already broken
+
       // For each tag, create a Card widget with the tag as the text
       for (String tag in allTags) {
         allCards.add(Card.outlined(
