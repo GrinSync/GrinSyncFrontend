@@ -90,7 +90,7 @@ class EventCardFavoritable extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => EventDetailsPage(eventID: event.id, refreshParent: refreshParent),
+                    builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
                   ),
                 );
               },
@@ -136,7 +136,7 @@ class EventCardPlain extends StatelessWidget {
               context,
               CupertinoPageRoute(
                 //go to event details page
-                builder: (context) => EventDetailsPage(eventID: event.id, refreshParent: refreshParent),
+                builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
               ));
         },
       ),
