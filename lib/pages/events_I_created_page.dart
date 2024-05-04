@@ -9,38 +9,13 @@ class EventsICreatedPage extends StatefulWidget {
   State<EventsICreatedPage> createState() => _EventsICreatedPageState();
 }
 
-class EventList extends ChangeNotifier {
-  List<Event> _events = [];
-
-  List<Event> get events => _events;
-
-  void setEvents(List<Event> events) {
-    _events = events;
-    notifyListeners();
-  }
-
-  // void toggleLikedEvent(int id) {
-  //   final event = _events.firstWhere((element) => element.id == id);
-  //   event.isFavorited = !event.isFavorited;
-  //   notifyListeners();
-  // }
-
-  // void deleteEvent(int id) {
-  //   _events.removeWhere((element) => element.id == id);
-  //   notifyListeners();
-  // }
-
-}
-
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
   ValueNotifier<List<Event>?> myEventsNotifier = ValueNotifier<List<Event>?>(null); // List of events created by the user
   late Future _loadEventsFuture;
-  EventList myEvents = EventList();
 
   // Get events created by the user from the backend
   Future<void> loadEvents() async {
-    //myEventsNotifier.value = await getMyEvents(); // function in get_events.dart
-    myEvents.setEvents(await getMyEvents());
+    myEventsNotifier.value = await getMyEvents(); // function in get_events.dart
   }
 
   @override
@@ -96,7 +71,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
               // if the connection is done, show the events
             } else {
               // if there are no events, show a message
-              if (myEvents.events.isEmpty) {
+              if (myEventsNotifier.value!.isEmpty) {
                 return const Center(
                   child: Text("You haven't created any events yet."),
                 );
@@ -108,7 +83,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                     return Container(
                       padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                       child: ListView.builder(
-                        itemCount: myEvents.length + 1,
+                        itemCount: myEvents!.length + 1,
                         itemBuilder: (context, index) {
                           if (index == myEvents.length) {
                             return Column(
