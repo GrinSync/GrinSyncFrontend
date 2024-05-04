@@ -126,7 +126,12 @@ class CalendarPageState extends State<CalendarPage> {
         MaterialPageRoute(
           builder: (context) => EventDetailsPage(
               // Look for the single event in the list that has a matching ID
-              event: allEvents.singleWhere((element) => element.id == id)),
+              event: allEvents.singleWhere((element) => element.id == id),
+              refreshParent: () => {
+                setState(() {
+                  loadEvents(filterOptions.followed);
+                })
+              },),
         ),
       );
     }

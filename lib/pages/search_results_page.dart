@@ -103,8 +103,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: eventList[index])
-                                    : EventCardPlain(event: eventList[index]);
+                                        event: eventList[index],
+                                        refreshParent: () => {})
+                                    : EventCardPlain(
+                                        event: eventList[index],
+                                        refreshParent: () => {},);
                               }
                             },
                           ),

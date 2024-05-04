@@ -88,8 +88,8 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                         );
                       } else {
                         return EventCardFavoritable(
-                            event: events[
-                                index]); // EventCardFavoritable is a custom widget that displays an event with a favorite button
+                            event: events[index],
+                            refreshParent: () => {},); // EventCardFavoritable is a custom widget that displays an event with a favorite button
                       }
                     },
                   ),

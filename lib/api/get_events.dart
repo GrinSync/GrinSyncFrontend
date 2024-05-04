@@ -19,8 +19,10 @@ class EventCardFavoritable extends StatelessWidget {
   const EventCardFavoritable({
     super.key,
     required this.event,
+    required this.refreshParent
   });
   final Event event;
+  final VoidCallback refreshParent;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +90,7 @@ class EventCardFavoritable extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => EventDetailsPage(event: event),
+                    builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
                   ),
                 );
               },
@@ -104,9 +106,10 @@ class EventCardPlain extends StatelessWidget {
   const EventCardPlain({
     super.key,
     required this.event,
+    required this.refreshParent
   });
-
   final Event event;
+  final VoidCallback refreshParent;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +136,7 @@ class EventCardPlain extends StatelessWidget {
               context,
               CupertinoPageRoute(
                 //go to event details page
-                builder: (context) => EventDetailsPage(event: event),
+                builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
               ));
         },
       ),

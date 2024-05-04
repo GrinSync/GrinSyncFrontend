@@ -9,12 +9,50 @@ class EventsICreatedPage extends StatefulWidget {
   State<EventsICreatedPage> createState() => _EventsICreatedPageState();
 }
 
+class EventList extends ChangeNotifier {
+  List<Event> _events = [];
+
+  List<Event> get events => _events;
+
+  void setEvents(List<Event> events) {
+    _events = events;
+    notifyListeners();
+  }
+
+  // void toggleLikedEvent(int id) {
+  //   final event = _events.firstWhere((element) => element.id == id);
+  //   event.isFavorited = !event.isFavorited;
+  //   notifyListeners();
+  // }
+
+  // void deleteEvent(int id) {
+  //   _events.removeWhere((element) => element.id == id);
+  //   notifyListeners();
+  // }
+
+}
+
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
-  late List<Event> myEvents; // List of events created by the user
+  ValueNotifier<List<Event>?> myEventsNotifier = ValueNotifier<List<Event>?>(null); // List of events created by the user
+  late Future _loadEventsFuture;
+  EventList myEvents = EventList();
 
   // Get events created by the user from the backend
   Future<void> loadEvents() async {
-    myEvents = await getMyEvents(); // function in get_events.dart
+    //myEventsNotifier.value = await getMyEvents(); // function in get_events.dart
+    myEvents.setEvents(await getMyEvents());
+  }
+
+  @override
+  void initState() {
+    _loadEventsFuture = loadEvents();
+    super.initState();
+  }
+
+  refresh() {
+    setState(() {
+       _loadEventsFuture = loadEvents();
+    });
   }
 
   @override
@@ -30,20 +68,13 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
-          future: loadEvents(),
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                child: 
                     CircularProgressIndicator(),
-                    const Text(
-                      'Preparing events for you...',
-                    ),
-                  ],
-                ),
               );
               // if there is an error, show an error message and a button to try again
             } else if (snapshot.hasError) {
@@ -65,34 +96,39 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
               // if the connection is done, show the events
             } else {
               // if there are no events, show a message
-              if (myEvents.isEmpty) {
+              if (myEvents.events.isEmpty) {
                 return const Center(
                   child: Text("You haven't created any events yet."),
                 );
                 // if there are events, show the events
               } else {
-                return Container(
-                  padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                  child: ListView.builder(
-                    itemCount: myEvents.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == myEvents.length) {
-                        return Column(
-                          children: [
-                            Divider(color: Colors.grey[400]),
-                            Text('--End of Your Events Created--',
-                                style: TextStyle(color: Colors.grey[600])),
-                            Text('Event Count: ${myEvents.length}',
-                                style: TextStyle(color: Colors.grey[600])),
-                          ],
-                        );
-                      } else {
-                        return EventCardPlain(
-                            event: myEvents[
-                                index]); // EventCardPlain is an event card Widget in get_events.dart
-                      }
-                    },
-                  ),
+                return ValueListenableBuilder(
+                  valueListenable: myEventsNotifier,
+                  builder: (context, myEvents, child) {
+                    return Container(
+                      padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                      child: ListView.builder(
+                        itemCount: myEvents.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == myEvents.length) {
+                            return Column(
+                              children: [
+                                Divider(color: Colors.grey[400]),
+                                Text('--End of Your Events Created--',
+                                    style: TextStyle(color: Colors.grey[600])),
+                                Text('Event Count: ${myEvents.length}',
+                                    style: TextStyle(color: Colors.grey[600])),
+                              ],
+                            );
+                          } else {
+                            return EventCardPlain(
+                                event: myEvents[index],
+                                refreshParent: refresh,); // EventCardPlain is an event card Widget in get_events.dart
+                          }
+                        },
+                      ),
+                    );
+                  }
                 );
               }
             }

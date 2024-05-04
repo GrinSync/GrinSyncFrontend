@@ -217,8 +217,8 @@ class _HomePageState extends State<HomePage> {
                               );
                             } else {
                               return isLoggedIn() // return different event cards based on user's login status
-                                  ? EventCardFavoritable(event: eventList[index])
-                                  : EventCardPlain(event: eventList[index]);
+                                  ? EventCardFavoritable(event: eventList[index], refreshParent: () => {})
+                                  : EventCardPlain(event: eventList[index], refreshParent: () => {});
                             }
                           },
                         ),

@@ -144,8 +144,8 @@ class _SearchPageState extends State<SearchPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: searchResult[index])
-                                    : EventCardPlain(event: searchResult[index]);
+                                        event: searchResult[index], refreshParent: () => {},)
+                                    : EventCardPlain(event: searchResult[index], refreshParent: () => {},);
                               }
                           },
                         );

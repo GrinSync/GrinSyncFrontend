@@ -12,8 +12,9 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 
 class EventDetailsPage extends StatelessWidget {
   final Event event; // Event to show details of as a field of the class
+  VoidCallback refreshParent;
 
-  EventDetailsPage({required this.event});
+  EventDetailsPage({required this.event, required this.refreshParent});
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,8 @@ class EventDetailsPage extends StatelessWidget {
                       backgroundColor: Colors.grey[800],
                       textColor: Colors.white,
                       fontSize: 16.0);
+
+                  refreshParent(); // Refresh the parent page
                   Navigator.of(context).pop(); // Dismiss the dialog
                   Navigator.of(context).pop(); // Dismiss the page
                 },
