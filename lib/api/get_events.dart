@@ -377,9 +377,9 @@ Future<List<Event>> getUpcomingEvents(
 
 
   allEvents = allEvents.toSet().toList(); // remove duplicates if any
-  for (var event in allEvents) { // but it still contains duplicates
-    print(event.id);
-  }
+  // for (var event in allEvents) { // but it still contains duplicates
+  //   print(event.id);
+  // }
   
 
   return allEvents;
@@ -485,5 +485,32 @@ Future<Event?> getEventByID(eventID) async {
     return event;
   } else {
     return null;
+  }
+}
+
+// Gets all events created by a certain student organization
+Future<List<Event>> getOrgEvents(orgID) async {
+  List<Event> orgEvents = [];
+
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri.parse('https://grinsync.com/api/getOrgEvents?id=$orgID');
+  var result = await https.get(url, headers: headers);
+
+  if (result.statusCode == 200) {
+    for (var jsonEvent in jsonDecode(result.body)) {
+      Event newEvent = Event.fromJson(jsonEvent);
+      orgEvents.add(newEvent);
+    }
+    return orgEvents;
+  } else {
+    return [];
   }
 }

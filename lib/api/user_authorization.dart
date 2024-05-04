@@ -140,3 +140,25 @@ Future<dynamic> passwordReset(String email) async {
   var result = await http.post(url, body: body);
   print(result.body); // This is for testing purposes only
 }
+
+Future<User?> getUserByID(int id) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri.parse('https://grinsync.com/api/getUser?id=$id');
+  var result = await http.get(url, headers: headers);
+
+  print('getUserById result: ${result.body}');
+
+  if (result.statusCode == 200) {
+    return User.fromJson(jsonDecode(result.body));
+  } else {
+    return null;
+  }
+}

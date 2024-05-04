@@ -107,7 +107,7 @@ class EventDetailsPage extends StatelessWidget {
               Row(children: [
                 Flexible(
                     child: Text(
-                        event.title ?? 'Null title', // Show the event's title
+                        event.title, // Show the event's title
                         style: const TextStyle(
                             fontFamily: 'Helvetica',
                             fontSize: 35,
@@ -141,7 +141,7 @@ class EventDetailsPage extends StatelessWidget {
               ),
               const Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.location ?? 'Null location',
+              Text(event.location,
                   style:
                       const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
               const Text('Starts at',
@@ -168,7 +168,7 @@ class EventDetailsPage extends StatelessWidget {
                       width: 2.0,
                     ),
                   ),
-                  child: HtmlWidget(event.description ?? 'Null description', // Show the event's description
+                  child: HtmlWidget(event.description, // Show the event's description
                       textStyle: const TextStyle(
                           fontSize: 15, fontFamily: 'Helvetica'),
                 ),

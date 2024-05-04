@@ -35,7 +35,7 @@ class MyOrgsPage extends StatelessWidget {
                 title: Text(studentOrgs[index].name ?? 'Null Org Name', style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
                 subtitle: Text(studentOrgs[index].email ?? 'Null Org Email', style: TextStyle(fontSize: 15)),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrgDetailsPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: studentOrgs[index])));
                 },
             );
           },
