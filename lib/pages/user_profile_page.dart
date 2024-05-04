@@ -45,12 +45,12 @@ class UserProfilePage extends StatelessWidget {
                 color: Colors.black,
               ),
               // Edit Profile button
-              TextButton(
-                child: const Text('Edit Profile', style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  // TODO: implement edit profile page
-                },
-              ),
+              // TextButton(
+              //   child: const Text('Edit Profile', style: TextStyle(fontSize: 20)),
+              //   onPressed: () {
+              //     // TODO: implement edit profile page
+              //   },
+              // ),
               // Tag Preferences button
               TextButton(
                 child:
@@ -118,17 +118,17 @@ class UserProfilePage extends StatelessWidget {
               ),
 
               // Connect to a Student Org button
-              TextButton(
-                child: const Text('Connect to a Student Org',
-                    style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => const ConnectOrgPage()),
-                  );
-                },
-              ),
+              // TextButton(
+              //   child: const Text('Connect to a Student Org',
+              //       style: TextStyle(fontSize: 20)),
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       CupertinoPageRoute(
+              //           builder: (context) => const ConnectOrgPage()),
+              //     );
+              //   },
+              // ),
               Expanded(child: SizedBox()),
               // Logout button
               ElevatedButton(
