@@ -1,33 +1,36 @@
 class Org {
-  int? id;
-  String? name;
-  String? email;
-  String? description;
-  bool? is_active;
-  String? last_login;
+  int id;
+  List<int> orgEvents = const [];
+  String name;
+  String email;
+  String description;
+  bool isActive;
+  String? lastLogin;
   // String? password;
-  List<int>? studentLeaders;
+  List<int> studentLeaders;
 
 
   Org({
-    this.id,
-    this.name,
-    this.email,
-    this.description,
-    this.is_active,
-    this.last_login,
+    this.id = -1,
+    this.orgEvents = const [],
+    this.name = 'null name',
+    this.email = 'null email',
+    this.description = 'null description',
+    this.isActive = false,
+    this.lastLogin,
     // this.password,
-    this.studentLeaders
+    this.studentLeaders = const [],
   });
 
   factory Org.fromJson(json) {
     return Org(
       id: json['id'],
+      orgEvents: (json['orgEvents'] as List<dynamic>).cast<int>(),
       name: json['name'],
       email: json['email'],
       description: json['description'],
-      is_active: json['is_active'],
-      last_login: json['last_login'],
+      isActive: json['is_active'],
+      lastLogin: json['last_login'],
       // password: json['password'],
       studentLeaders: (json['studentLeaders'] as List<dynamic>).cast<int>(),
     );

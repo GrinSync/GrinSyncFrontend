@@ -1,13 +1,13 @@
 class Event {
   int id;
-  String? title;
+  String title;
   int host;
   String? hostName;
   int? org;
-  String? location;
+  String location;
   String? start;
   String? end;
-  String? description;
+  String description;
   bool? studentsOnly;
   List<String>? tags;
   bool isFavorited;
@@ -15,14 +15,14 @@ class Event {
 
   Event({
     this.id = -1,
-    this.title,
+    this.title = '',
     this.host = -1,
     this.hostName,
     this.org,
-    this.location,
+    this.location = '',
     this.start,
     this.end,
-    this.description,
+    this.description = 'No description provided.',
     this.studentsOnly = false,
     this.tags,
     this.isFavorited = false,
