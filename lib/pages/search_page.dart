@@ -75,9 +75,10 @@ class _SearchPageState extends State<SearchPage> {
                     controller: _query,
                     autocorrect: false,
                     decoration: InputDecoration(
-                      prefixIcon: searchMode == 0
-                          ? const Icon(Icons.event)
-                          : const Icon(Icons.person),
+                      // implement this after we have the user search functionality
+                      // prefixIcon: searchMode == 0
+                      //     ? const Icon(Icons.event)
+                      //     : const Icon(Icons.person),
                       labelText: searchMode == 0
                           ? 'Search for Events'
                           : 'Search for Users',
