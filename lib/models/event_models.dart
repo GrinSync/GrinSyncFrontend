@@ -9,6 +9,7 @@ class Event {
   String? end;
   String description;
   bool? studentsOnly;
+  int? parentOrg;
   List<String>? tags;
   bool isFavorited;
   int? nextRepeat;
@@ -24,6 +25,7 @@ class Event {
     this.end,
     this.description = 'No description provided.',
     this.studentsOnly = false,
+    this.parentOrg,
     this.tags,
     this.isFavorited = false,
     this.nextRepeat,
@@ -41,6 +43,7 @@ class Event {
       end: json['end'],
       description: json['description'],
       studentsOnly: json['studentsOnly'],
+      parentOrg: json['parentOrg'],
       tags: (json['tags'] as List<dynamic>).cast<String>(),
       isFavorited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],

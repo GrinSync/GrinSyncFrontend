@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
@@ -18,9 +20,8 @@ class EventDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = (event.host == USER.value?.id) ||
-        (ORGIDS.contains(
-            event.host)); // Check if the event is created by the current user
+    bool isCreatedByThisUser = (event.host == USER.value?.id) || 
+    (ORGIDS.contains(event.parentOrg)); // Check if the event is created by the current user
     var favorited = ValueNotifier(event
         .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
 
@@ -135,9 +136,14 @@ class EventDetailsPage extends StatelessWidget {
               // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
               const Text('Host',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(
-                event.hostName.toString(),
-                style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
+              InkWell(
+                child: Text(
+                  event.hostName.toString(),
+                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
+                ),
+                onTap: () {
+                  // TODO: Navigate to the host's profile page (User/org profile page)
+                },
               ),
               const Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
