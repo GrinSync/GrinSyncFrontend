@@ -25,6 +25,7 @@ class EventDetailsPage extends StatelessWidget {
     (ORGIDS.contains(event.parentOrg)); // Check if the event is created by the current user
     var favorited = ValueNotifier(event
         .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
+    bool navigationAvailable = event.latitude != null && event.longitude != null;
 
     // Function to confirm deletion of the event
     // delete the event if confirmed
@@ -75,6 +76,7 @@ class EventDetailsPage extends StatelessWidget {
         },
       );
     }
+
     // actual page
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +97,43 @@ class EventDetailsPage extends StatelessWidget {
                           : Icon(Icons.favorite_border,
                               color: Theme.of(context).colorScheme.primary);
                     }),
-              )
+              ),
+              // information button to pop up a dialog with information about the page
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Event Details Page'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('This page shows the detailed information of an event.\n'),
+                            Text('Information', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('- You can view the event\'s title, host, location, start and end time, description, and tags.'),
+                            Text('- You can also navigate to the event\'s venue on Google Maps if the location is provided (Indicated by a location pin icon before the location).\n'),
+                            Text('Actions', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('You can contact the host, share the event with your friends.'),
+                            Text('If you are logged in: You can also save the event.'),    
+                            Text('If you are the host of the event: You can edit the event or delete it.'),                      
+                            ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Close'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ]),
       body: Container(
         decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
@@ -148,14 +186,22 @@ class EventDetailsPage extends StatelessWidget {
               ),
               const Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              InkWell(
-                child: Text(event.location,
-                    style:
-                        const TextStyle(fontSize: 20, fontFamily: 'Helvetica', decoration: TextDecoration.underline)),
-                onTap: () async {
-                  await MapUtils.launchGoogleMaps(41.74937505513188, -92.72009801654278);
-                  
-                }
+              Wrap(
+                children: [
+                  if (navigationAvailable)
+                    const Icon(Icons.location_on, color: Colors.blue),
+                  InkWell(
+                    child: Text(event.location,
+                        style:
+                            const TextStyle(fontSize: 20, fontFamily: 'Helvetica', color: Colors.blue, decoration: TextDecoration.underline, decorationColor: Colors.blue)),
+                    onTap: () async {
+                      if (navigationAvailable)
+                        await MapUtils.launchGoogleMaps(double.parse(event.latitude!), double.parse(event.longitude!));
+                      else
+                        await urlLauncher(Uri.parse('https://map.concept3d.com/?id=1232#!ct/68846,74074?sbc/'));
+                    }
+                  ),
+                ],
               ),
               const Text('Starts at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
@@ -299,7 +345,7 @@ class EventDetailsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.edit,
+                        Icons.edit_outlined,
                         size: 20,
                       ),
                       SizedBox(width: 5.0),

@@ -15,6 +15,9 @@ class Event {
   int? nextRepeat;
   String? contactEmail;
 
+  String? latitude;
+  String? longitude;
+
   Event({
     this.id = -1,
     this.title = '',
@@ -31,6 +34,8 @@ class Event {
     this.isFavorited = false,
     this.nextRepeat,
     this.contactEmail,
+    this.latitude,
+    this.longitude,
   });
 
   factory Event.fromJson(json) {
@@ -50,6 +55,8 @@ class Event {
       isFavorited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
       contactEmail: json['contactEmail'],
+      latitude: json['lat'],
+      longitude: json['long'],
     );
   }
 }
