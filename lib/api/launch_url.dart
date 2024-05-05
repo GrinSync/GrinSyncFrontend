@@ -48,15 +48,14 @@ class MailUtils {
   MailUtils._();
   
   static Future<void> contactHost(hostEmail, eventTitle) async {
-    // const double destinationLatitude= 31.5204;
-    // const double destinationLongitude = 74.3587;
+    // All spaces are replaced with %20 to avoid "+"
+    String subject = 'Regarding $eventTitle'.replaceAll(' ', '%20');
+    String body = 'Hello,\n I am interested in your event $eventTitle.'.replaceAll(' ', '%20');
+
     Uri url = Uri(
       scheme: 'mailto',
       path: hostEmail,
-      queryParameters: {
-        'subject': 'Regarding $eventTitle',
-        'body': 'Hello, I am interested in your event $eventTitle',
-      }
+      query: 'subject=$subject&body=$body',
     );
 
     if (await canLaunchUrl(url)) {
