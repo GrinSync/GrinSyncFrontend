@@ -466,17 +466,19 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       fontSize: 16.0);
 
                                       //clear all the text fields
-                                      _title.clear();
-                                      _location.clear();
-                                      _startDate.clear();
-                                      _endDate.clear();
-                                      _description.clear();
-                                      _repeatDate.clear();
-                                      _tags.clear();
-                                      _tagsString = "";
-                                      _org = null;
-                                      _studentsOnly = false;
-                                      _repeat = null;
+                                      setState(() {
+                                        _title.clear();
+                                        _location.clear();
+                                        _startDate.clear();
+                                        _endDate.clear();
+                                        _description.clear();
+                                        _repeatDate.clear();
+                                        _tags.clear();
+                                        _tagsString = "";
+                                        _org = null;
+                                        _studentsOnly = false;
+                                        _repeat = null;
+                                      });
                                 }
                               },
                               child: const Text('Create Event') // Button title
