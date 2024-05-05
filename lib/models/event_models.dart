@@ -13,6 +13,7 @@ class Event {
   List<String>? tags;
   bool isFavorited;
   int? nextRepeat;
+  String? contactEmail;
 
   Event({
     this.id = -1,
@@ -29,6 +30,7 @@ class Event {
     this.tags,
     this.isFavorited = false,
     this.nextRepeat,
+    this.contactEmail,
   });
 
   factory Event.fromJson(json) {
@@ -47,6 +49,7 @@ class Event {
       tags: (json['tags'] as List<dynamic>).cast<String>(),
       isFavorited: json['isFavorited'],
       nextRepeat: json['nextRepeat'],
+      contactEmail: json['contactEmail'],
     );
   }
 }

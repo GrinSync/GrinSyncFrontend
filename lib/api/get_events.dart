@@ -479,6 +479,8 @@ Future<Event?> getEventByID(eventID) async {
   var url = Uri.parse('https://grinsync.com/api/getEvent?id=$eventID');
   var result = await https.get(url, headers: headers);
 
+  print(result.body);
+
   if (result.statusCode == 200) {
     var json = jsonDecode(result.body);
     Event event = Event.fromJson(json);

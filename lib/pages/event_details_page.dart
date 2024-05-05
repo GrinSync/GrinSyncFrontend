@@ -8,18 +8,19 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:flutter_test_app/api/launch_url.dart';
 
 class EventDetailsPage extends StatelessWidget {
   final Event event; // Event to show details of as a field of the class
-  VoidCallback refreshParent;
+  final VoidCallback refreshParent;
 
   EventDetailsPage({required this.event, required this.refreshParent});
 
   @override
   Widget build(BuildContext context) {
+
     bool isCreatedByThisUser = (event.host == USER.value?.id) || 
     (ORGIDS.contains(event.parentOrg)); // Check if the event is created by the current user
     var favorited = ValueNotifier(event
@@ -147,9 +148,15 @@ class EventDetailsPage extends StatelessWidget {
               ),
               const Text('Location',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              Text(event.location,
-                  style:
-                      const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
+              InkWell(
+                child: Text(event.location,
+                    style:
+                        const TextStyle(fontSize: 20, fontFamily: 'Helvetica', decoration: TextDecoration.underline)),
+                onTap: () async {
+                  await MapUtils.launchGoogleMaps(41.74937505513188, -92.72009801654278);
+                  
+                }
+              ),
               const Text('Starts at',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Text(timeFormat(event.start),
@@ -160,7 +167,7 @@ class EventDetailsPage extends StatelessWidget {
               Text(timeFormat(event.end),
                   style:
                       const TextStyle(fontSize: 20, fontFamily: 'Helvetica')),
-              const Text('Description:',
+              const Text('Description',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Card(
                 color: Theme.of(context).colorScheme.secondaryContainer,
@@ -180,7 +187,7 @@ class EventDetailsPage extends StatelessWidget {
                 ),
                 )
               ),
-              const Text('Tags:',
+              const Text('Tags',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Wrap(
                 children: buildTags(context),
@@ -197,29 +204,27 @@ class EventDetailsPage extends StatelessWidget {
 
               // Like button
               if (isLoggedIn())
-                SizedBox(
-                  width: double.infinity,
-                  child: ValueListenableBuilder(
+                WideButton(
+                  content: ValueListenableBuilder(
                       valueListenable: favorited,
                       builder: (context, value, child) {
-                        return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.pink[400],
-                                foregroundColor: Colors.white),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 5.0),
-                                Text(value ? 'Unsave Event' : 'Save Event'),
-                              ],
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              value
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: 20,
                             ),
-                            onPressed: () {
+                            SizedBox(width: 5.0),
+                            Text(value ? 'Unsave Event' : 'Save Event'),
+                          ],
+                        );
+                      }),
+                  backgroundColor: const Color.fromRGBO(236, 64, 122, 1),
+                  foregroundColor: Colors.white,
+                  onPressedFunc: () {
                               toggleLikeEvent(event.id);
                               event.isFavorited = !event.isFavorited;
                               favorited.value = !favorited.value;
@@ -233,71 +238,102 @@ class EventDetailsPage extends StatelessWidget {
                                   backgroundColor: Colors.grey[800],
                                   textColor: Colors.white,
                                   fontSize: 16.0);
-                            });
-                      }),
+                            }),
+
+              const SizedBox(height: 10),
+
+              // Contact button
+              WideButton(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.email_outlined,
+                      size: 20,
+                    ),
+                    SizedBox(width: 5.0),
+                    Text('Contact Host'),
+                  ],
                 ),
+                onPressedFunc: () async {
+                      if (event.contactEmail != null) {
+                        await MailUtils.contactHost(event.contactEmail, event.title);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Host email not provided',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey[800],
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                    }),
 
               const SizedBox(height: 10),
 
               // Share button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                        foregroundColor: Colors.black),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.share,
-                          size: 20,
-                        ),
-                        SizedBox(width: 5.0),
-                        Text('Share Event'),
-                      ],
+              WideButton(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.share,
+                      size: 20,
                     ),
-                    onPressed: () {
-                      Share.share(
+                    SizedBox(width: 5.0),
+                    Text('Share Event'),
+                  ],
+                ),
+                onPressedFunc: () {
+                  Share.share(
                           'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
-                    }),
-              ),
+                }),
 
-              if (isCreatedByThisUser) const SizedBox(height: 10),
+              if (isCreatedByThisUser) const SizedBox(height: 30),
 
               // Edit button
               if (isCreatedByThisUser)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                          foregroundColor: Colors.black),
-                      child: const Text('Edit Event'),
-                      onPressed: () {
-                        Navigator.push(
+                WideButton(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 20,
+                      ),
+                      SizedBox(width: 5.0),
+                      Text('Edit Event'),
+                    ],
+                  ), 
+                  onPressedFunc: () {
+                    Navigator.push(
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
                                     EventEditPage(event: event)));
-                      }),
-                ),
+                  }),
+                
 
               if (isCreatedByThisUser) const SizedBox(height: 10),
 
               // Delete button
               if (isCreatedByThisUser)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white),
-                      child: const Text('Delete'),
-                      onPressed: () {
-                        confirmDeletion(); //pop up a dialog to confirm deletion and delete the event
-                      }),
+                WideButton(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          size: 20,
+                        ),
+                        SizedBox(width: 5.0),
+                        Text('Delete'),
+                      ],
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    onPressedFunc: confirmDeletion //pop up a dialog to confirm deletion and delete the event
                 ),
             ],
           ),
@@ -337,6 +373,36 @@ class EventDetailsPage extends StatelessWidget {
     }
 
     return allCards;
+  }
+}
+
+class WideButton extends StatelessWidget {
+  final Widget content;
+  final Color backgroundColor; 
+  final Color foregroundColor; 
+  final Function onPressedFunc;
+
+  WideButton({
+    super.key,
+    required this.content,
+    this.backgroundColor = const Color.fromARGB(255, 255, 172, 28),
+    this.foregroundColor = Colors.black,
+    required this.onPressedFunc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: backgroundColor,
+              foregroundColor: foregroundColor),
+          child: content,
+          onPressed: () {
+            onPressedFunc();
+          }),
+    );
   }
 }
 

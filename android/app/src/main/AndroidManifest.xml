@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <application
         android:label="flutter_test_app"
         android:name="${applicationName}"
@@ -41,4 +43,26 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+
+    <!-- Required for launching Google Maps or Navigation -->
+     <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="google.navigation" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent>
+
+
+        <!-- If your app emails -->
+        <intent>
+            <action android:name="android.intent.action.SEND"/>
+            <data android:mimeType="*/*"/>
+        </intent>
+
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="mailto"/>
+        </intent>
+    </queries>
+
 </manifest>
