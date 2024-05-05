@@ -464,16 +464,38 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       backgroundColor: Colors.grey[300],
                                       textColor: Colors.black,
                                       fontSize: 16.0);
-                                  _title.clear();
-                                  _location.clear();
-                                  _startDate.clear();
-                                  _endDate.clear();
-                                  _description.clear();
-                                  _repeatDate.clear();
                                 }
                               },
                               child: const Text('Create Event') // Button title
-                              ))
+                              )),
+                              const SizedBox(height: 10),
+
+            ElevatedButton(
+          child: const Text("Reset All Fields"),
+          onPressed: () {
+           //Reset All Checkboxes
+            _org = null;
+            _title.clear();
+            _location.clear();
+            _startDate.clear();
+            _endDate.clear();
+            _description.clear();
+            _studentsOnly = false;
+            _tags.clear();
+            _repeat = null;
+            _repeatDate.clear();
+            _studentOrgs = List.generate(
+      STUDENTORGS.length,
+      (index) => DropdownMenuItem(
+        value: STUDENTORGS[index].name,
+        child: Text(
+          STUDENTORGS[index].name ?? "No Org Name",
+        ),
+      ),
+    );
+            setState(() {});
+          },
+        )
                     ]))));
   } // build
 } // EventCreationPageState
