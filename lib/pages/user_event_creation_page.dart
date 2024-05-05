@@ -464,6 +464,12 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       backgroundColor: Colors.grey[300],
                                       textColor: Colors.black,
                                       fontSize: 16.0);
+                                  _title.clear();
+                                  _location.clear();
+                                  _startDate.clear();
+                                  _endDate.clear();
+                                  _description.clear();
+                                  _repeatDate.clear();
                                 }
                               },
                               child: const Text('Create Event') // Button title
