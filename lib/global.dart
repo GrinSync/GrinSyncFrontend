@@ -14,7 +14,7 @@ List<String> PREFERREDTAGS =
 // important: if you are will use the PREFERREDTAGS variable, make sure to use getPreferredTags() and getAllTags() functions in tags.dart
 // if you do yourList = PREFERREDLIST, you could be modifying the global variable unintentionally (learned from real experience ;_;)
 
-List<Org> STUDENTORGS =
+List<String> STUDENTORGS =
     []; // this list will contain student org names that the user is linked with
 List<int> ORGIDS =
     []; // this list will contain student org ids that the user is linked with

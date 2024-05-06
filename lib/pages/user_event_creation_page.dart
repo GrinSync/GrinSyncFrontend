@@ -114,9 +114,9 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _studentOrgs = List.generate(
       STUDENTORGS.length,
       (index) => DropdownMenuItem(
-        value: STUDENTORGS[index].name,
+        value: STUDENTORGS[index],
         child: Text(
-          STUDENTORGS[index].name ?? "No Org Name",
+          STUDENTORGS[index] ?? "No Org Name",
         ),
       ),
     );
@@ -502,9 +502,9 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
             _studentOrgs = List.generate(
       STUDENTORGS.length,
       (index) => DropdownMenuItem(
-        value: STUDENTORGS[index].name,
+        value: STUDENTORGS[index],
         child: Text(
-          STUDENTORGS[index].name ?? "No Org Name",
+          STUDENTORGS[index] ?? "No Org Name",
         ),
       ),
     );

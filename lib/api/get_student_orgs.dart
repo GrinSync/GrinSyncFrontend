@@ -1,9 +1,37 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test_app/pages/org_details_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
+
+class OrgCard extends StatelessWidget {
+  const OrgCard({
+    super.key,
+    required this.org,
+    required this.refreshParent,
+  });
+  final Org org;
+  final VoidCallback refreshParent;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        title: Text(org.name, style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
+        subtitle: Text(org.email, style: TextStyle(fontSize: 15)),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: org, refreshParent: refreshParent)));
+        },
+    );
+  }
+}
+
+
 Future<void> setStudentOrgs() async {
+  clearOrgs(); // clear the lists of student organizations and their ids
 
   var token = BOX.get('token');
 
@@ -21,12 +49,37 @@ Future<void> setStudentOrgs() async {
     //   ORGIDS.add(jsonOrg['id']);
     // }
     for (var jsonOrg in jsonDecode(result.body)) {
-      print('jsonOrg: $jsonOrg');
+      // print('jsonOrg: $jsonOrg');
       Org newOrg = Org.fromJson(jsonOrg);
-      STUDENTORGS.add(newOrg);
-      ORGIDS.add(newOrg.id!);
+      STUDENTORGS.add(newOrg.name);
+      ORGIDS.add(newOrg.id);
     }
   }
+}
+
+Future<List<Org>> getUserOrgs () async {
+  List<Org> orgs = [];
+
+  var token = BOX.get('token');
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+    var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
+    var result = await http.get(url, headers: headers);
+
+  if (result.statusCode == 200) {
+    for (var jsonOrg in jsonDecode(result.body)) {
+      orgs.add(Org.fromJson(jsonOrg));
+    }
+    return orgs;
+  } else {
+    return [];
+  }
+
+
 }
 
 Future<Org?> getOrgById (int id) async {
