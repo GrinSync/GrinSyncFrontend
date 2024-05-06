@@ -14,8 +14,8 @@ import 'package:flutter_test_app/api/tags.dart';
 
 /// Enum for the filter options for the calendar page
 enum filterOptions {
-  preferences("By your preferences"),
-  created("By your events"),
+  preferences("By tag preferences"),
+  created("By events you created"),
   followed("By events you follow");
 
   // Have a label for each of the filter
