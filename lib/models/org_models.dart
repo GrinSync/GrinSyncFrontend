@@ -7,18 +7,22 @@ class Org {
   bool isActive;
   String? lastLogin;
   // String? password;
+  String? alias; // alias is the org's acronym (e.g. AAA, BRASA, CSA etc.)
+  bool isFollowed;
   List<int> studentLeaders;
 
 
   Org({
     this.id = -1,
     this.orgEvents = const [],
-    this.name = 'null name',
-    this.email = 'null email',
-    this.description = 'null description',
+    this.name = 'null org name',
+    this.email = 'null org email',
+    this.description = 'null org description',
     this.isActive = false,
     this.lastLogin,
     // this.password,
+    this.alias,
+    this.isFollowed = false,
     this.studentLeaders = const [],
   });
 
@@ -32,6 +36,8 @@ class Org {
       isActive: json['is_active'],
       lastLogin: json['last_login'],
       // password: json['password'],
+      alias: json['alias'], 
+      isFollowed: json['isFollowed'],
       studentLeaders: (json['studentLeaders'] as List<dynamic>).cast<int>(),
     );
   }
