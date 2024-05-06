@@ -32,10 +32,10 @@ class MyOrgsPage extends StatelessWidget {
           itemCount: studentOrgs.length,
           itemBuilder: (context, index) {
             return ListTile(
-                title: Text(studentOrgs[index].name ?? 'Null Org Name', style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-                subtitle: Text(studentOrgs[index].email ?? 'Null Org Email', style: TextStyle(fontSize: 15)),
+                title: Text(studentOrgs[index].name, style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
+                subtitle: Text(studentOrgs[index].email, style: TextStyle(fontSize: 15)),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: studentOrgs[index])));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: studentOrgs[index], refreshParent: () {},)));
                 },
             );
           },
