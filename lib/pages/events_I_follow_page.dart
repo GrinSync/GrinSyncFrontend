@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 
@@ -10,11 +11,24 @@ class EventsIFollowPage extends StatefulWidget {
 }
 
 class _EventsIFollowPageState extends State<EventsIFollowPage> {
-  late List<Event> events; // List of events followed by the user
+  List<Event> events = [];
+  late Future _loadEventsFuture;
 
   // Get events followed by the user from the backend
   Future<void> loadEvents() async {
     events = await getLikedEvents(); // function in get_events.dart
+  }
+
+    @override
+  void initState() {
+    _loadEventsFuture = loadEvents();
+    super.initState();
+  }
+
+  refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
   }
 
   @override
@@ -30,7 +44,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
-          future: loadEvents(),
+          future: _loadEventsFuture,
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -54,7 +68,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                     const Text('Error loading events'),
                     TextButton(
                       onPressed: () {
-                        loadEvents();
+                        _loadEventsFuture = loadEvents();
                         setState(() {});
                       },
                       child: const Text('Try again'),
@@ -87,9 +101,36 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                           ],
                         );
                       } else {
-                        return EventCardFavoritable(
-                            event: events[index],
-                            refreshParent: () => {},); // EventCardFavoritable is a custom widget that displays an event with a favorite button
+                        return Slidable(
+                          key: ValueKey(events[index].id),
+                          child: EventCardPlain(
+                              event: events[index],
+                              refreshParent: refresh,),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            dismissible: DismissiblePane(
+                              onDismissed: () {
+                                unlikeEvent(events[index].id);
+                                setState(() {
+                                  events.removeAt(index);
+                                });
+                                //refresh();
+                              },
+                              ),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  // Remove the event from the user's liked events
+                                  unlikeEvent(events[index].id);
+                                  events.removeAt(index);
+                                  refresh();
+                                },
+                                label: 'Unfollow',
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                        ); // EventCardFavoritable is a custom widget that displays an event with a favorite button
                       }
                     },
                   ),

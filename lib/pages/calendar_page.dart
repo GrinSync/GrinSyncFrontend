@@ -70,8 +70,8 @@ class CalendarPageState extends State<CalendarPage> {
   late List<Event> allEvents = <Event>[];
 
   /// The label of the current filtering option
-  String currentFilter =
-      filterOptions.followed.label; // defaulted to user's own agenda
+  filterOptions currentFilter =
+      filterOptions.followed; // defaulted to user's own agenda
 
   /// List of user's preferred tags if logged in
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
@@ -106,6 +106,12 @@ class CalendarPageState extends State<CalendarPage> {
     loadEventsFuture = loadEvents(filterOptions.followed);
   }
 
+  refresh () {
+    setState(() {
+      loadEventsFuture = loadEvents(currentFilter);
+    });
+  }
+
   void calendarViewChanged(ViewChangedDetails viewChangedDetails) {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       calendarController.selectedDate = null;
@@ -127,11 +133,7 @@ class CalendarPageState extends State<CalendarPage> {
           builder: (context) => EventDetailsPage(
               // Look for the single event in the list that has a matching ID
               event: allEvents.singleWhere((element) => element.id == id),
-              refreshParent: () => {
-                setState(() {
-                  loadEvents(filterOptions.followed);
-                })
-              },),
+              refreshParent: refresh),
         ),
       );
     }
@@ -186,7 +188,7 @@ class CalendarPageState extends State<CalendarPage> {
           centerTitle: true,
           actions: [
             // The label of the current filter
-            Text(currentFilter),
+            Text(currentFilter.label),
             // A pop up menu button
             PopupMenuButton(
               icon: const Icon(Icons.filter_alt),
@@ -209,7 +211,7 @@ class CalendarPageState extends State<CalendarPage> {
               onSelected: (filterOptions option) {
                 setState(() {
                   loadEventsFuture = loadEvents(option);
-                  currentFilter = option.label;
+                  currentFilter = option;
                 });
               },
             ),

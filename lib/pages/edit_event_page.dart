@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/user_event_creation_page.dart';
@@ -10,7 +11,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Define a stateful widget for event edit that is mutable and its corresponding state class.
 class EventEditPage extends StatefulWidget {
   final Event event; // Event that we are editing
-  const EventEditPage({super.key, required this.event});
+  final VoidCallback refreshParent;
+  const EventEditPage({super.key, required this.event, required this.refreshParent});
 
   @override
   EventEditPageState createState() => EventEditPageState();
@@ -324,6 +326,7 @@ class EventEditPageState extends State<EventEditPage> {
                                 // Give success message.
                                 // TODO: Refresh the page.
                                 else {
+                                  // give success message
                                   Fluttertoast.showToast(
                                       msg: 'Event Edited Successfully!',
                                       toastLength: Toast.LENGTH_SHORT,
@@ -332,6 +335,12 @@ class EventEditPageState extends State<EventEditPage> {
                                       backgroundColor: Colors.grey[300],
                                       textColor: Colors.black,
                                       fontSize: 16.0);
+
+                                  // Refresh the parent page
+                                  widget.refreshParent();
+
+                                  // Go back to the previous page
+                                  Navigator.of(context).pop();
                                 }
                               },
                               child: const Text('Edit Event') // Button title

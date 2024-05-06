@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/pages/edit_event_page.dart';
 
 class EventsICreatedPage extends StatefulWidget {
   EventsICreatedPage({super.key});
@@ -10,12 +13,12 @@ class EventsICreatedPage extends StatefulWidget {
 }
 
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
-  ValueNotifier<List<Event>?> myEventsNotifier = ValueNotifier<List<Event>?>(null); // List of events created by the user
+  List<Event> events = [];
   late Future _loadEventsFuture;
 
   // Get events created by the user from the backend
   Future<void> loadEvents() async {
-    myEventsNotifier.value = await getMyEvents(); // function in get_events.dart
+    events = await getMyEvents(); // function in get_events.dart
   }
 
   @override
@@ -26,7 +29,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
 
   refresh() {
     setState(() {
-       _loadEventsFuture = loadEvents();
+      _loadEventsFuture = loadEvents();
     });
   }
 
@@ -60,7 +63,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                     const Text('Error loading events'),
                     TextButton(
                       onPressed: () {
-                        loadEvents();
+                        _loadEventsFuture = loadEvents();
                         setState(() {});
                       },
                       child: const Text('Try again'),
@@ -71,40 +74,86 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
               // if the connection is done, show the events
             } else {
               // if there are no events, show a message
-              if (myEventsNotifier.value!.isEmpty) {
+              if (events.isEmpty) {
                 return const Center(
                   child: Text("You haven't created any events yet."),
                 );
                 // if there are events, show the events
               } else {
-                return ValueListenableBuilder(
-                  valueListenable: myEventsNotifier,
-                  builder: (context, myEvents, child) {
-                    return Container(
+                return Container(
                       padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                       child: ListView.builder(
-                        itemCount: myEvents!.length + 1,
+                        itemCount: events.length + 1,
                         itemBuilder: (context, index) {
-                          if (index == myEvents.length) {
+                          if (index == events.length) {
                             return Column(
                               children: [
                                 Divider(color: Colors.grey[400]),
                                 Text('--End of Your Events Created--',
                                     style: TextStyle(color: Colors.grey[600])),
-                                Text('Event Count: ${myEvents.length}',
+                                Text('Event Count: ${events.length}',
                                     style: TextStyle(color: Colors.grey[600])),
                               ],
                             );
                           } else {
-                            return EventCardPlain(
-                                event: myEvents[index],
-                                refreshParent: refresh,); // EventCardPlain is an event card Widget in get_events.dart
+                            return Slidable(
+                              key: ValueKey(events[index].id),
+                              endActionPane: ActionPane(
+                                motion: DrawerMotion(),
+                                dismissible: DismissiblePane(
+                                  onDismissed: () async {
+                                    String deleteMsg = await deleteEvent(events[index].id);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(deleteMsg),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                    setState(() {
+                                      events.removeAt(index);
+                                    });
+                              },
+                                ),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      EventEditPage(event: events[index], refreshParent: refresh,)));
+                                    },
+                                    label: 'Edit',
+                                    icon: Icons.edit,
+                                    backgroundColor: Colors.blue,),
+
+                                  SlidableAction(
+                                    onPressed: (context) async {
+                                      String deleteMsg = await deleteEvent(events[index].id);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(deleteMsg),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                    setState(() {
+                                      events.removeAt(index);
+                                    });
+                                    },
+                                    label: 'Delete',
+                                    icon: Icons.delete,
+                                    backgroundColor: Colors.red,
+                                  ),
+                                ],
+                              ),
+                              child: EventCardPlain(
+                                  event: events[index],
+                                  refreshParent: refresh,),
+                            ); // EventCardPlain is an event card Widget in get_events.dart
                           }
                         },
                       ),
                     );
-                  }
-                );
               }
             }
           }),
