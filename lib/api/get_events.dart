@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as https;
+import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -224,7 +224,7 @@ Future<String> deleteEvent(int eventId) async {
   };
 
   var url = Uri.parse('https://grinsync.com/api/deleteEvent');
-  var response = await https.delete(url, headers: headers, body: body);
+  var response = await http.delete(url, headers: headers, body: body);
 
   if (response.statusCode == 200) {
     return 'Event deleted successfully';
@@ -246,12 +246,12 @@ Future<void> toggleLikeEvent(int eventId) async {
 
   var url = Uri.parse('https://grinsync.com/api/toggleLikedEvent');
   var response =
-      await https.post(url, headers: headers, body: {'id': eventId.toString()});
+      await http.post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
     print('Event liked/unliked');
   } else {
-    print('Failed to like/unlike event');
+    print(response.body);
   }
 }
 
@@ -271,12 +271,12 @@ Future<void> unlikeEvent(int eventId) async {
     path: 'api/unlikeEvent',  
   );
 
-  var response = await https.post(url, headers: headers, body: {'id': eventId.toString()});
+  var response = await http.post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
     print('Event unliked');
   } else {
-    print('Failed to unlike event');
+    print(response.body);
   }
 }
 
@@ -297,7 +297,7 @@ Future<List<Event>> getAllEvents() async {
   }
   print('Fetching events...');
   var url = Uri.parse('https://grinsync.com/api/getAll');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   // print('Parsing JSON response...');
 
@@ -331,7 +331,7 @@ Future<List<Event>> getAllEventsByPreferences(
   }
   print('Fetching events...');
   var url = Uri.parse('https://grinsync.com/api/getAll');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   // print('Parsing JSON response...');
 
@@ -377,7 +377,7 @@ Future<List<Event>> getUpcomingEvents(
 
   var url =
       Uri.parse('https://grinsync.com/api/upcoming?tags=${tagList.join(';')}');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
@@ -425,7 +425,7 @@ Future<List<Event>> getMyEvents() async {
   }
 
   var url = Uri.parse('https://grinsync.com/api/getCreatedEvents');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
@@ -452,7 +452,7 @@ Future<List<Event>> getLikedEvents() async {
   }
 
   var url = Uri.parse('https://grinsync.com/api/getLikedEvents');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   // parse the json response and create a list of Event objects
   // result.body is a list of maps with event information
@@ -477,7 +477,7 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
     headers = {'Authorization': 'Token $token'};
   }
   var url = Uri.parse('https://grinsync.com/api/search?query=$keyword');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
   // print(result.body);
   // print('Parsing JSON response...');
 
@@ -502,9 +502,9 @@ Future<Event?> getEventByID(eventID) async {
   }
 
   var url = Uri.parse('https://grinsync.com/api/getEvent?id=$eventID');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
-  print(result.body);
+  //print(result.body);
 
   if (result.statusCode == 200) {
     var json = jsonDecode(result.body);
@@ -529,7 +529,7 @@ Future<List<Event>> getOrgEvents(orgID) async {
   }
 
   var url = Uri.parse('https://grinsync.com/api/getOrgEvents?id=$orgID');
-  var result = await https.get(url, headers: headers);
+  var result = await http.get(url, headers: headers);
 
   if (result.statusCode == 200) {
     for (var jsonEvent in jsonDecode(result.body)) {
