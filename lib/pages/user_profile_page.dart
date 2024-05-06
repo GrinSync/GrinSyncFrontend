@@ -94,7 +94,7 @@ class UserProfilePage extends StatelessWidget {
 
               // Users/Orgs I Follow button
               TextButton(
-                child: const Text('Studnet Organiztions I Follow',
+                child: const Text('Student Organizations I Follow',
                     style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   Navigator.push(
