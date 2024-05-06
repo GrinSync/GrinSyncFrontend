@@ -116,7 +116,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
       (index) => DropdownMenuItem(
         value: STUDENTORGS[index],
         child: Text(
-          STUDENTORGS[index] ?? "No Org Name",
+          STUDENTORGS[index],
         ),
       ),
     );
