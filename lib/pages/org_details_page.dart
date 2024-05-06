@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/models/event_models.dart';
@@ -23,7 +24,7 @@ class OrgDetailsPage extends StatefulWidget {
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
-  bool _isFollowing = false;
+  late bool _isFollowing;
   List<User> leaders = []; // List of student leaders in the organization
   List<Event> events = []; // List of events created by the organization
   late Future _leadersFuture;
@@ -32,6 +33,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
   @override
   void initState() {
     super.initState();
+    _isFollowing = widget.org.isFollowed;
     _leadersFuture = initializeLeaders();
     _eventsFuture = initializeEvents();
   }
@@ -202,8 +204,8 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                       await toggleFollowedOrg(widget.org.id);
 
                       setState(() {
-                        _isFollowing = !_isFollowing;
-                        // widget.org.isFollowing = !org.isFollowing; // uncomment after Brian updates the Org model
+                        _isFollowing = !_isFollowing; // Toggle the local variable
+                        widget.org.isFollowed = !widget.org.isFollowed; // Update the org object
                       });
 
                       Fluttertoast.showToast(
