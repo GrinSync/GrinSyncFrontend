@@ -2,11 +2,14 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/api/launch_url.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/api/tags.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:share_plus/share_plus.dart';
 
 // HomePage shows user a list of events
 
@@ -16,8 +19,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future? _loadEventsFuture; // Future to load events
-  ValueNotifier upcomingEvents = ValueNotifier<List<Event>?>(null); // A list of upcoming events as a ValueNotifier
+  late Future _loadEventsFuture; // Future to load events
+  List<Event> upcomingEvents = []; // A list of upcoming events as a ValueNotifier
   List<String> availableTags = getAllTags(); // get all tags from the global variable
   List<String> selectedTags = isLoggedIn()? getPreferredTags():getAllTags(); // get the preferred tags from the global variable only if logged in
   bool stduentOnly = false; // show only studentOnly events
@@ -30,8 +33,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadEvents() async {
-    print('Loading events');
-    upcomingEvents.value = await getUpcomingEvents(selectedTags, stduentOnly, intersectionFilter);
+    upcomingEvents = await getUpcomingEvents(selectedTags, stduentOnly, intersectionFilter);
   }
 
   @override
@@ -66,10 +68,10 @@ class _HomePageState extends State<HomePage> {
                                   setState(() {
                                     if (selected) {
                                       selectedTags.add(tag);
-                                      print(selectedTags);
+                                      // print(selectedTags);
                                     } else {
                                       selectedTags.remove(tag);
-                                      print(selectedTags);
+                                      // print(selectedTags);
                                     }
                                   });
                                 },
@@ -194,37 +196,71 @@ class _HomePageState extends State<HomePage> {
               );
               // if the connection is done, show the events
             } else {
-              return ValueListenableBuilder(
-                  valueListenable:
-                      upcomingEvents, // Listens to the upcomingEvents ValueNotifier to rebuild the page when the events are (re)loaded
-                  builder: (context, eventList, child) {
-                    return Container(
+              return Container(
                       padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                       child: RefreshIndicator(
                         onRefresh: loadEvents,
                         child: ListView.builder(
-                          itemCount: eventList!.length + 1,
+                          itemCount: upcomingEvents.length + 1,
                           itemBuilder: (context, index) {
-                            if (index == eventList.length) {
+                            if (index == upcomingEvents.length) {
                               return Column(
                                 children: [
                                   Divider(color: Colors.grey[400]),
                                   Text('--End of All Events--',
                                       style: TextStyle(color: Colors.grey[600])),
-                                  Text('Event Count: ${eventList.length}',
+                                  Text('Event Count: ${upcomingEvents.length}',
                                       style: TextStyle(color: Colors.grey[600])),
                                 ],
                               );
                             } else {
-                              return isLoggedIn() // return different event cards based on user's login status
-                                  ? EventCardFavoritable(event: eventList[index], refreshParent: () => {})
-                                  : EventCardPlain(event: eventList[index], refreshParent: () => {});
+                              Widget eventCard = isLoggedIn() // return different event cards based on user's login status
+                                  ? EventCardFavoritable(event: upcomingEvents[index], refreshParent: () => {})
+                                  : EventCardPlain(event: upcomingEvents[index], refreshParent: () => {});
+                              return Slidable(
+                                child: eventCard,
+                                endActionPane: ActionPane(
+                                  motion: DrawerMotion(),
+                                  children: [
+                                    // A SlidableAction can have an icon and/or a label.
+                                    SlidableAction(
+                                      onPressed: (context) async {
+                                        if (upcomingEvents[index].contactEmail != null) {
+                                          await MailUtils.contactHost(upcomingEvents[index].contactEmail, upcomingEvents[index].title);
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: 'Host email not provided',
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.grey[800],
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        }
+                                      },
+                                      backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                                      foregroundColor: Colors.black,
+                                      icon: Icons.email_outlined,
+                                      label: 'Contact',
+                                    ),
+                                    SlidableAction(
+                                      onPressed: (context) {
+                                        Share.share(
+                                            'Check out this event: ${upcomingEvents[index].title} at ${upcomingEvents[index].location} on ${timeFormat(upcomingEvents[index].start)}!');
+                                      },
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.black,
+                                      icon: Icons.share,
+                                      label: 'Share',
+                                    ),
+                                  ],
+                                ),
+                                );
                             }
                           },
                         ),
                       ),
                     );
-                  });
             }
           }),
     );

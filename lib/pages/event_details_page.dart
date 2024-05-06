@@ -2,30 +2,56 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/global.dart';
+import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
+import 'package:flutter_test_app/pages/org_details_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter_test_app/api/launch_url.dart';
 
-class EventDetailsPage extends StatelessWidget {
+class EventDetailsPage extends StatefulWidget {
   final Event event; // Event to show details of as a field of the class
   final VoidCallback refreshParent;
 
   EventDetailsPage({required this.event, required this.refreshParent});
 
   @override
+  State<EventDetailsPage> createState() => _EventDetailsPageState();
+}
+
+class _EventDetailsPageState extends State<EventDetailsPage> {
+  late Event event;
+
+  @override
+  void initState() {
+    event = widget.event; //initialize the event field with the event passed to the class
+    super.initState();
+  }
+
+  refresh () async {
+    var newEvent = await getEventByID(event.id);
+    setState(() {
+      if (newEvent != null) {
+        event = newEvent;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     bool isCreatedByThisUser = (event.host == USER.value?.id) || 
-    (ORGIDS.contains(event.parentOrg)); // Check if the event is created by the current user
+    (ORGIDS.contains(event.parentOrg)); // Check if the event is created by the current user or an organization the user is a part of
     var favorited = ValueNotifier(event
         .isFavorited); // ValueNotifier to store if the event is favorited by the user so that the heart icon can be updated in real time
-    bool navigationAvailable = event.latitude != null && event.longitude != null;
+    bool navigationAvailable = event.latitude != null && event.longitude != null; // Check if the event has a location to navigate to
+    bool isCreatedByOrg = event.parentOrg != null; // Check if the event is created by an organization (rather than an individual user)
 
     // Function to confirm deletion of the event
     // delete the event if confirmed
@@ -55,10 +81,10 @@ class EventDetailsPage extends StatelessWidget {
               // Yes button
               TextButton(
                 child: const Text('Yes'),
-                onPressed: () {
-                  deleteEvent(event.id); // Call deleteEvent
+                onPressed: () async {
+                  String deleteMsg = await deleteEvent(event.id); // Call deleteEvent
                   Fluttertoast.showToast(
-                      msg: 'Event deleted successfully',
+                      msg: deleteMsg,
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 1,
@@ -66,9 +92,10 @@ class EventDetailsPage extends StatelessWidget {
                       textColor: Colors.white,
                       fontSize: 16.0);
 
-                  refreshParent(); // Refresh the parent page
                   Navigator.of(context).pop(); // Dismiss the dialog
                   Navigator.of(context).pop(); // Dismiss the page
+                  
+                  widget.refreshParent(); // Refresh the parent page
                 },
               ),
             ],
@@ -180,8 +207,16 @@ class EventDetailsPage extends StatelessWidget {
                   event.hostName.toString(),
                   style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
                 ),
-                onTap: () {
-                  // TODO: Navigate to the host's profile page (User/org profile page)
+                onTap: () async {
+                  if (event.parentOrg != null) {
+                    Org? org = await getOrgById(event.parentOrg!);
+                    if (org != null)
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => OrgDetailsPage(
+                                  org: org!)));
+                  }
                 },
               ),
               const Text('Location',
@@ -270,8 +305,8 @@ class EventDetailsPage extends StatelessWidget {
                       }),
                   backgroundColor: const Color.fromRGBO(236, 64, 122, 1),
                   foregroundColor: Colors.white,
-                  onPressedFunc: () {
-                              toggleLikeEvent(event.id);
+                  onPressedFunc: () async {
+                              await toggleLikeEvent(event.id);
                               event.isFavorited = !event.isFavorited;
                               favorited.value = !favorited.value;
                               Fluttertoast.showToast(
@@ -284,6 +319,8 @@ class EventDetailsPage extends StatelessWidget {
                                   backgroundColor: Colors.grey[800],
                                   textColor: Colors.white,
                                   fontSize: 16.0);
+
+                              widget.refreshParent();
                             }),
 
               const SizedBox(height: 10),
@@ -352,14 +389,16 @@ class EventDetailsPage extends StatelessWidget {
                       Text('Edit Event'),
                     ],
                   ), 
-                  onPressedFunc: () {
+                  onPressedFunc: () async {
                     Navigator.push(
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
-                                    EventEditPage(event: event)));
+                                    EventEditPage(event: event, refreshParent: refresh)));
+                    // notify the parent page to refresh
+                    widget.refreshParent();
                   }),
-                
+              
 
               if (isCreatedByThisUser) const SizedBox(height: 10),
 

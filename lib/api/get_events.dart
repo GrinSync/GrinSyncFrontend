@@ -209,7 +209,7 @@ String timeFormat(String? timeString) {
   return '${time} ${month} ${day}, ${year}';
 }
 
-Future<void> deleteEvent(int eventId) async {
+Future<String> deleteEvent(int eventId) async {
   var token = BOX.get('token');
 
   Map<String, String> headers;
@@ -227,9 +227,9 @@ Future<void> deleteEvent(int eventId) async {
   var response = await https.delete(url, headers: headers, body: body);
 
   if (response.statusCode == 200) {
-    print('Event deleted');
+    return 'Event deleted successfully';
   } else {
-    print(response.body);
+    return response.body;
   }
 }
 
@@ -252,6 +252,31 @@ Future<void> toggleLikeEvent(int eventId) async {
     print('Event liked/unliked');
   } else {
     print('Failed to like/unlike event');
+  }
+}
+
+Future<void> unlikeEvent(int eventId) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri(
+    scheme: 'https',
+    host: 'grinsync.com',
+    path: 'api/unlikeEvent',  
+  );
+
+  var response = await https.post(url, headers: headers, body: {'id': eventId.toString()});
+
+  if (response.statusCode == 200) {
+    print('Event unliked');
+  } else {
+    print('Failed to unlike event');
   }
 }
 

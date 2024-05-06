@@ -46,6 +46,7 @@ dependencies:
   widgets_to_image: any
   flutter_widget_from_html_core: ^0.14.11
   awesome_notifications: ^0.9.3+1
+  flutter_slidable: ^3.1.0
 
 dev_dependencies:
   flutter_test:
