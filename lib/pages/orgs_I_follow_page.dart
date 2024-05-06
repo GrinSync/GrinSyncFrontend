@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/pages/org_details_page.dart';
@@ -55,25 +56,42 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
                   Text('You are not following any organizations.'),
             );
           }
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Organizations I Follow', style: TextStyle(fontWeight: FontWeight.bold)),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-            ),
-            body: ListView.separated(
+          return ListView.separated(
               separatorBuilder: (context, index) => Divider(color: Colors.grey, height: 0),
               itemCount: orgs.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(orgs[index].name, style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-                  subtitle: Text(orgs[index].email, style: TextStyle(fontSize: 15)),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: orgs[index], refreshParent: refresh,)));
-                  },
+                return Slidable(
+                  key: ValueKey(orgs[index].id),
+                  endActionPane: ActionPane(
+                    motion: DrawerMotion(),
+                    dismissible: DismissiblePane(
+                      onDismissed: () {
+                        unfollowOrg(orgs[index].id);
+                        setState(() {
+                          orgs.removeAt(index);
+                        });
+                        //refresh();
+                      },
+                    ),
+                    children: [
+                      SlidableAction(
+                                onPressed: (context) {
+                                  // Remove the event from the user's liked events
+                                  unfollowOrg(orgs[index].id);
+                                  orgs.removeAt(index);
+                                  refresh();
+                                },
+                                label: 'Unsave',
+                                backgroundColor: Colors.red,
+                              ),
+                    ],
+                  ),
+                  child: OrgCard(
+                    org: orgs[index],
+                    refreshParent: refresh,
+                  ),
                 );
               },
-            ),
           );
         },
         ),

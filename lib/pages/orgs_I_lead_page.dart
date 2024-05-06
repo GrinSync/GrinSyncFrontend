@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/org_details_page.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
-class MyOrgsPage extends StatelessWidget {
-  final List<Org> studentOrgs = List<Org>.from(STUDENTORGS);
+class MyOrgsPage extends StatefulWidget {
 
-  // constructor
   MyOrgsPage({Key? key}) : super(key: key);
 
+  @override
+  State<MyOrgsPage> createState() => _MyOrgsPageState();
+}
+
+class _MyOrgsPageState extends State<MyOrgsPage> {
+  late List<Org> orgs = [];
+  late Future _loadOrgsFuture;
+
+  @override 
+  initState() {
+    super.initState();
+    _loadOrgsFuture = loadOrgs();
+  }
+
+  Future<void> loadOrgs() async {
+    orgs = await getUserOrgs(); // function in get_orgs.dart
+  }
+
+  refresh() {
+    setState(() {
+      _loadOrgsFuture = loadOrgs();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +49,34 @@ class MyOrgsPage extends StatelessWidget {
             }),
         ],
       ),
-      body: ListView.separated(
-          separatorBuilder: (context, index) => Divider(color: Colors.grey, height:0),
-          itemCount: studentOrgs.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-                title: Text(studentOrgs[index].name, style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-                subtitle: Text(studentOrgs[index].email, style: TextStyle(fontSize: 15)),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: studentOrgs[index], refreshParent: () {},)));
-                },
+      body: FutureBuilder(
+        future: _loadOrgsFuture, 
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Text('Loading organizations...'),
+                ],
+              ),
             );
-          },
-        ),
+          } else if (orgs.isEmpty) {
+            return Center(
+              child: 
+                  Text('You are not a member of any organizations.'),
+            );
+          }
+          return ListView.separated(
+              separatorBuilder: (context, index) => Divider(color: Colors.grey, height: 0),
+              itemCount: orgs.length,
+              itemBuilder: (context, index) {
+                return OrgCard(org: orgs[index], refreshParent: refresh,);
+              },
+          );
+        },
+      ),
     );
   }
 }
