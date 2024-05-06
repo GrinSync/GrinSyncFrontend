@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
@@ -8,24 +10,27 @@ import 'package:flutter_test_app/api/get_events.dart';
 
 class OrgDetailsPage extends StatefulWidget {
   final Org org; // Organization to display details of
+  final VoidCallback refreshParent;
     
   @override
   _OrgDetailsPageState createState() => _OrgDetailsPageState();
 
   // constructor
-  OrgDetailsPage({Key? key, required this.org}) : super(key: key);
+  OrgDetailsPage({Key? key, required this.org, required this.refreshParent}) : super(key: key);
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
-  // bool _isFollowing = false;
+  bool _isFollowing = false;
   List<User> leaders = []; // List of student leaders in the organization
   List<Event> events = []; // List of events created by the organization
+  late Future _leadersFuture;
+  late Future _eventsFuture;
 
   @override
   void initState() {
     super.initState();
-    initializeLeaders();
-    initializeEvents();
+    _leadersFuture = initializeLeaders();
+    _eventsFuture = initializeEvents();
   }
 
   initializeLeaders() async {
@@ -95,15 +100,25 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                   ),
                 ),
               // Student Leader Cards
-              SizedBox(
-                height: 100,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: leaders.length,
-                  itemBuilder: (context, index) {
-                    return OrgLeaderCard(leader: leaders[index]);
-                  },
-                ),
+              FutureBuilder(
+                future: _leadersFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (leaders.isEmpty) {
+                    return Text('No student leaders found');
+                  }
+                  return SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: leaders.length,
+                      itemBuilder: (context, index) {
+                        return OrgLeaderCard(leader: leaders[index]);
+                      },
+                    ),
+                  );
+                }
               ),
 
               SizedBox(height: 10),
@@ -149,36 +164,49 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
               // TODO: implement a scrollable list of event cards here using FutureBuilder?
               // Say no events are created yet if there are no events
               Expanded(
-                child: ListView.builder(
-                          itemCount: events.length,
-                          itemBuilder: (context, index) {
-                            return isLoggedIn() // return different event cards based on user's login status
-                                  ? EventCardFavoritable(event: events[index], refreshParent: () => {})
-                                  : EventCardPlain(event: events[index], refreshParent: () => {});
-                          },
-                        ),
+                child: FutureBuilder(
+                  future: _eventsFuture,
+                  builder: (context, Snapshot) {
+                    if (Snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (events.isEmpty) {
+                      return Center(child: Text('No events created yet'));
+                    }
+                    return ListView.builder(
+                              itemCount: events.length,
+                              itemBuilder: (context, index) {
+                                return isLoggedIn() // return different event cards based on user's login status
+                                      ? EventCardFavoritable(event: events[index], refreshParent: () => {})
+                                      : EventCardPlain(event: events[index], refreshParent: () => {});
+                              },
+                            );
+                  }
+                ),
               ),
               
-              // Follow Button: To be implemented later
-              // SizedBox(height: 16),
-        
-              // if (isLoggedIn())
-              //   SizedBox(
-              //     width: double.infinity,
-              //     child: ElevatedButton(
-              //       style: ElevatedButton.styleFrom(
-              //             backgroundColor: Color.fromARGB(255, 255, 172, 28),
-              //             foregroundColor: Colors.black),
-              //       onPressed: () {
-              //         setState(() {
-              //           _isFollowing = !_isFollowing;
-              //         });
-              //         // TODO: implement follow/unfollow functionality
-              //       },
+              SizedBox(height: 16),
+
+              // Follow/Unfollow Button
+              if (isLoggedIn())
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                          foregroundColor: Colors.black),
+                    onPressed: () {
+                      setState(() {
+                        _isFollowing = !_isFollowing;
+                      });
+                      // TODO: implement follow/unfollow functionality
+                      
+                      // Refresh the parent page
+                      widget.refreshParent();
+                    },
                     
-              //       child: Text(_isFollowing ? 'Unfollow' : 'Follow'),
-              //     ),
-              //   ),
+                    child: Text(_isFollowing ? 'Unfollow' : 'Follow'),
+                  ),
+                ),
             ],
           ),
         ),
