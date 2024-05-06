@@ -6,6 +6,7 @@ import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/events_I_follow_page.dart';
+import 'package:flutter_test_app/pages/orgs_I_follow_page.dart';
 import 'package:flutter_test_app/pages/orgs_I_lead_page.dart';
 import 'package:flutter_test_app/pages/tag_preference_page.dart';
 
@@ -92,10 +93,13 @@ class UserProfilePage extends StatelessWidget {
 
               // Users/Orgs I Follow button
               TextButton(
-                child: const Text('Users/Orgs I Follow',
+                child: const Text('Studnet Organiztionss I Follow',
                     style: TextStyle(fontSize: 20)),
                 onPressed: () {
-                  // TODO: implement users/orgs I follow page
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => OrgsIFollowPage()));
                 },
               ),
               // Settings button
