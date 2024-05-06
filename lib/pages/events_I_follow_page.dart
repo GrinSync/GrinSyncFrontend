@@ -125,7 +125,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                                   events.removeAt(index);
                                   refresh();
                                 },
-                                label: 'Unfollow',
+                                label: 'Unsave',
                                 backgroundColor: Colors.red,
                               ),
                             ],
