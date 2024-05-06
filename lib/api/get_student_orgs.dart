@@ -52,6 +52,82 @@ Future<Org?> getOrgById (int id) async {
   
 }
 
+
+Future<List<Org>> getFollowedOrgs() async {
+  List<Org> orgs = [];
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+  var url = Uri(
+    scheme: 'https',
+    host: 'grinsync.com',
+    path: 'api/getFollowedOrgs');
+  var result = await http.get(url, headers: headers);
+
+  if (result.statusCode == 200) {
+    for (var jsonOrg in jsonDecode(result.body)) {
+      orgs.add(Org.fromJson(jsonOrg));
+    }
+    return orgs;
+  } else {
+    return [];
+  }
+}
+
+Future<void> toggleFollowedOrg(int id) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri(
+    scheme: 'https',
+    host: 'grinsync.com',
+    path: 'api/toggleFollowedOrg');
+  var result =
+      await http.post(url, headers: headers, body: {'id': id.toString()});
+
+  if (result.statusCode == 200) {
+    print('Org followed/unfollowed');
+  } else {
+    print(result.body);
+  }
+}
+
+Future<void> unfollowOrg(int id) async {
+  var token = BOX.get('token');
+
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+
+  var url = Uri(
+    scheme: 'https',
+    host: 'grinsync.com',
+    path: 'api/unfollowOrg',  
+  );
+
+  var result = await http.post(url, headers: headers, body: {'id': id.toString()});
+
+  if (result.statusCode == 200) {
+    print('Org unfollowed');
+  } else {
+    print(result.body);
+  }
+}
+
 // performed at times such as logging out
 clearOrgs() {
   STUDENTORGS.clear();
