@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
+import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/search_results_page.dart';
 
@@ -12,13 +13,34 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
+enum searchMode {
+  events(obj: Event, label: "Search for Events", icon: Icons.event,), //displayWidget: EventCardFavoritable),
+  users(obj: User, label: "Search for Users", icon: Icons.person,), //displayWidget: UserCard),
+  orgs(obj: Org, label: "Search for Organizations", icon: Icons.group,); //displayWidget: OrgCard),;
+
+  const searchMode({
+    required this.obj,
+    required this.label, 
+    required this.icon,
+    //required this.displayWidget,
+    });
+    
+  final Type obj;
+  final String label;
+  final IconData icon;
+  //final Type displayWidget;
+}
+
 class _SearchPageState extends State<SearchPage> {
   late TextEditingController _query =
       TextEditingController(); //text box for search
-  int searchMode = 0; // 0 for search event, 1 for search user
-  ValueNotifier eventSearchResults = ValueNotifier<List<Event>?>(null);
-  //ValueNotifier<List<User>?>? _userSearchResults;
-  late List<Event> events;
+  searchMode currentMode = searchMode.events; //default search mode
+  List<Event> eventSearchResults = [];
+  List<User> userSearchResults = [];
+  List<Org> orgSearchResults = [];
+  late Future _searchFuture;
+
+
 
   @override
   void initState() {
@@ -27,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> searchEvents() async {
-    eventSearchResults.value = await getSearchedEvents(_query.text);
+    eventSearchResults = await getSearchedEvents(_query.text);
   }
 
 
@@ -49,16 +71,20 @@ class _SearchPageState extends State<SearchPage> {
         //     itemBuilder: (BuildContext context) => [
         //       const PopupMenuItem(
         //         child: Text('Search Events'),
-        //         value: 0,
+        //         value: searchMode.events,
         //       ),
         //       const PopupMenuItem(
         //         child: Text('Search Users'),
-        //         value: 1,
+        //         value: searchMode.users,
+        //       ),
+        //       const PopupMenuItem(
+        //         child: Text('Search Organizations'),
+        //         value: searchMode.orgs,
         //       ),
         //     ],
-        //     onSelected: (int value) {
+        //     onSelected: (searchMode value) {
         //       setState(() {
-        //         searchMode = value;
+        //         currentMode = value;
         //       });
         //     },
         //   ),
@@ -76,12 +102,8 @@ class _SearchPageState extends State<SearchPage> {
                     autocorrect: false,
                     decoration: InputDecoration(
                       // implement this after we have the user search functionality
-                      // prefixIcon: searchMode == 0
-                      //     ? const Icon(Icons.event)
-                      //     : const Icon(Icons.person),
-                      labelText: searchMode == 0
-                          ? 'Search for Events'
-                          : 'Search for Users',
+                      prefixIcon: Icon(currentMode.icon),
+                      labelText: currentMode.label,
                       hintText: 'Enter a keyword',
                       border: const OutlineInputBorder(),
                     ),
@@ -90,17 +112,25 @@ class _SearchPageState extends State<SearchPage> {
                 IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) =>
-                    //           SearchResultsPage(todo: _query.text)),
-                    // );
                     if (_query.text.isNotEmpty) {
-                      if (searchMode == 0)
+                      if (currentMode == searchMode.events) {
                         setState(() {
-                          searchEvents();
+                          _searchFuture = searchEvents();
+                          // clear the other search results
+                          userSearchResults = [];
+                          orgSearchResults = [];
                         });
+                      } else if (currentMode == searchMode.users) {
+                        // implement this after we have the user search functionality
+                        // clear the other search results
+                        eventSearchResults = [];
+                        orgSearchResults = [];
+                      } else if (currentMode == searchMode.orgs) {
+                        // implement this after we have the organization search functionality
+                        // clear the other search results
+                        eventSearchResults = [];
+                        userSearchResults = [];
+                      }
                     }
                   },
                 ),
@@ -113,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: Text('Search Something...'),
               ) 
               :FutureBuilder(
-                future: searchMode == 0? searchEvents() : null,
+                future: _searchFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -121,23 +151,25 @@ class _SearchPageState extends State<SearchPage> {
                     );
                   } else if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Search Something...'),
+                      child: Text('An error occurred while searching. Please try again.'),
                     );
                   } else {
-                    return ValueListenableBuilder(
-                      valueListenable: searchMode == 0? eventSearchResults : eventSearchResults, //userSearchResults will be added later
-                      builder: (context, searchResult, child) {
-                        return ListView.builder(
-                          itemCount: searchResult.length + 1,
+                    if (eventSearchResults.isEmpty) {
+                      return const Center(
+                        child: Text('No Results Found'),
+                      );
+                    }
+                    return ListView.builder(
+                          itemCount: eventSearchResults.length + 1,
                           itemBuilder: (context, index) {
-                            if (index == searchResult.length) {
+                            if (index == eventSearchResults.length) {
                                 return Column(
                                   children: [
                                     Divider(color: Colors.grey[400]),
                                     Text('--End of Search Result--',
                                         style:
                                             TextStyle(color: Colors.grey[600])),
-                                    Text('Event Count: ${searchResult.length}',
+                                    Text('Event Count: ${eventSearchResults.length}',
                                         style:
                                             TextStyle(color: Colors.grey[600])),
                                   ],
@@ -145,13 +177,11 @@ class _SearchPageState extends State<SearchPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: searchResult[index], refreshParent: () => {},)
-                                    : EventCardPlain(event: searchResult[index], refreshParent: () => {},);
+                                        event: eventSearchResults[index], refreshParent: () => {},)
+                                    : EventCardPlain(event: eventSearchResults[index], refreshParent: () => {},);
                               }
                           },
                         );
-                      }
-                    );
                   }
                 },
               ),
