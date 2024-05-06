@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_test_app/api/launch_url.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/pages/connect_org_page.dart';
@@ -120,6 +121,16 @@ class UserProfilePage extends StatelessWidget {
                   );
                 }
               ),
+
+              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+
+              // Feedback button that links to a Google Form
+              TextButton(
+                child: const Text('Feedback (Google Form)', style: TextStyle(fontSize: 20)),
+                onPressed: () async {
+                  await urlLauncher(Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLSeg71_cqskaCDyWsqf-wn2TjHlVRWKBJeVkGjHMJLQYp5CHBw/viewform?usp=sf_link'));
+                }
+                ),
 
               // Connect to a Student Org button
               // TextButton(

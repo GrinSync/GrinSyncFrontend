@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:flutter_test_app/pages/orgs_I_lead_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OrgDetailsPage extends StatefulWidget {
   final Org org; // Organization to display details of
@@ -194,11 +197,25 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                     style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 172, 28),
                           foregroundColor: Colors.black),
-                    onPressed: () {
+                    onPressed: () async {
+                      // Send a request to the server to toggle the follow status
+                      await toggleFollowedOrg(widget.org.id);
+
                       setState(() {
                         _isFollowing = !_isFollowing;
+                        // widget.org.isFollowing = !org.isFollowing; // uncomment after Brian updates the Org model
                       });
-                      // TODO: implement follow/unfollow functionality
+
+                      Fluttertoast.showToast(
+                                  msg: _isFollowing
+                                      ? 'Followed successfully'
+                                      : 'Unfollowed successfully',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
                       
                       // Refresh the parent page
                       widget.refreshParent();

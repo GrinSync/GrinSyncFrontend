@@ -330,7 +330,7 @@ Future<List<Event>> getAllEventsByPreferences(
     headers = {'Authorization': 'Token $token'};
   }
   print('Fetching events...');
-  var url = Uri.parse('https://grinsync.com/api/getAll');
+  var url = Uri.parse('https://grinsync.com/api/getAll?tags=${tagList.join(';')}');
   var result = await http.get(url, headers: headers);
 
   // print('Parsing JSON response...');
