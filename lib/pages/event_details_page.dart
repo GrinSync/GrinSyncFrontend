@@ -215,7 +215,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                           context,
                           CupertinoPageRoute(
                               builder: (context) => OrgDetailsPage(
-                                  org: org!)));
+                                  org: org!,
+                                  refreshParent: (){})));
                   }
                 },
               ),
