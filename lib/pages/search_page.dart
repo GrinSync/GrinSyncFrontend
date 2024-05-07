@@ -38,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
   List<Event> eventSearchResults = [];
   List<User> userSearchResults = [];
   List<Org> orgSearchResults = [];
-  late Future _searchFuture;
+  late Future _searchFuture = Future.value();
 
 
 
