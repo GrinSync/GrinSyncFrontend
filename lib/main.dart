@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
-            height: 30,
+            height: MediaQuery.of(context).size.height * 0.07,
             iconTheme:
                 MaterialStateProperty.all(IconThemeData(color: Colors.black)),
             labelTextStyle: MaterialStateProperty.resolveWith((state) {
@@ -94,6 +94,7 @@ class _MyAppState extends State<MyApp> {
               }
               return const TextStyle(color: Colors.black);
             }),
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           ),
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
@@ -194,12 +195,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           selectedIndexOnHomePage = value;
                         });
                       }),
-                    // SizedBox(
-                    //   height: 50,
-                    //   child: Container(
-                    //     color: Colors.white, //Theme.of(context).colorScheme.primary,
-                    //   ),
-                    // )
                     ]
     );
   }
