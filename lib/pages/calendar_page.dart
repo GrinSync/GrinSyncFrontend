@@ -106,7 +106,7 @@ class CalendarPageState extends State<CalendarPage> {
     loadEventsFuture = loadEvents(filterOptions.followed);
   }
 
-  refresh () {
+  refresh() {
     setState(() {
       loadEventsFuture = loadEvents(currentFilter);
     });
@@ -256,13 +256,39 @@ class CalendarPageState extends State<CalendarPage> {
               // If there are no events, show a message
               if (allEvents.isEmpty) {
                 return Scaffold(
-                  body: Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(
-                      child: ListView(
-                        children: [const Text('No events to show here')],
-                      ),
+                  body: SfCalendar(
+                    controller: calendarController,
+                    onViewChanged: calendarViewChanged,
+                    onTap: calendarTapped,
+                    view: CalendarView.day, // default view of the calendar
+                    firstDayOfWeek:
+                        7, // first day of the week defaulted to Sunday
+                    minDate: DateTime(2023, 08, 14, 0, 0, 0),
+                    maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                    allowedViews: [
+                      CalendarView.day,
+                      CalendarView.week,
+                      CalendarView.month,
+                    ], // the calendar only allows three views - discussed in previous milestones
+                    allowViewNavigation: true,
+                    showNavigationArrow: true,
+                    viewNavigationMode: ViewNavigationMode.none,
+                    monthViewSettings: const MonthViewSettings(
+                      dayFormat: 'EEE',
+                      monthCellStyle: MonthCellStyle(),
+                      navigationDirection: MonthNavigationDirection.horizontal,
                     ),
+                    timeSlotViewSettings: const TimeSlotViewSettings(
+                      timeInterval: Duration(minutes: 30),
+                      timeFormat: "hh:mm",
+                      timeIntervalHeight: 50,
+                      timeIntervalWidth: 25,
+                      minimumAppointmentDuration: Duration(minutes: 15),
+                      dateFormat: 'd',
+                      dayFormat: 'EEE',
+                    ),
+                    showDatePickerButton: true,
+                    showTodayButton: true, // get the event data
                   ),
                 );
 
