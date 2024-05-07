@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test_app/api/tags.dart';
-import 'package:flutter_test_app/constants.dart';
+import 'package:flutter_test_app/api/token_box.dart';
 import 'package:flutter_test_app/pages/profile_page.dart';
 import 'package:flutter_test_app/pages/event_creation_page.dart';
 import 'package:flutter_test_app/pages/home_page.dart';
@@ -12,30 +11,13 @@ import 'package:flutter_test_app/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_test_app/pages/search_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
-
-  const secureStorage = FlutterSecureStorage();
-  // if key not exists return null
-  final encryptionKeyString = await secureStorage.read(key: 'key');
-  if (encryptionKeyString == null) {
-    final key = Hive.generateSecureKey();
-    await secureStorage.write(
-      key: 'key',
-      value: base64UrlEncode(key),
-    );
-  }
-  final key = await secureStorage.read(key: 'key');
-  final encryptionKeyUint8List = base64Url.decode(key!);
-  print('Encryption key Uint8List: $encryptionKeyUint8List');
-  BOX = await Hive.openBox(tokenBox,
-      encryptionCipher: HiveAesCipher(
-          encryptionKeyUint8List)); // save the box in a global variable
-
+  await setTokenBox(); // this function will set the BOX global variable to the encrypted token box
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await setAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
   await setPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
