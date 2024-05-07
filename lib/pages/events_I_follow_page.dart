@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_test_app/api/notifications.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class EventsIFollowPage extends StatefulWidget {
   EventsIFollowPage({super.key});
@@ -13,6 +15,7 @@ class EventsIFollowPage extends StatefulWidget {
 class _EventsIFollowPageState extends State<EventsIFollowPage> {
   List<Event> events = [];
   late Future _loadEventsFuture;
+  late bool notificationsEnabled;
 
   // Get events followed by the user from the backend
   Future<void> loadEvents() async {
@@ -22,6 +25,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
     @override
   void initState() {
     _loadEventsFuture = loadEvents();
+    notificationsEnabled = getNotificationsSetting();
     super.initState();
   }
 
@@ -41,6 +45,28 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
+        actions: [
+          Switch(
+            activeColor: Colors.white,
+            value: notificationsEnabled, 
+            onChanged: (value) async {
+              await setNotificationsSetting(value);
+              setState(() {
+                notificationsEnabled = value;
+              });
+              Fluttertoast.showToast(
+                msg: value
+                    ? 'Notifications for favorited events enabled'
+                    : 'Notifications for favorited events disabled',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.grey[800],
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }),
+            ],
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
