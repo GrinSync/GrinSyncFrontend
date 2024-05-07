@@ -400,8 +400,8 @@ Future<List<Event>> getUpcomingEvents(
         .toList(); // list.every returns true if all elements satisfy the condition
   }
 
-
-  allEvents = allEvents.toSet().toList(); // remove duplicates if any
+  // This part of the code is for duplicate debugging
+  // allEvents = allEvents.toSet().toList(); // remove duplicates if any
   // for (var event in allEvents) { // but it still contains duplicates
   //   print(event.id);
   // }
