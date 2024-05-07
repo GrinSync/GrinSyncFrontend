@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/launch_url.dart';
+import 'package:flutter_test_app/api/save_event_to_calendar.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/global.dart';
@@ -244,14 +245,13 @@ class _HomePageState extends State<HomePage> {
                                       label: 'Contact',
                                     ),
                                     SlidableAction(
-                                      onPressed: (context) {
-                                        Share.share(
-                                            'Check out this event: ${upcomingEvents[index].title} at ${upcomingEvents[index].location} on ${timeFormat(upcomingEvents[index].start)}!');
+                                      onPressed: (context) async {
+                                        await saveEventToCalendar(context, upcomingEvents[index]);
                                       },
                                       backgroundColor: Colors.blue,
                                       foregroundColor: Colors.black,
-                                      icon: Icons.share,
-                                      label: 'Share',
+                                      icon: Icons.today_outlined,
+                                      label: 'Save',
                                     ),
                                   ],
                                 ),
