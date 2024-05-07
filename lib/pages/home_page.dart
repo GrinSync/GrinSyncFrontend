@@ -37,6 +37,12 @@ class _HomePageState extends State<HomePage> {
     upcomingEvents = await getUpcomingEvents(selectedTags, stduentOnly, intersectionFilter);
   }
 
+  refresh() {
+    setState(() {
+      _loadEventsFuture = loadEvents();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,9 +152,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text('Apply Filters'),
                                 onPressed: () {
                                   Navigator.pop(context);
-                                  setState(() {
-                                    _loadEventsFuture = loadEvents();
-                                  });
+                                  refresh();
                                 },
                               ),
                           //SizedBox(height: 25.0),
@@ -186,9 +190,7 @@ class _HomePageState extends State<HomePage> {
                     const Text('Error loading events'),
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          _loadEventsFuture = loadEvents();
-                        });
+                        refresh();
                       },
                       child: const Text('Try again'),
                     ),
@@ -200,7 +202,9 @@ class _HomePageState extends State<HomePage> {
               return Container(
                       padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                       child: RefreshIndicator(
-                        onRefresh: loadEvents,
+                        onRefresh: () async {
+                          refresh();
+                        },
                         child: ListView.builder(
                           itemCount: upcomingEvents.length + 1,
                           itemBuilder: (context, index) {
