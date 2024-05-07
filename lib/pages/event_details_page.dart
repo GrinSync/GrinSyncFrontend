@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
+import 'package:flutter_test_app/api/save_event_to_calendar.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
@@ -14,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter_test_app/api/launch_url.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetailsPage extends StatefulWidget {
   final Event event; // Event to show details of as a field of the class
@@ -57,7 +59,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     // delete the event if confirmed
     // pop the dialog and the page to go back to the previous page
     Future<void> confirmDeletion() async {
-      return showDialog<void>(
+      return showCupertinoDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
@@ -142,8 +144,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             Text('- You can view the event\'s title, host, location, start and end time, description, and tags.'),
                             Text('- You can also navigate to the event\'s venue on Google Maps if the location is provided (Indicated by a location pin icon before the location).\n'),
                             Text('Actions', style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('You can contact the host, share the event with your friends.'),
-                            Text('If you are logged in: You can also save the event.'),    
+                            Text('You can save the event to your calendar, contact the host, and share the event with your friends.'),
+                            Text('If you are logged in: You can also favorite the event.'),    
                             Text('If you are the host of the event: You can edit the event or delete it.'),                      
                             ],
                         ),
@@ -205,10 +207,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               InkWell(
                 child: Text(
                   event.hostName.toString(),
-                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica'),
+                  style: const TextStyle(fontSize: 20, fontFamily: 'Helvetica', decoration: TextDecoration.underline),
                 ),
                 onTap: () async {
-                  if (event.parentOrg != null) {
+                  if (event.hostName.toString() == "Grinnell Calendar") {
+                    launchUrl(Uri.parse("https://events.grinnell.edu/"));
+                  } else if (event.parentOrg != null) {
                     Org? org = await getOrgById(event.parentOrg!);
                     if (org != null)
                       Navigator.push(
@@ -229,7 +233,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   InkWell(
                     child: Text(event.location,
                         style:
-                            const TextStyle(fontSize: 20, fontFamily: 'Helvetica', color: Colors.blue, decoration: TextDecoration.underline, decorationColor: Colors.blue)),
+                            const TextStyle(fontSize: 20, fontFamily: 'Helvetica', color: Colors.black, decoration: TextDecoration.underline)),
                     onTap: () async {
                       if (navigationAvailable)
                         await MapUtils.launchGoogleMaps(double.parse(event.latitude!), double.parse(event.longitude!));
@@ -300,7 +304,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               size: 20,
                             ),
                             SizedBox(width: 5.0),
-                            Text(value ? 'Unsave Event' : 'Save Event'),
+                            Text(value ? 'Unfavorite Event' : 'Favorite Event'),
                           ],
                         );
                       }),
@@ -312,8 +316,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               favorited.value = !favorited.value;
                               Fluttertoast.showToast(
                                   msg: event.isFavorited
-                                      ? 'Saved successfully'
-                                      : 'Unsaved successfully',
+                                      ? 'Favorited successfully'
+                                      : 'Unfavorited successfully',
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.CENTER,
                                   timeInSecForIosWeb: 1,
@@ -323,6 +327,27 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
                               widget.refreshParent();
                             }),
+
+              const SizedBox(height: 10),
+
+              // Add to calendar button
+              WideButton(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 20,
+                    ),
+                    SizedBox(width: 5.0),
+                    Text('Add to Calendar'),
+                  ],
+                ),
+                onPressedFunc: () async {
+                  await saveEventToCalendar(context, event);
+
+                }
+              ),
 
               const SizedBox(height: 10),
 
@@ -391,7 +416,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     ],
                   ), 
                   onPressedFunc: () async {
-                    Navigator.push(
+                    await Navigator.push(
                             context,
                             CupertinoPageRoute(
                                 builder: (context) =>
@@ -421,6 +446,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     foregroundColor: Colors.white,
                     onPressedFunc: confirmDeletion //pop up a dialog to confirm deletion and delete the event
                 ),
+                const SizedBox(height: 10),
             ],
           ),
         ),

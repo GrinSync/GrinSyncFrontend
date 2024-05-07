@@ -1,4 +1,6 @@
 PODS:
+  - add_2_calendar (0.0.1):
+    - Flutter
   - awesome_notifications (0.9.3):
     - Flutter
     - IosAwnCore (~> 0.9.3)
@@ -12,6 +14,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.3.0):
+    - Flutter
   - share_plus (0.0.1):
     - Flutter
   - Toast (4.1.1)
@@ -19,11 +23,13 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - add_2_calendar (from `.symlinks/plugins/add_2_calendar/ios`)
   - awesome_notifications (from `.symlinks/plugins/awesome_notifications/ios`)
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -33,6 +39,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  add_2_calendar:
+    :path: ".symlinks/plugins/add_2_calendar/ios"
   awesome_notifications:
     :path: ".symlinks/plugins/awesome_notifications/ios"
   Flutter:
@@ -43,18 +51,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  add_2_calendar: 5eee66d5a3b99cd5e1487a7e03abd4e3ac4aff11
   awesome_notifications: 66d28ab7174ca2823b04d275cb043e0a4a3eb9cf
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
-  fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
+  fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   IosAwnCore: b8601fbb37f7b3560f31b84ebf55a72f65812e05
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586

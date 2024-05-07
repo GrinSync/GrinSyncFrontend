@@ -47,6 +47,8 @@ dependencies:
   flutter_widget_from_html_core: ^0.14.11
   awesome_notifications: ^0.9.3+1
   flutter_slidable: ^3.1.0
+  add_2_calendar: ^3.0.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

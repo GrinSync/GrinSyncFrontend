@@ -18,3 +18,5 @@ List<String> STUDENTORGS =
     []; // this list will contain student org names that the user is linked with
 List<int> ORGIDS =
     []; // this list will contain student org ids that the user is linked with
+
+//CALENDARWRITEONLYPERMISSION = 
