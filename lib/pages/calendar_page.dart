@@ -188,7 +188,7 @@ class CalendarPageState extends State<CalendarPage> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: isLoggedIn()
+          actions: !isLoggedIn()
               ? []
               : [
                   // The label of the current filter
