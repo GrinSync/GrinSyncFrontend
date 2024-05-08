@@ -14,6 +14,7 @@ class ConnectOrgPage extends StatefulWidget {
 class _ConnectOrgPage extends State<ConnectOrgPage> {
   /// Initializes empty list of event
   late List<String> allOrgs = <String>[];
+  String? data = '';
 
   Future<void> loadOrgs() async {
     allOrgs = await getAllOrgs(); // function in get_events.dart
@@ -85,9 +86,42 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
               } else {
                 return Container(
                     padding: const EdgeInsets.all(8.0),
-                    child: DropdownSearch<String>(
+                    child: Column(
+                    // Arrange children vertically.
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DropdownSearch<String>(
                       items: allOrgs,
-                    ));
+                  onChanged: (String? stuff) {
+         data = stuff;
+         },
+                    ),
+                    Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 200,
+                  height: 50,
+                  // Create Org Creation Button
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 218, 41, 28),
+                          foregroundColor: Colors.black),
+                      onPressed: () async {
+                        // Authorize user with provided credentials
+                        int id = await getId(data);
+                        var auth = await connectOrg(id);
+                        if (auth == 'Success'){
+                             Navigator.of(context).pop();
+                        }
+                          else{
+                        }
+                      },
+                      child: const Text('Connect to Org')),
+                ))
+                    ]
+                    )
+                    );
               }
             }
           }),
@@ -114,4 +148,49 @@ Future<List<String>> getAllOrgs() async {
     allOrgs.add(jsonTag['name']);
   }
   return allOrgs;
+}
+
+Future<int> getId(String? data) async {
+  var token = BOX.get('token');
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+  int id = 0;
+  var url = Uri.parse('https://grinsync.com/api/getAllOrgs');
+  var result = await http.get(url, headers: headers);
+  //print(result.body);
+  // parse the json response and create a string of all tags with commas in between
+  // result.body is a list of maps with tag names, ids, and selectDefault values (after jsonDecoding)
+  for (var jsonTag in jsonDecode(result.body)) {
+    if(jsonTag['name'] == data){
+      id = jsonTag['id'];
+    }
+  }
+  return id;
+}
+
+
+Future<String> connectOrg(int id) async {
+  var token = BOX.get('token');
+  Map<String, String> headers;
+  if (token == null) {
+    headers = {};
+  } else {
+    headers = {'Authorization': 'Token $token'};
+  }
+  String identity = id.toString();
+  Map body = {
+    'id': identity,
+  };
+  var url = Uri.parse('https://grinsync.com/api/claimOrg');
+  var result = await http.post(url, headers: headers, body :body);
+  print(result.body);
+  if(result.statusCode == 200){
+    return 'Success';
+  }
+  return 'Error';
+
 }

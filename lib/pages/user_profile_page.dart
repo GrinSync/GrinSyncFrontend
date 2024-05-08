@@ -4,6 +4,7 @@ import 'package:flutter_test_app/api/launch_url.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/pages/connect_org_page.dart';
+import 'package:flutter_test_app/pages/create_org_page.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/events_I_follow_page.dart';
@@ -120,6 +121,26 @@ class UserProfilePage extends StatelessWidget {
                     CupertinoPageRoute(builder: (context) =>  MyOrgsPage())
                   );
                 }
+              ),
+              TextButton(
+                child: const Text('Create a Student Org',
+                     style: TextStyle(fontSize: 20)),
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     CupertinoPageRoute(builder: (context) =>  const CreateOrgPage())
+                   );
+                 }
+              ),
+              TextButton(
+                child: const Text('Connect to a Student Org',
+                     style: TextStyle(fontSize: 20)),
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     CupertinoPageRoute(builder: (context) =>  const ConnectOrgPage())
+                   );
+                 }
               ),
 
               Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),

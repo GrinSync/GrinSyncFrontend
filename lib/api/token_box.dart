@@ -20,7 +20,6 @@ setTokenBox() async {
   }
   final key = await secureStorage.read(key: 'key');
   final encryptionKeyUint8List = base64Url.decode(key!);
-  print('Encryption key Uint8List: $encryptionKeyUint8List');
   BOX = await Hive.openBox(tokenBox,
       encryptionCipher: HiveAesCipher(
           encryptionKeyUint8List)); // save the box in a global variable

@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/tags.dart';
-import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 import 'package:flutter_test_app/pages/registration_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/global.dart';
 
@@ -17,7 +15,6 @@ Future<dynamic> userAuthentication(String username, String password) async {
   };
   var url = Uri.parse('https://grinsync.com/api/auth'); // url to send info
   var result = await http.post(url, body: body);
-  print(result.body); // This is for testing purposes only
 
   // If the login was successful, we can store the login token for future use
   if (result.statusCode == 200) {
@@ -41,7 +38,6 @@ Future<dynamic> userAuthentication(String username, String password) async {
 Future<User?> getUser(String token) async {
   var url = Uri.parse('https://grinsync.com/api/getUser'); // url to send info
   var res = await http.get(url, headers: {'Authorization': 'Token $token'});
-  print(res.body);
   if (res.statusCode == 200) {
     var json = jsonDecode(res.body);
     User user = User.fromJson(json);
@@ -96,7 +92,6 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
   var url =
       Uri.parse('https://grinsync.com/api/create/user'); // url to send info
   var res = await http.post(url, body: data);
-  print(res.body);
   if (res.statusCode == 200) {
     //var json = jsonDecode(res.body);
     // String token = json['key'];
@@ -137,8 +132,7 @@ Future<dynamic> passwordReset(String email) async {
   };
   var url =
       Uri.parse('https://grinsync.com/api/password_reset/'); // url to send info
-  var result = await http.post(url, body: body);
-  print(result.body); // This is for testing purposes only
+  await http.post(url, body: body);
 }
 
 Future<User?> getUserByID(int id) async {
@@ -153,9 +147,6 @@ Future<User?> getUserByID(int id) async {
 
   var url = Uri.parse('https://grinsync.com/api/getUser?id=$id');
   var result = await http.get(url, headers: headers);
-
-  print('getUserById result: ${result.body}');
-
   if (result.statusCode == 200) {
     return User.fromJson(jsonDecode(result.body));
   } else {
