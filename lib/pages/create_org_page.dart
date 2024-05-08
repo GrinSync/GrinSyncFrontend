@@ -140,11 +140,9 @@ class _CreateOrgPage extends State<CreateOrgPage> {
                         // Authorize user with provided credentials
                         var auth = await createOrg(
                             _email.text, _orgName.text, _orgCode.text);
-                        if (auth == 'Success'){
-                            Navigator.of(context).pop();
-                        }
-                        else{
-                        }
+                        if (auth == 'Success') {
+                          Navigator.of(context).pop();
+                        } else {}
                       },
                       child: const Text('Create Org')),
                 ))

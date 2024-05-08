@@ -13,12 +13,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 class OrgDetailsPage extends StatefulWidget {
   final Org org; // Organization to display details of
   final VoidCallback refreshParent;
-    
+
   @override
   _OrgDetailsPageState createState() => _OrgDetailsPageState();
 
   // constructor
-  OrgDetailsPage({Key? key, required this.org, required this.refreshParent}) : super(key: key);
+  OrgDetailsPage({Key? key, required this.org, required this.refreshParent})
+      : super(key: key);
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
@@ -39,19 +40,19 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
   initializeLeaders() async {
     for (int id in widget.org.studentLeaders) {
       User? leader = await getUserByID(id);
-    
+
       if (leader != null) {
         setState(() {
           leaders.add(leader);
         });
       }
     }
-}
+  }
 
   initializeEvents() async {
     for (int id in widget.org.orgEvents) {
       Event? event = await getEventByID(id);
-      
+
       if (event != null) {
         setState(() {
           events.add(event);
@@ -64,7 +65,8 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organization Details', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Organization Details',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -76,64 +78,64 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
             children: [
               // Org Title
               Text(
-                  widget.org.name,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Helvetica',
-                  ),
+                widget.org.name,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Helvetica',
                 ),
-              
+              ),
+
               // Org Email
-              Text(widget.org.email,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+              Text(
+                widget.org.email,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
                 ),
-        
+              ),
+
               SizedBox(height: 10),
-              
+
               // Student Leaders
               Text(
-                  'Leaders',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                'Leaders',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
               // Student Leader Cards
               FutureBuilder(
-                future: _leadersFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (leaders.isEmpty) {
-                    return Text('No student leaders found');
-                  }
-                  return SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: leaders.length,
-                      itemBuilder: (context, index) {
-                        return OrgLeaderCard(leader: leaders[index]);
-                      },
-                    ),
-                  );
-                }
-              ),
+                  future: _leadersFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (leaders.isEmpty) {
+                      return Text('No student leaders found');
+                    }
+                    return SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: leaders.length,
+                        itemBuilder: (context, index) {
+                          return OrgLeaderCard(leader: leaders[index]);
+                        },
+                      ),
+                    );
+                  }),
 
               SizedBox(height: 10),
               // Description
               Text(
-                  'Description',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                'Description',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-              
+              ),
+
               SizedBox(
                 height: 100,
                 child: SingleChildScrollView(
@@ -146,47 +148,47 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                 ),
               ),
 
-              
-              
               // Events Section
               Divider(
                 height: 20,
                 color: Colors.black,
               ),
               Text(
-                  'Events Created by ${widget.org.name}',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                'Events Created by ${widget.org.name}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-        
+              ),
+
               SizedBox(height: 5),
-        
+
               // Event Card list
               // TODO: implement a scrollable list of event cards here using FutureBuilder?
               // Say no events are created yet if there are no events
               Expanded(
                 child: FutureBuilder(
-                  future: _eventsFuture,
-                  builder: (context, Snapshot) {
-                    if (Snapshot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (events.isEmpty) {
-                      return Center(child: Text('No events created yet'));
-                    }
-                    return ListView.builder(
-                              itemCount: events.length,
-                              itemBuilder: (context, index) {
-                                return isLoggedIn() // return different event cards based on user's login status
-                                      ? EventCardFavoritable(event: events[index], refreshParent: () => {})
-                                      : EventCardPlain(event: events[index], refreshParent: () => {});
-                              },
-                            );
-                  }
-                ),
+                    future: _eventsFuture,
+                    builder: (context, Snapshot) {
+                      if (Snapshot.connectionState != ConnectionState.done) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (events.isEmpty) {
+                        return Center(child: Text('No events created yet'));
+                      }
+                      return ListView.builder(
+                        itemCount: events.length,
+                        itemBuilder: (context, index) {
+                          return isLoggedIn() // return different event cards based on user's login status
+                              ? EventCardFavoritable(
+                                  event: events[index], refreshParent: () => {})
+                              : EventCardPlain(
+                                  event: events[index],
+                                  refreshParent: () => {});
+                        },
+                      );
+                    }),
               ),
-              
+
               SizedBox(height: 16),
 
               // Follow/Unfollow Button
@@ -195,32 +197,33 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 172, 28),
-                          foregroundColor: Colors.black),
+                        backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                        foregroundColor: Colors.black),
                     onPressed: () async {
                       // Send a request to the server to toggle the follow status
                       await toggleFollowedOrg(widget.org.id);
 
                       setState(() {
-                        _isFollowing = !_isFollowing; // Toggle the local variable
-                        widget.org.isFollowed = !widget.org.isFollowed; // Update the org object
+                        _isFollowing =
+                            !_isFollowing; // Toggle the local variable
+                        widget.org.isFollowed =
+                            !widget.org.isFollowed; // Update the org object
                       });
 
                       Fluttertoast.showToast(
-                                  msg: _isFollowing
-                                      ? 'Followed successfully'
-                                      : 'Unfollowed successfully',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.grey[800],
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                      
+                          msg: _isFollowing
+                              ? 'Followed successfully'
+                              : 'Unfollowed successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey[800],
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+
                       // Refresh the parent page
                       widget.refreshParent();
                     },
-                    
                     child: Text(_isFollowing ? 'Unfollow' : 'Follow'),
                   ),
                 ),
@@ -245,22 +248,22 @@ class OrgLeaderCard extends StatelessWidget {
       width: 100,
       height: 100,
       child: InkWell(
-        child: Card(
-          color: Colors.blue[100],
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.account_box, size: 50),
-                Text(leader.firstName),
-                Text(leader.lastName),
-              ],),
+          child: Card(
+            color: Colors.blue[100],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.account_box, size: 50),
+                  Text(leader.firstName),
+                  Text(leader.lastName),
+                ],
+              ),
+            ),
           ),
-        ),
-        onTap: () {
-          //TODO: Implement navigation to UserDetailsPages
-        }
-      ),
+          onTap: () {
+            //TODO: Implement navigation to UserDetailsPages
+          }),
     );
   }
 }

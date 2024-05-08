@@ -465,52 +465,52 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       textColor: Colors.black,
                                       fontSize: 16.0);
 
-                                      //clear all the text fields
-                                      setState(() {
-                                        _title.clear();
-                                        _location.clear();
-                                        _startDate.clear();
-                                        _endDate.clear();
-                                        _description.clear();
-                                        _repeatDate.clear();
-                                        _tags.clear();
-                                        _tagsString = "";
-                                        _org = null;
-                                        _studentsOnly = false;
-                                        _repeat = null;
-                                      });
+                                  //clear all the text fields
+                                  setState(() {
+                                    _title.clear();
+                                    _location.clear();
+                                    _startDate.clear();
+                                    _endDate.clear();
+                                    _description.clear();
+                                    _repeatDate.clear();
+                                    _tags.clear();
+                                    _tagsString = "";
+                                    _org = null;
+                                    _studentsOnly = false;
+                                    _repeat = null;
+                                  });
                                 }
                               },
                               child: const Text('Create Event') // Button title
                               )),
-                              const SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-            ElevatedButton(
-          child: const Text("Reset All Fields"),
-          onPressed: () {
-           //Reset All Checkboxes
-            _org = null;
-            _title.clear();
-            _location.clear();
-            _startDate.clear();
-            _endDate.clear();
-            _description.clear();
-            _studentsOnly = false;
-            _tags.clear();
-            _repeat = null;
-            _repeatDate.clear();
-            _studentOrgs = List.generate(
-      STUDENTORGS.length,
-      (index) => DropdownMenuItem(
-        value: STUDENTORGS[index],
-        child: Text(
-          STUDENTORGS[index] ?? "No Org Name",
-        ),
-      ),
-    );
-            setState(() {});
-          },
-        )
+                      ElevatedButton(
+                        child: const Text("Reset All Fields"),
+                        onPressed: () {
+                          //Reset All Checkboxes
+                          _org = null;
+                          _title.clear();
+                          _location.clear();
+                          _startDate.clear();
+                          _endDate.clear();
+                          _description.clear();
+                          _studentsOnly = false;
+                          _tags.clear();
+                          _repeat = null;
+                          _repeatDate.clear();
+                          _studentOrgs = List.generate(
+                            STUDENTORGS.length,
+                            (index) => DropdownMenuItem(
+                              value: STUDENTORGS[index],
+                              child: Text(
+                                STUDENTORGS[index] ?? "No Org Name",
+                              ),
+                            ),
+                          );
+                          setState(() {});
+                        },
+                      )
                     ]))));
   } // build
 } // EventCreationPageState

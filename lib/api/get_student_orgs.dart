@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
-
 class OrgCard extends StatelessWidget {
   const OrgCard({
     super.key,
@@ -16,19 +15,25 @@ class OrgCard extends StatelessWidget {
   final Org org;
   final VoidCallback refreshParent;
 
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        title: Text(org.name, style: TextStyle(fontSize: 20, fontFamily: 'Helvetica', fontWeight: FontWeight.bold)),
-        subtitle: Text(org.email, style: TextStyle(fontSize: 15)),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDetailsPage(org: org, refreshParent: refreshParent)));
-        },
+      title: Text(org.name,
+          style: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Helvetica',
+              fontWeight: FontWeight.bold)),
+      subtitle: Text(org.email, style: TextStyle(fontSize: 15)),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    OrgDetailsPage(org: org, refreshParent: refreshParent)));
+      },
     );
   }
 }
-
 
 Future<void> setStudentOrgs() async {
   clearOrgs(); // clear the lists of student organizations and their ids
@@ -57,7 +62,7 @@ Future<void> setStudentOrgs() async {
   }
 }
 
-Future<List<Org>> getUserOrgs () async {
+Future<List<Org>> getUserOrgs() async {
   List<Org> orgs = [];
 
   var token = BOX.get('token');
@@ -67,8 +72,8 @@ Future<List<Org>> getUserOrgs () async {
   } else {
     headers = {'Authorization': 'Token $token'};
   }
-    var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
-    var result = await http.get(url, headers: headers);
+  var url = Uri.parse('https://grinsync.com/api/getUserOrgs');
+  var result = await http.get(url, headers: headers);
 
   if (result.statusCode == 200) {
     for (var jsonOrg in jsonDecode(result.body)) {
@@ -78,11 +83,9 @@ Future<List<Org>> getUserOrgs () async {
   } else {
     return [];
   }
-
-
 }
 
-Future<Org?> getOrgById (int id) async {
+Future<Org?> getOrgById(int id) async {
   var token = BOX.get('token');
 
   Map<String, String> headers;
@@ -102,9 +105,7 @@ Future<Org?> getOrgById (int id) async {
   } else {
     return null;
   }
-  
 }
-
 
 Future<List<Org>> getFollowedOrgs() async {
   List<Org> orgs = [];
@@ -116,10 +117,8 @@ Future<List<Org>> getFollowedOrgs() async {
   } else {
     headers = {'Authorization': 'Token $token'};
   }
-  var url = Uri(
-    scheme: 'https',
-    host: 'grinsync.com',
-    path: 'api/getFollowedOrgs');
+  var url =
+      Uri(scheme: 'https', host: 'grinsync.com', path: 'api/getFollowedOrgs');
   var result = await http.get(url, headers: headers);
 
   if (result.statusCode == 200) {
@@ -142,10 +141,8 @@ Future<void> toggleFollowedOrg(int id) async {
     headers = {'Authorization': 'Token $token'};
   }
 
-  var url = Uri(
-    scheme: 'https',
-    host: 'grinsync.com',
-    path: 'api/toggleFollowedOrg');
+  var url =
+      Uri(scheme: 'https', host: 'grinsync.com', path: 'api/toggleFollowedOrg');
   var result =
       await http.post(url, headers: headers, body: {'id': id.toString()});
 
@@ -169,10 +166,11 @@ Future<void> unfollowOrg(int id) async {
   var url = Uri(
     scheme: 'https',
     host: 'grinsync.com',
-    path: 'api/unfollowOrg',  
+    path: 'api/unfollowOrg',
   );
 
-  var result = await http.post(url, headers: headers, body: {'id': id.toString()});
+  var result =
+      await http.post(url, headers: headers, body: {'id': id.toString()});
 
   if (result.statusCode == 200) {
     print('Org unfollowed');

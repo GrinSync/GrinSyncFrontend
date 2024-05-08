@@ -22,7 +22,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
     events = await getLikedEvents(); // function in get_events.dart
   }
 
-    @override
+  @override
   void initState() {
     _loadEventsFuture = loadEvents();
     notificationsEnabled = getNotificationsSetting();
@@ -47,26 +47,26 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
         foregroundColor: Colors.white,
         actions: [
           Switch(
-            activeColor: Colors.white,
-            value: notificationsEnabled, 
-            onChanged: (value) async {
-              await setNotificationsSetting(value);
-              setState(() {
-                notificationsEnabled = value;
-              });
-              Fluttertoast.showToast(
-                msg: value
-                    ? 'Notifications for favorited events enabled'
-                    : 'Notifications for favorited events disabled',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.grey[800],
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
-            }),
-            ],
+              activeColor: Colors.white,
+              value: notificationsEnabled,
+              onChanged: (value) async {
+                await setNotificationsSetting(value);
+                setState(() {
+                  notificationsEnabled = value;
+                });
+                Fluttertoast.showToast(
+                  msg: value
+                      ? 'Notifications for favorited events enabled'
+                      : 'Notifications for favorited events disabled',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.grey[800],
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }),
+        ],
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
@@ -130,8 +130,9 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                         return Slidable(
                           key: ValueKey(events[index].id),
                           child: EventCardPlain(
-                              event: events[index],
-                              refreshParent: refresh,),
+                            event: events[index],
+                            refreshParent: refresh,
+                          ),
                           endActionPane: ActionPane(
                             motion: DrawerMotion(),
                             dismissible: DismissiblePane(
@@ -142,7 +143,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                                 });
                                 //refresh();
                               },
-                              ),
+                            ),
                             children: [
                               SlidableAction(
                                 onPressed: (context) {

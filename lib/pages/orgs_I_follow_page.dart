@@ -12,7 +12,7 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
   List<Org> orgs = [];
   late Future _loadOrgsFuture;
 
-  @override 
+  @override
   initState() {
     super.initState();
     _loadOrgsFuture = loadOrgs();
@@ -32,12 +32,13 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organizations I Follow', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Organizations I Follow',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder(
-        future: _loadOrgsFuture, 
+        future: _loadOrgsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -51,49 +52,49 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
             );
           } else if (orgs.isEmpty) {
             return Center(
-              child: 
-                  Text('You are not following any organizations.'),
+              child: Text('You are not following any organizations.'),
             );
           }
           return ListView.separated(
-              separatorBuilder: (context, index) => Divider(color: Colors.grey, height: 0),
-              itemCount: orgs.length,
-              itemBuilder: (context, index) {
-                return Slidable(
-                  key: ValueKey(orgs[index].id),
-                  endActionPane: ActionPane(
-                    motion: DrawerMotion(),
-                    dismissible: DismissiblePane(
-                      onDismissed: () {
+            separatorBuilder: (context, index) =>
+                Divider(color: Colors.grey, height: 0),
+            itemCount: orgs.length,
+            itemBuilder: (context, index) {
+              return Slidable(
+                key: ValueKey(orgs[index].id),
+                endActionPane: ActionPane(
+                  motion: DrawerMotion(),
+                  dismissible: DismissiblePane(
+                    onDismissed: () {
+                      unfollowOrg(orgs[index].id);
+                      setState(() {
+                        orgs.removeAt(index);
+                      });
+                      //refresh();
+                    },
+                  ),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) {
+                        // Remove the event from the user's liked events
                         unfollowOrg(orgs[index].id);
-                        setState(() {
-                          orgs.removeAt(index);
-                        });
-                        //refresh();
+                        orgs.removeAt(index);
+                        refresh();
                       },
+                      label: 'Unsave',
+                      backgroundColor: Colors.red,
                     ),
-                    children: [
-                      SlidableAction(
-                                onPressed: (context) {
-                                  // Remove the event from the user's liked events
-                                  unfollowOrg(orgs[index].id);
-                                  orgs.removeAt(index);
-                                  refresh();
-                                },
-                                label: 'Unsave',
-                                backgroundColor: Colors.red,
-                              ),
-                    ],
-                  ),
-                  child: OrgCard(
-                    org: orgs[index],
-                    refreshParent: refresh,
-                  ),
-                );
-              },
+                  ],
+                ),
+                child: OrgCard(
+                  org: orgs[index],
+                  refreshParent: refresh,
+                ),
+              );
+            },
           );
         },
-        ),
+      ),
     );
   }
 }

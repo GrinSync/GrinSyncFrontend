@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart' as gs;
 import 'package:permission_handler/permission_handler.dart';
 
-
-
-
 Future<void> saveEventToCalendar(context, gs.Event gsEvent) async {
-
   final a2c.Event event = a2c.Event(
     title: gsEvent.title,
     description: gsEvent.description,
@@ -38,25 +34,25 @@ Future<void> saveEventToCalendar(context, gs.Event gsEvent) async {
   }
 }
 
-showAlertDialog (context, String permissionItem) {
+showAlertDialog(context, String permissionItem) {
   return showCupertinoDialog<void>(
-  context: context, 
-  barrierDismissible: false,
-  builder: (BuildContext context) => CupertinoAlertDialog(
-    title: const Text("Permission Denied"),
-    content: Text("Allow access to $permissionItem in settings"),
-    actions: <CupertinoDialogAction>[
-    CupertinoDialogAction(
-      child: const Text('Cancele'),
-      onPressed: () => Navigator.of(context).pop(),
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) => CupertinoAlertDialog(
+      title: const Text("Permission Denied"),
+      content: Text("Allow access to $permissionItem in settings"),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          child: const Text('Cancele'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        // CupertinoDialogAction
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          child: const Text('Settings'),
+          onPressed: () => openAppSettings(),
+        ),
+      ],
     ),
-    // CupertinoDialogAction
-    CupertinoDialogAction(
-      isDefaultAction: true,
-      child: const Text ('Settings'),
-      onPressed: () => openAppSettings(),
-    ),
-    ],
-  ),
-);
+  );
 }

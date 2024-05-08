@@ -91,8 +91,7 @@ class CalendarPageState extends State<CalendarPage> {
     // Reload calendar events depending on the filter option
     switch (option) {
       case filterOptions.preferences:
-        allEvents = await getAllEventsByPreferences(
-            selectedTags, false, false);
+        allEvents = await getAllEventsByPreferences(selectedTags, false, false);
       case filterOptions.created:
         allEvents = await getMyEvents();
       case filterOptions.followed:

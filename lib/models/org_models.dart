@@ -11,7 +11,6 @@ class Org {
   bool isFollowed;
   List<int> studentLeaders;
 
-
   Org({
     this.id = -1,
     this.orgEvents = const [],
@@ -36,7 +35,7 @@ class Org {
       isActive: json['is_active'],
       lastLogin: json['last_login'],
       // password: json['password'],
-      alias: json['alias'], 
+      alias: json['alias'],
       isFollowed: json['isFollowed'],
       studentLeaders: (json['studentLeaders'] as List<dynamic>).cast<int>(),
     );

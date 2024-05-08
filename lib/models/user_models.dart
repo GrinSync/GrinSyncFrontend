@@ -6,7 +6,8 @@ class User {
   String lastName;
   String? email;
   String? type;
-  List<String>? interestedTags; // commented out because it is not used as of now. Also, it should only be used for other users (current user's interested tags are stored in PREFERREDTAGS in global.dart)
+  List<String>?
+      interestedTags; // commented out because it is not used as of now. Also, it should only be used for other users (current user's interested tags are stored in PREFERREDTAGS in global.dart)
   List<int>? childOrgs;
 
   User(
@@ -17,8 +18,7 @@ class User {
       this.email,
       this.type,
       this.interestedTags,
-      this.childOrgs
-      });
+      this.childOrgs});
 
   factory User.fromJson(json) {
     return User(
@@ -27,9 +27,8 @@ class User {
         lastName: json['last_name'],
         email: json['email'],
         type: json['type'],
-        interestedTags: (json['interestedTags'] as List<dynamic>).cast<String>(),
-        childOrgs: (json['childOrgs'] as List<dynamic>).cast<int>()
-        );
-
+        interestedTags:
+            (json['interestedTags'] as List<dynamic>).cast<String>(),
+        childOrgs: (json['childOrgs'] as List<dynamic>).cast<int>());
   }
 }

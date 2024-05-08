@@ -11,7 +11,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 class EventEditPage extends StatefulWidget {
   final Event event; // Event that we are editing
   final VoidCallback refreshParent;
-  const EventEditPage({super.key, required this.event, required this.refreshParent});
+  const EventEditPage(
+      {super.key, required this.event, required this.refreshParent});
 
   @override
   EventEditPageState createState() => EventEditPageState();

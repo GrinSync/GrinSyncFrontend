@@ -15,6 +15,4 @@ Future<void> setNotificationsSetting(bool value) async {
   await BOX.put(notificationsSettingKey, value);
 }
 
-class NotificationService {
-  
-}
+class NotificationService {}

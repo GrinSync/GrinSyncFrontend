@@ -22,7 +22,8 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('My Profile',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -42,7 +43,7 @@ class UserProfilePage extends StatelessWidget {
               // User's email
               Text(' ${user?.email}',
                   style: TextStyle(fontSize: 15, color: Colors.grey[600])),
-      
+
               // display buttons
               const Divider(
                 color: Colors.black,
@@ -56,17 +57,22 @@ class UserProfilePage extends StatelessWidget {
               // ),
               // Tag Preferences button
               TextButton(
-                child:
-                    const Text('Tag Preferences', style: TextStyle(fontSize: 20)),
+                child: const Text('Tag Preferences',
+                    style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => TagPreferencePage()),
+                    CupertinoPageRoute(
+                        builder: (context) => TagPreferencePage()),
                   );
                 },
               ),
 
-              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+              Divider(
+                color: Colors.grey[500],
+                indent: 5,
+                endIndent: 5,
+              ),
 
               // Events I Created button
               TextButton(
@@ -81,8 +87,8 @@ class UserProfilePage extends StatelessWidget {
               ),
               // Events I Follow button
               TextButton(
-                child:
-                    const Text('Events I Follow', style: TextStyle(fontSize: 20)),
+                child: const Text('Events I Follow',
+                    style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -91,7 +97,11 @@ class UserProfilePage extends StatelessWidget {
                 },
               ),
 
-              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+              Divider(
+                color: Colors.grey[500],
+                indent: 5,
+                endIndent: 5,
+              ),
 
               // Users/Orgs I Follow button
               TextButton(
@@ -113,45 +123,45 @@ class UserProfilePage extends StatelessWidget {
               // ),
               // My affiliated Student Orgs button
               TextButton(
-                child: const Text('Student Organizations I Lead',
-                    style: TextStyle(fontSize: 20)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) =>  MyOrgsPage())
-                  );
-                }
-              ),
+                  child: const Text('Student Organizations I Lead',
+                      style: TextStyle(fontSize: 20)),
+                  onPressed: () {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => MyOrgsPage()));
+                  }),
               TextButton(
-                child: const Text('Create a Student Org',
-                     style: TextStyle(fontSize: 20)),
-                 onPressed: () {
-                   Navigator.push(
-                     context,
-                     CupertinoPageRoute(builder: (context) =>  const CreateOrgPage())
-                   );
-                 }
-              ),
+                  child: const Text('Create a Student Org',
+                      style: TextStyle(fontSize: 20)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => const CreateOrgPage()));
+                  }),
               TextButton(
-                child: const Text('Connect to a Student Org',
-                     style: TextStyle(fontSize: 20)),
-                 onPressed: () {
-                   Navigator.push(
-                     context,
-                     CupertinoPageRoute(builder: (context) =>  const ConnectOrgPage())
-                   );
-                 }
-              ),
+                  child: const Text('Connect to a Student Org',
+                      style: TextStyle(fontSize: 20)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => const ConnectOrgPage()));
+                  }),
 
-              Divider(color: Colors.grey[500], indent: 5, endIndent: 5,),
+              Divider(
+                color: Colors.grey[500],
+                indent: 5,
+                endIndent: 5,
+              ),
 
               // Feedback button that links to a Google Form
               TextButton(
-                child: const Text('Feedback (Google Form)', style: TextStyle(fontSize: 20)),
-                onPressed: () async {
-                  await urlLauncher(Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLSeg71_cqskaCDyWsqf-wn2TjHlVRWKBJeVkGjHMJLQYp5CHBw/viewform?usp=sf_link'));
-                }
-                ),
+                  child: const Text('Feedback (Google Form)',
+                      style: TextStyle(fontSize: 20)),
+                  onPressed: () async {
+                    await urlLauncher(Uri.parse(
+                        'https://docs.google.com/forms/d/e/1FAIpQLSeg71_cqskaCDyWsqf-wn2TjHlVRWKBJeVkGjHMJLQYp5CHBw/viewform?usp=sf_link'));
+                  }),
 
               // Connect to a Student Org button
               // TextButton(

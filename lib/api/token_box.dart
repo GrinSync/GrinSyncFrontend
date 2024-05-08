@@ -1,11 +1,9 @@
-
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test_app/constants.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 
 setTokenBox() async {
   const secureStorage = FlutterSecureStorage();

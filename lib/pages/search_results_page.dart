@@ -107,7 +107,8 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                         refreshParent: () => {})
                                     : EventCardPlain(
                                         event: eventList[index],
-                                        refreshParent: () => {},);
+                                        refreshParent: () => {},
+                                      );
                               }
                             },
                           ),

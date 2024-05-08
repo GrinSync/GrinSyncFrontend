@@ -4,7 +4,6 @@ import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
 class MyOrgsPage extends StatefulWidget {
-
   MyOrgsPage({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +14,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
   late List<Org> orgs = [];
   late Future _loadOrgsFuture;
 
-  @override 
+  @override
   initState() {
     super.initState();
     _loadOrgsFuture = loadOrgs();
@@ -36,20 +35,22 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Organizations', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('My Organizations',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
-            tooltip: 'Connect to a new student organization',
-            onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectOrgPage()));
-            }),
+              icon: Icon(Icons.add),
+              tooltip: 'Connect to a new student organization',
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ConnectOrgPage()));
+              }),
         ],
       ),
       body: FutureBuilder(
-        future: _loadOrgsFuture, 
+        future: _loadOrgsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -63,16 +64,19 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
             );
           } else if (orgs.isEmpty) {
             return Center(
-              child: 
-                  Text('You are not a member of any organizations.'),
+              child: Text('You are not a member of any organizations.'),
             );
           }
           return ListView.separated(
-              separatorBuilder: (context, index) => Divider(color: Colors.grey, height: 0),
-              itemCount: orgs.length,
-              itemBuilder: (context, index) {
-                return OrgCard(org: orgs[index], refreshParent: refresh,);
-              },
+            separatorBuilder: (context, index) =>
+                Divider(color: Colors.grey, height: 0),
+            itemCount: orgs.length,
+            itemBuilder: (context, index) {
+              return OrgCard(
+                org: orgs[index],
+                refreshParent: refresh,
+              );
+            },
           );
         },
       ),

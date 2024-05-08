@@ -13,11 +13,8 @@ import 'package:flutter_test_app/global.dart';
 /// favorite the event when you show them.
 /// This is used on home page and search page.
 class EventCardFavoritable extends StatelessWidget {
-  const EventCardFavoritable({
-    super.key,
-    required this.event,
-    required this.refreshParent
-  });
+  const EventCardFavoritable(
+      {super.key, required this.event, required this.refreshParent});
   final Event event;
   final VoidCallback refreshParent;
 
@@ -87,7 +84,8 @@ class EventCardFavoritable extends StatelessWidget {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
+                    builder: (context) => EventDetailsPage(
+                        event: event, refreshParent: refreshParent),
                   ),
                 );
               },
@@ -100,11 +98,8 @@ class EventCardFavoritable extends StatelessWidget {
 /// This event card is used to show events on the home page when the user
 /// is not logged in or in the user's own list (e.g. in events I created page)
 class EventCardPlain extends StatelessWidget {
-  const EventCardPlain({
-    super.key,
-    required this.event,
-    required this.refreshParent
-  });
+  const EventCardPlain(
+      {super.key, required this.event, required this.refreshParent});
   final Event event;
   final VoidCallback refreshParent;
 
@@ -133,7 +128,8 @@ class EventCardPlain extends StatelessWidget {
               context,
               CupertinoPageRoute(
                 //go to event details page
-                builder: (context) => EventDetailsPage(event: event, refreshParent: refreshParent),
+                builder: (context) => EventDetailsPage(
+                    event: event, refreshParent: refreshParent),
               ));
         },
       ),
@@ -265,10 +261,11 @@ Future<void> unlikeEvent(int eventId) async {
   var url = Uri(
     scheme: 'https',
     host: 'grinsync.com',
-    path: 'api/unlikeEvent',  
+    path: 'api/unlikeEvent',
   );
 
-  var response = await http.post(url, headers: headers, body: {'id': eventId.toString()});
+  var response =
+      await http.post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
     print('Event unliked');
@@ -327,7 +324,8 @@ Future<List<Event>> getAllEventsByPreferences(
     headers = {'Authorization': 'Token $token'};
   }
   print('Fetching events...');
-  var url = Uri.parse('https://grinsync.com/api/getAll?tags=${tagList.join(';')}');
+  var url =
+      Uri.parse('https://grinsync.com/api/getAll?tags=${tagList.join(';')}');
   var result = await http.get(url, headers: headers);
 
   // print('Parsing JSON response...');
@@ -402,7 +400,6 @@ Future<List<Event>> getUpcomingEvents(
   // for (var event in allEvents) { // but it still contains duplicates
   //   print(event.id);
   // }
-  
 
   return allEvents;
 }

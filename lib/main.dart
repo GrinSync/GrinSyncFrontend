@@ -138,46 +138,44 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: currentPage, //one of the five pages depending on the navigation bar item selected
-              ),
-                    NavigationBar(
-                      animationDuration: const Duration(milliseconds: 300),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      indicatorColor: Colors.white,
-                      shadowColor: Colors.white,
-                      destinations: const [
-                        NavigationDestination(
-                          icon: Icon(Icons.home),
-                          label: 'Home',
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.search),
-                          label: 'Search',
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.add),
-                          label: 'Create',
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.calendar_month),
-                          label: 'Calendar',
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.person),
-                          label: 'Profile',
-                        ),
-                      ],
-                      selectedIndex: selectedIndexOnHomePage,
-                      onDestinationSelected: (value) {
-                        setState(() {
-                          selectedIndexOnHomePage = value;
-                        });
-                      }),
-                    ]
-    );
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Expanded(
+        child:
+            currentPage, //one of the five pages depending on the navigation bar item selected
+      ),
+      NavigationBar(
+          animationDuration: const Duration(milliseconds: 300),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          indicatorColor: Colors.white,
+          shadowColor: Colors.white,
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.add),
+              label: 'Create',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.calendar_month),
+              label: 'Calendar',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          selectedIndex: selectedIndexOnHomePage,
+          onDestinationSelected: (value) {
+            setState(() {
+              selectedIndexOnHomePage = value;
+            });
+          }),
+    ]);
   }
 }

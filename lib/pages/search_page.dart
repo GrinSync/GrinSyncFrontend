@@ -11,17 +11,29 @@ class SearchPage extends StatefulWidget {
 }
 
 enum searchMode {
-  events(obj: Event, label: "Search for Events", icon: Icons.event,), //displayWidget: EventCardFavoritable),
-  users(obj: User, label: "Search for Users", icon: Icons.person,), //displayWidget: UserCard),
-  orgs(obj: Org, label: "Search for Organizations", icon: Icons.group,); //displayWidget: OrgCard),;
+  events(
+    obj: Event,
+    label: "Search for Events",
+    icon: Icons.event,
+  ), //displayWidget: EventCardFavoritable),
+  users(
+    obj: User,
+    label: "Search for Users",
+    icon: Icons.person,
+  ), //displayWidget: UserCard),
+  orgs(
+    obj: Org,
+    label: "Search for Organizations",
+    icon: Icons.group,
+  ); //displayWidget: OrgCard),;
 
   const searchMode({
     required this.obj,
-    required this.label, 
+    required this.label,
     required this.icon,
     //required this.displayWidget,
-    });
-    
+  });
+
   final Type obj;
   final String label;
   final IconData icon;
@@ -37,8 +49,6 @@ class _SearchPageState extends State<SearchPage> {
   List<Org> orgSearchResults = [];
   late Future _searchFuture = Future.value();
 
-
-
   @override
   void initState() {
     _query = TextEditingController();
@@ -48,9 +58,6 @@ class _SearchPageState extends State<SearchPage> {
   Future<void> searchEvents() async {
     eventSearchResults = await getSearchedEvents(_query.text);
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,38 +142,41 @@ class _SearchPageState extends State<SearchPage> {
             ),
             SizedBox(height: 10),
             Expanded(
-              child: _query.text.isEmpty? 
-              const Center(
-                child: Text('Search Something...'),
-              ) 
-              :FutureBuilder(
-                future: _searchFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('An error occurred while searching. Please try again.'),
-                    );
-                  } else {
-                    if (eventSearchResults.isEmpty) {
-                      return const Center(
-                        child: Text('No Results Found'),
-                      );
-                    }
-                    return ListView.builder(
-                          itemCount: eventSearchResults.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == eventSearchResults.length) {
+              child: _query.text.isEmpty
+                  ? const Center(
+                      child: Text('Search Something...'),
+                    )
+                  : FutureBuilder(
+                      future: _searchFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                            child: Text(
+                                'An error occurred while searching. Please try again.'),
+                          );
+                        } else {
+                          if (eventSearchResults.isEmpty) {
+                            return const Center(
+                              child: Text('No Results Found'),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: eventSearchResults.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == eventSearchResults.length) {
                                 return Column(
                                   children: [
                                     Divider(color: Colors.grey[400]),
                                     Text('--End of Search Result--',
                                         style:
                                             TextStyle(color: Colors.grey[600])),
-                                    Text('Event Count: ${eventSearchResults.length}',
+                                    Text(
+                                        'Event Count: ${eventSearchResults.length}',
                                         style:
                                             TextStyle(color: Colors.grey[600])),
                                   ],
@@ -174,15 +184,20 @@ class _SearchPageState extends State<SearchPage> {
                               } else {
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
-                                        event: eventSearchResults[index], refreshParent: () => {},)
-                                    : EventCardPlain(event: eventSearchResults[index], refreshParent: () => {},);
+                                        event: eventSearchResults[index],
+                                        refreshParent: () => {},
+                                      )
+                                    : EventCardPlain(
+                                        event: eventSearchResults[index],
+                                        refreshParent: () => {},
+                                      );
                               }
-                          },
-                        );
-                  }
-                },
-              ),
-        ),
+                            },
+                          );
+                        }
+                      },
+                    ),
+            ),
           ],
         ),
       ),

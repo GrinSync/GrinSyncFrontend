@@ -51,8 +51,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: 
-                    CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               );
               // if there is an error, show an error message and a button to try again
             } else if (snapshot.hasError) {
@@ -81,79 +80,84 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                 // if there are events, show the events
               } else {
                 return Container(
-                      padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                      child: ListView.builder(
-                        itemCount: events.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == events.length) {
-                            return Column(
-                              children: [
-                                Divider(color: Colors.grey[400]),
-                                Text('--End of Your Events Created--',
-                                    style: TextStyle(color: Colors.grey[600])),
-                                Text('Event Count: ${events.length}',
-                                    style: TextStyle(color: Colors.grey[600])),
-                              ],
-                            );
-                          } else {
-                            return Slidable(
-                              key: ValueKey(events[index].id),
-                              endActionPane: ActionPane(
-                                motion: DrawerMotion(),
-                                dismissible: DismissiblePane(
-                                  onDismissed: () async {
-                                    String deleteMsg = await deleteEvent(events[index].id);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(deleteMsg),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                    setState(() {
-                                      events.removeAt(index);
-                                    });
-                              },
-                                ),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (context) {
-                                      Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(
-                                                  builder: (context) =>
-                                                      EventEditPage(event: events[index], refreshParent: refresh,)));
-                                    },
-                                    label: 'Edit',
-                                    icon: Icons.edit,
-                                    backgroundColor: Colors.blue,),
-
-                                  SlidableAction(
-                                    onPressed: (context) async {
-                                      String deleteMsg = await deleteEvent(events[index].id);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(deleteMsg),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                    setState(() {
-                                      events.removeAt(index);
-                                    });
-                                    },
-                                    label: 'Delete',
-                                    icon: Icons.delete,
-                                    backgroundColor: Colors.red,
+                  padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                  child: ListView.builder(
+                    itemCount: events.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == events.length) {
+                        return Column(
+                          children: [
+                            Divider(color: Colors.grey[400]),
+                            Text('--End of Your Events Created--',
+                                style: TextStyle(color: Colors.grey[600])),
+                            Text('Event Count: ${events.length}',
+                                style: TextStyle(color: Colors.grey[600])),
+                          ],
+                        );
+                      } else {
+                        return Slidable(
+                          key: ValueKey(events[index].id),
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            dismissible: DismissiblePane(
+                              onDismissed: () async {
+                                String deleteMsg =
+                                    await deleteEvent(events[index].id);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(deleteMsg),
+                                    duration: Duration(seconds: 2),
                                   ),
-                                ],
+                                );
+                                setState(() {
+                                  events.removeAt(index);
+                                });
+                              },
+                            ),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => EventEditPage(
+                                                event: events[index],
+                                                refreshParent: refresh,
+                                              )));
+                                },
+                                label: 'Edit',
+                                icon: Icons.edit,
+                                backgroundColor: Colors.blue,
                               ),
-                              child: EventCardPlain(
-                                  event: events[index],
-                                  refreshParent: refresh,),
-                            ); // EventCardPlain is an event card Widget in get_events.dart
-                          }
-                        },
-                      ),
-                    );
+                              SlidableAction(
+                                onPressed: (context) async {
+                                  String deleteMsg =
+                                      await deleteEvent(events[index].id);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(deleteMsg),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                  setState(() {
+                                    events.removeAt(index);
+                                  });
+                                },
+                                label: 'Delete',
+                                icon: Icons.delete,
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: EventCardPlain(
+                            event: events[index],
+                            refreshParent: refresh,
+                          ),
+                        ); // EventCardPlain is an event card Widget in get_events.dart
+                      }
+                    },
+                  ),
+                );
               }
             }
           }),
