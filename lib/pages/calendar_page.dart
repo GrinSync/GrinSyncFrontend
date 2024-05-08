@@ -87,6 +87,8 @@ class CalendarPageState extends State<CalendarPage> {
 
   /// Future function to load all events
   Future<void> loadEvents(filterOptions option) async {
+    if (!isLoggedIn()) return;
+
     // Reload calendar events depending on the filter option
     switch (option) {
       case filterOptions.preferences:
@@ -106,7 +108,7 @@ class CalendarPageState extends State<CalendarPage> {
     loadEventsFuture = loadEvents(filterOptions.followed);
   }
 
-  refresh () {
+  refresh() {
     setState(() {
       loadEventsFuture = loadEvents(currentFilter);
     });
@@ -219,108 +221,152 @@ class CalendarPageState extends State<CalendarPage> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
         ),
-        body: FutureBuilder(
-          future: loadEventsFuture,
-          builder: (context, snapshot) {
-            // If the connection is waiting, show a loading indicator
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  Center(child: Text('Preparing the calendar for you...')),
-                ],
-              );
+        body: !isLoggedIn()
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text('Welcome to GrinSync!',
+                        style: TextStyle(fontSize: 20)),
+                    const SizedBox(height: 20),
+                    const Text(
+                        'Please log in or register to view the calendar.'),
+                  ],
+                ),
+              )
+            : FutureBuilder(
+                future: loadEventsFuture,
+                builder: (context, snapshot) {
+                  // If the connection is waiting, show a loading indicator
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Center(
+                            child: Text('Preparing the calendar for you...')),
+                      ],
+                    );
 
-              // If there is an error, show an error message and a button to try again
-            } else if (snapshot.hasError) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text('Error loading events'),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        loadEvents(filterOptions.followed);
-                      });
-                    },
-                    child: const Text('Try again'),
-                  ),
-                ],
-              );
+                    // If there is an error, show an error message and a button to try again
+                  } else if (snapshot.hasError) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text('Error loading events'),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              loadEvents(filterOptions.followed);
+                            });
+                          },
+                          child: const Text('Try again'),
+                        ),
+                      ],
+                    );
 
-              // If the connection is done, show the events
-            } else {
-              // If there are no events, show a message
-              if (allEvents.isEmpty) {
-                return Scaffold(
-                  body: Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(
-                      child: ListView(
-                        children: [const Text('No events to show here')],
-                      ),
-                    ),
-                  ),
-                );
+                    // If the connection is done, show the events
+                  } else {
+                    // If there are no events, show a message
+                    if (allEvents.isEmpty) {
+                      return Scaffold(
+                        body: SfCalendar(
+                          controller: calendarController,
+                          onViewChanged: calendarViewChanged,
+                          onTap: calendarTapped,
+                          view:
+                              CalendarView.day, // default view of the calendar
+                          firstDayOfWeek:
+                              7, // first day of the week defaulted to Sunday
+                          minDate: DateTime(2023, 08, 14, 0, 0, 0),
+                          maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                          allowedViews: [
+                            CalendarView.day,
+                            CalendarView.week,
+                            CalendarView.month,
+                          ], // the calendar only allows three views - discussed in previous milestones
+                          allowViewNavigation: true,
+                          showNavigationArrow: true,
+                          viewNavigationMode: ViewNavigationMode.none,
+                          monthViewSettings: const MonthViewSettings(
+                            dayFormat: 'EEE',
+                            monthCellStyle: MonthCellStyle(),
+                            navigationDirection:
+                                MonthNavigationDirection.horizontal,
+                          ),
+                          timeSlotViewSettings: const TimeSlotViewSettings(
+                            timeInterval: Duration(minutes: 30),
+                            timeFormat: "hh:mm",
+                            timeIntervalHeight: 50,
+                            timeIntervalWidth: 25,
+                            minimumAppointmentDuration: Duration(minutes: 15),
+                            dateFormat: 'd',
+                            dayFormat: 'EEE',
+                          ),
+                          showDatePickerButton: true,
+                          showTodayButton: true, // get the event data
+                        ),
+                      );
 
-                // If there are events, show the events
-              } else {
-                return Scaffold(
-                  // Return the actual calendar
-                  body: SfCalendar(
-                    controller: calendarController,
-                    onViewChanged: calendarViewChanged,
-                    onTap: calendarTapped,
-                    view: CalendarView.day, // default view of the calendar
-                    firstDayOfWeek:
-                        7, // first day of the week defaulted to Sunday
-                    minDate: DateTime(2023, 08, 14, 0, 0, 0),
-                    maxDate: DateTime(2025, 05, 25, 0, 0, 0),
-                    allowedViews: [
-                      CalendarView.day,
-                      CalendarView.week,
-                      CalendarView.month,
-                    ], // the calendar only allows three views - discussed in previous milestones
-                    allowViewNavigation: true,
-                    showNavigationArrow: true,
-                    viewNavigationMode: ViewNavigationMode.none,
-                    monthViewSettings: const MonthViewSettings(
-                      dayFormat: 'EEE',
-                      monthCellStyle: MonthCellStyle(),
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.indicator,
-                      appointmentDisplayCount: 4,
-                      showAgenda: true,
-                      agendaViewHeight: 200,
-                      agendaStyle: AgendaStyle(),
-                      navigationDirection: MonthNavigationDirection.horizontal,
-                    ),
-                    timeSlotViewSettings: const TimeSlotViewSettings(
-                      timeInterval: Duration(minutes: 30),
-                      timeFormat: "hh:mm",
-                      timeIntervalHeight: 50,
-                      timeIntervalWidth: 25,
-                      minimumAppointmentDuration: Duration(minutes: 15),
-                      dateFormat: 'd',
-                      dayFormat: 'EEE',
-                      // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
-                    ),
-                    showDatePickerButton: true,
-                    showTodayButton: true,
-                    blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
-                    dataSource: EventDataSource(
-                        getAllAppointmentData()), // get the event data
-                    appointmentTextStyle: TextStyle(
-                      color: Color(0xFFFFFFFF),
-                    ),
-                  ),
-                );
-              }
-            }
-          },
-        ));
+                      // If there are events, show the events
+                    } else {
+                      return Scaffold(
+                        // Return the actual calendar
+                        body: SfCalendar(
+                          controller: calendarController,
+                          onViewChanged: calendarViewChanged,
+                          onTap: calendarTapped,
+                          view:
+                              CalendarView.day, // default view of the calendar
+                          firstDayOfWeek:
+                              7, // first day of the week defaulted to Sunday
+                          minDate: DateTime(2023, 08, 14, 0, 0, 0),
+                          maxDate: DateTime(2025, 05, 25, 0, 0, 0),
+                          allowedViews: [
+                            CalendarView.day,
+                            CalendarView.week,
+                            CalendarView.month,
+                          ], // the calendar only allows three views - discussed in previous milestones
+                          allowViewNavigation: true,
+                          showNavigationArrow: true,
+                          viewNavigationMode: ViewNavigationMode.none,
+                          monthViewSettings: const MonthViewSettings(
+                            dayFormat: 'EEE',
+                            monthCellStyle: MonthCellStyle(),
+                            appointmentDisplayMode:
+                                MonthAppointmentDisplayMode.indicator,
+                            appointmentDisplayCount: 4,
+                            showAgenda: true,
+                            agendaViewHeight: 200,
+                            agendaStyle: AgendaStyle(),
+                            navigationDirection:
+                                MonthNavigationDirection.horizontal,
+                          ),
+                          timeSlotViewSettings: const TimeSlotViewSettings(
+                            timeInterval: Duration(minutes: 30),
+                            timeFormat: "hh:mm",
+                            timeIntervalHeight: 50,
+                            timeIntervalWidth: 25,
+                            minimumAppointmentDuration: Duration(minutes: 15),
+                            dateFormat: 'd',
+                            dayFormat: 'EEE',
+                            // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
+                          ),
+                          showDatePickerButton: true,
+                          showTodayButton: true,
+                          blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
+                          dataSource: EventDataSource(
+                              getAllAppointmentData()), // get the event data
+                          appointmentTextStyle: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+              ));
   }
 } // CalendarPageState
