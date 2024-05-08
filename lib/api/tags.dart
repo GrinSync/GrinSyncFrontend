@@ -33,7 +33,7 @@ Future<void> setPrefferedTags() async {
   if (token == null) {
     // if the user is not logged in, set the preferred tags to all tags
     // headers = {};
-    PREFERREDTAGS = ALLTAGS;
+    PREFERREDTAGS = getAllTags();
   } else {
     // if the user is logged in, get the preferred tags from the server
     headers = {'Authorization': 'Token $token'};
