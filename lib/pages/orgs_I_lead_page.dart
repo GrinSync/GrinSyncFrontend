@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
-import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/connect_org_page.dart';
-import 'package:flutter_test_app/pages/org_details_page.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
 class MyOrgsPage extends StatefulWidget {
@@ -25,6 +23,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
 
   Future<void> loadOrgs() async {
     orgs = await getUserOrgs(); // function in get_orgs.dart
+    await setStudentOrgs();
   }
 
   refresh() {
