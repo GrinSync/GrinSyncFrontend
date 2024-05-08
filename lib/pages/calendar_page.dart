@@ -9,7 +9,6 @@ import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/api/tags.dart';
 
 /// Enum for the filter options for the calendar page

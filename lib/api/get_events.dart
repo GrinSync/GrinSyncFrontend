@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/constants.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/pages/event_details_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_test_app/pages/edit_event_page.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_test_app/global.dart';

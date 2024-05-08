@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:flutter_test_app/pages/user_event_creation_page.dart';

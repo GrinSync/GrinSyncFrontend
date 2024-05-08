@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
-import 'package:flutter_test_app/pages/search_results_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override
