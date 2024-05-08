@@ -188,36 +188,38 @@ class CalendarPageState extends State<CalendarPage> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: [
-            // The label of the current filter
-            Text(currentFilter.label),
-            // A pop up menu button
-            PopupMenuButton(
-              icon: const Icon(Icons.filter_alt),
-              itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
-                  value: filterOptions.preferences,
-                  child: Text(filterOptions.preferences.label),
-                ),
-                PopupMenuItem(
-                  value: filterOptions.created,
-                  child: Text(filterOptions.created.label),
-                ),
-                PopupMenuItem(
-                  value: filterOptions.followed,
-                  child: Text(filterOptions.followed.label),
-                ),
-              ],
-              // Set the state and reload the page (a stateful builder)
-              // depending on the selected filter option
-              onSelected: (filterOptions option) {
-                setState(() {
-                  loadEventsFuture = loadEvents(option);
-                  currentFilter = option;
-                });
-              },
-            ),
-          ],
+          actions: isLoggedIn()
+              ? []
+              : [
+                  // The label of the current filter
+                  Text(currentFilter.label),
+                  // A pop up menu button
+                  PopupMenuButton(
+                    icon: const Icon(Icons.filter_alt),
+                    itemBuilder: (BuildContext context) => [
+                      PopupMenuItem(
+                        value: filterOptions.preferences,
+                        child: Text(filterOptions.preferences.label),
+                      ),
+                      PopupMenuItem(
+                        value: filterOptions.created,
+                        child: Text(filterOptions.created.label),
+                      ),
+                      PopupMenuItem(
+                        value: filterOptions.followed,
+                        child: Text(filterOptions.followed.label),
+                      ),
+                    ],
+                    // Set the state and reload the page (a stateful builder)
+                    // depending on the selected filter option
+                    onSelected: (filterOptions option) {
+                      setState(() {
+                        loadEventsFuture = loadEvents(option);
+                        currentFilter = option;
+                      });
+                    },
+                  ),
+                ],
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
         ),
