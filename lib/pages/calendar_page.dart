@@ -77,10 +77,10 @@ class CalendarPageState extends State<CalendarPage> {
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
 
   /// Boolean check for whether the user is a student
-  bool studentsOnly = (isLoggedIn() && USER.value?.type == "STU");
+  // bool studentsOnly = false;
 
   /// Boolean check for whether the user wants to filter only events that match ALL of their preferred tags
-  bool intersectionFilter = false;
+  // bool intersectionFilter = false;
 
   /// Future function call to load all events with the API call
   late Future<void> loadEventsFuture;
@@ -93,7 +93,7 @@ class CalendarPageState extends State<CalendarPage> {
     switch (option) {
       case filterOptions.preferences:
         allEvents = await getAllEventsByPreferences(
-            selectedTags, studentsOnly, intersectionFilter);
+            selectedTags, false, false);
       case filterOptions.created:
         allEvents = await getMyEvents();
       case filterOptions.followed:
