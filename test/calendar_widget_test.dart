@@ -20,13 +20,13 @@ void main() {
     await box.clear();
   });
 
-  testWidgets('Test that the Event Creation page populated correctly',
+  testWidgets('Test that the Calendar page populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const MyApp());
 
-    // Tap on the create icon once on the home screen.
-    await tester.tap(find.byIcon(Icons.add));
+    // Tap on the calendar icon once on the home screen.
+    await tester.tap(find.byIcon(Icons.calendar_month));
 
     // Rebuild the widget after the state has changed.
     await tester.pump();
@@ -39,7 +39,7 @@ void main() {
 
     // Test that all Text Fields populated.
     // 1. 'Welcome to GrinSync!'
-    // 2. 'Please log in or register to create an event'
+    // 2. 'Please log in or register to view the calendar'
     // 3. 'Create an Event' -- page title
     // 4. 'Home' - bottom navigation bar
     // 5. 'Search' - bottom navigation bar

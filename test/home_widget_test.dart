@@ -20,13 +20,13 @@ void main() {
     await box.clear();
   });
 
-  testWidgets('Test that the Event Creation page populated correctly',
+  testWidgets('Test that the Home page populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const MyApp());
 
-    // Tap on the create icon once on the home screen.
-    await tester.tap(find.byIcon(Icons.add));
+    // Tap on the search icon once on the home screen.
+    await tester.tap(find.byIcon(Icons.home));
 
     // Rebuild the widget after the state has changed.
     await tester.pump();
@@ -34,18 +34,15 @@ void main() {
     // We can now use this test widget to test different aspects of our page.
     // We do this below by checking if different fields populated correctly.
 
-    // Check the number of text fields that appeared on the page.
-    var numText = find.byType(Text);
+    // Test that the title populated.
+    expect(find.text('Upcoming Events'), findsNWidgets(1));
 
-    // Test that all Text Fields populated.
-    // 1. 'Welcome to GrinSync!'
-    // 2. 'Please log in or register to create an event'
-    // 3. 'Create an Event' -- page title
-    // 4. 'Home' - bottom navigation bar
-    // 5. 'Search' - bottom navigation bar
-    // 6. 'Create' - bottom navigation bar
-    // 7. 'Calendar' - bottom navigation bar
-    // 8. 'Profile' - bottom navigation bar
-    expect(numText, findsNWidgets(8));
+    // Test that the home button populated.
+    expect(find.text('Home'), findsNWidgets(1));
+
+    // Check the number of text fields that appeared on the Search page.
+    var filterButton = find.byIcon(Icons.filter_list);
+    // Test that the filter button populated.
+    expect(filterButton, findsNWidgets(1));
   });
 }
