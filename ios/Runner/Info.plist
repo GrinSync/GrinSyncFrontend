@@ -24,8 +24,19 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+		<string>webcal</string>
+		<string>mailto</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Allowing the access to your calendar enables us to add events to the calendar on your device. </string>
+	<key>NSContactsUsageDescription</key>
+	<string>This is required for the location autocomplete once Apple's UI is opened, so it is highly recommended that you also approve this permission. The app might crash otherwise.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -45,19 +56,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>googlechromes</string>
-	<string>comgooglemaps</string>
-	<string>webcal</string>
-	<string>mailto</string>
-	</array>
-
-	<key>NSCalendarsUsageDescription</key>
-	<string>Allowing the access to your calendar enables us to add events to the calendar on your device. </string>
-
-	<key>NSContactsUsageDescription</key>
-	<string>This is required for the location autocomplete once Apple's UI is opened, so it is highly recommended that you also approve this permission. The app might crash otherwise.</string>
 </dict>
 </plist>
