@@ -40,7 +40,6 @@ class _LoginPage extends State<LoginPage> {
           foregroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
-          //padding: const EdgeInsets.all(8.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
@@ -177,12 +176,6 @@ class _LoginPage extends State<LoginPage> {
                         else if (auth.runtimeType == User) {
                           // Set login status to logged in
                           await setLoginStatus();
-                          // Open the app home page
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const MyApp()),
-                          // );
                           Navigator.pop(context);
                           Fluttertoast.showToast(
                             msg: "Login Successful",
