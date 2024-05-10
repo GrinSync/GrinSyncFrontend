@@ -10,22 +10,23 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
+/// This enum is used to determine the search mode. (The commented out code is for future implementation)
 enum searchMode {
   events(
     obj: Event,
     label: "Search for Events",
     icon: Icons.event,
-  ), //displayWidget: EventCardFavoritable),
+  ), //displayWidget: EventCardFavoritable).
   users(
     obj: User,
     label: "Search for Users",
     icon: Icons.person,
-  ), //displayWidget: UserCard),
+  ), //displayWidget: UserCard).
   orgs(
     obj: Org,
     label: "Search for Organizations",
     icon: Icons.group,
-  ); //displayWidget: OrgCard),;
+  ); //displayWidget: OrgCard).
 
   const searchMode({
     required this.obj,
@@ -43,18 +44,19 @@ enum searchMode {
 class _SearchPageState extends State<SearchPage> {
   late TextEditingController _query =
       TextEditingController(); //text box for search
-  searchMode currentMode = searchMode.events; //default search mode
-  List<Event> eventSearchResults = [];
-  List<User> userSearchResults = [];
-  List<Org> orgSearchResults = [];
+  searchMode currentMode = searchMode.events; // default search mode: Events
+  List<Event> eventSearchResults = []; // Event list of search results
+  List<User> userSearchResults = []; // User list of search results
+  List<Org> orgSearchResults = []; // Organization list of search results
   late Future _searchFuture = Future.value();
 
   @override
   void initState() {
-    _query = TextEditingController();
+    _query = TextEditingController(); //text box for search
     super.initState();
   }
 
+  /// This function is used to search for events based on the query.
   Future<void> searchEvents() async {
     eventSearchResults = await getSearchedEvents(_query.text);
   }
@@ -69,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
-        // Remove the comment when we have the user search functionality
+        // Uncomment when we have other search functionalities
         // actions:[
         //   PopupMenuButton(
         //     itemBuilder: (BuildContext context) => [
@@ -110,11 +112,13 @@ class _SearchPageState extends State<SearchPage> {
                       labelText: currentMode.label,
                       hintText: 'Enter a keyword',
                       border: const OutlineInputBorder(),
+                      // suffixIcon: IconButton(), // implement this when we remove the search button outside the text field and added textInputButtonaction
                     ),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.search),
+                  // Different actions based on the search mode
                   onPressed: () {
                     if (_query.text.isNotEmpty) {
                       if (currentMode == searchMode.events) {
@@ -141,33 +145,39 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
             SizedBox(height: 10),
+            // Display search results
             Expanded(
               child: _query.text.isEmpty
                   ? const Center(
                       child: Text('Search Something...'),
                     )
                   : FutureBuilder(
-                      future: _searchFuture,
+                      future: _searchFuture, // Future to be resolved
                       builder: (context, snapshot) {
+                        // loading state
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
+                          // error state
                         } else if (snapshot.hasError) {
                           return const Center(
                             child: Text(
                                 'An error occurred while searching. Please try again.'),
                           );
                         } else {
+                          // empty search results
                           if (eventSearchResults.isEmpty) {
                             return const Center(
                               child: Text('No Results Found'),
                             );
                           }
+                          // non-empty search results
                           return ListView.builder(
                             itemCount: eventSearchResults.length + 1,
                             itemBuilder: (context, index) {
+                              // Display the end of search results
                               if (index == eventSearchResults.length) {
                                 return Column(
                                   children: [
@@ -181,7 +191,8 @@ class _SearchPageState extends State<SearchPage> {
                                             TextStyle(color: Colors.grey[600])),
                                   ],
                                 );
-                              } else {
+                              } else { 
+                                // Display the search results based on the search mode
                                 return isLoggedIn()
                                     ? EventCardFavoritable(
                                         event: eventSearchResults[index],
