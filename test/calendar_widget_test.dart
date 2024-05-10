@@ -20,13 +20,13 @@ void main() {
     await box.clear();
   });
 
-  testWidgets('Test that the Search page populated correctly',
+  testWidgets('Test that the Calendar page populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const MyApp());
 
-    // Tap on the search icon once on the home screen.
-    await tester.tap(find.byIcon(Icons.search));
+    // Tap on the calendar icon once on the home screen.
+    await tester.tap(find.byIcon(Icons.calendar_month));
 
     // Rebuild the widget after the state has changed.
     await tester.pump();
@@ -34,12 +34,18 @@ void main() {
     // We can now use this test widget to test different aspects of our page.
     // We do this below by checking if different fields populated correctly.
 
-    // Check the number of text fields that appeared on the Search page.
-    var numTextFields = find.byType(TextField);
-    // Test that the Text Field populated.
-    expect(numTextFields, findsNWidgets(1));
+    // Check the number of text fields that appeared on the page.
+    var numText = find.byType(Text);
 
-    // Test that the title and search button populated.
-    expect(find.text('Search'), findsNWidgets(2));
+    // Test that all Text Fields populated.
+    // 1. 'Welcome to GrinSync!'
+    // 2. 'Please log in or register to view the calendar'
+    // 3. 'Create an Event' -- page title
+    // 4. 'Home' - bottom navigation bar
+    // 5. 'Search' - bottom navigation bar
+    // 6. 'Create' - bottom navigation bar
+    // 7. 'Calendar' - bottom navigation bar
+    // 8. 'Profile' - bottom navigation bar
+    expect(numText, findsNWidgets(8));
   });
 }

@@ -7,31 +7,37 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() {
   Box box;
-      setUp(() async {
-      final temp = await Directory.systemTemp.createTemp();
-      Hive.init(temp.path);
-      box = await Hive.openBox('test-box');
-      await box.clear();
-    });
-  testWidgets('Test that the Guest Event Creation page populated correctly',
+
+  /// Sets up tests environment.
+  // Creates a temporary directory,
+  // initializes Hive with that directory's path,
+  // opens a box named within Hive,
+  // and then clears any existing data in that box.
+  setUp(() async {
+    final temp = await Directory.systemTemp.createTemp();
+    Hive.init(temp.path);
+    box = await Hive.openBox('test-box');
+    await box.clear();
+  });
+
+  testWidgets('Test that the Event Creation page populated correctly',
       (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(const MyApp());
 
-    // Tap on the Create icon once on the home screen
-    // This will show bring us to the Guest Event Creation page
+    // Tap on the create icon once on the home screen.
     await tester.tap(find.byIcon(Icons.add));
 
     // Rebuild the widget after the state has changed.
     await tester.pump();
 
-    // We can use this test widget to test different aspects of our page
-    // We do this below by checking if different fields populated correctly
+    // We can now use this test widget to test different aspects of our page.
+    // We do this below by checking if different fields populated correctly.
 
-    // Check the number of text fields that appeared on the page
+    // Check the number of text fields that appeared on the page.
     var numText = find.byType(Text);
 
-    // Test that all Text Fields populated
+    // Test that all Text Fields populated.
     // 1. 'Welcome to GrinSync!'
     // 2. 'Please log in or register to create an event'
     // 3. 'Create an Event' -- page title
