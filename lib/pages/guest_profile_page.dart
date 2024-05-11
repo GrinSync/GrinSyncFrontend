@@ -21,9 +21,12 @@ class GuestProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // This is the welcome message for the guest user
             const Text('Welcome to GrinSync!', style: TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
             const Text('Please log in or register to access more features.'),
+
+            // These are the buttons for the guest user to log in or register
             TextButton(
                 onPressed: () {
                   Navigator.push(

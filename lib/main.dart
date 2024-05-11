@@ -13,13 +13,13 @@ import 'package:flutter_test_app/api/get_student_orgs.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.initFlutter();
+  // initializations 
+  await Hive.initFlutter(); // initialize Hive
   await setTokenBox(); // this function will set the BOX global variable to the encrypted token box
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
   await setAllTags(); // this function will set the ALLTAGS global variable to a list of strings of all tags
   await setPrefferedTags(); // this function will set the PREFERREDTAGS global variable to a list of strings of preferred tags
   await setStudentOrgs(); // this function will set the STUDENTORGS global variable to a list of student org ids that the user is linked with
-  print('All Init Functions Completed');
 
   // run the app
   runApp(const MyApp());
@@ -35,10 +35,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
-  // Close token box when app is closed
   @override
   void dispose() {
-    Hive.close();
+    Hive.close(); /// Close token box when app is closed
     super.dispose();
   }
 
@@ -46,7 +45,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GrinSync App',
+      // This theme will be used throughout the app
       theme: ThemeData(
+          // The themedata of navigation bar
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
@@ -61,12 +62,14 @@ class _MyAppState extends State<MyApp> {
             }),
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           ),
+          // The color scheme of the app, which comes from: https://www.grinnell.edu/about/leadership/offices-services/communications/our-brand/visuals
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
           fontFamily:
               'Futura' // Futura as the default font, the font used on Grinnell College's website
           ),
+      // This is the only page that will be displayed on the screen (other pages will be displayed based on the navigation bar item selected)
       home: const MyHomePage(),
     );
   }
@@ -79,6 +82,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // This variable will keep track of the navigation bar item selected
+  // The default value is 0, which is the home page (upcoming events page)
   var selectedIndexOnHomePage = 0;
 
   @override
@@ -90,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0: // this is the home page where where user can discover events
         currentPage = HomePage();
         break;
-      case 1: // this is the search page where user can search for events
+      case 1: // this is the search page where user can search for events/users/organizations
         currentPage = SearchPage();
         break;
       case 2: // this is the event creation page where user can create their own events
@@ -141,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedIndex: selectedIndexOnHomePage,
           onDestinationSelected: (value) {
             setState(() {
+              // This will change the navigation bar item selected
               selectedIndexOnHomePage = value;
             });
           }),
