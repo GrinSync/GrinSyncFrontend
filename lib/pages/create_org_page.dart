@@ -8,12 +8,12 @@ class CreateOrgPage extends StatefulWidget {
 }
 
 class _CreateOrgPage extends State<CreateOrgPage> {
-  /// Variables to store email
+  /// Variables to store email, org name, and org alias
   late final TextEditingController _email;
   late final TextEditingController _orgName;
   late final TextEditingController _orgCode;
 
-  /// Initialize variables to store email and password for the login page
+  /// Initialize variables to store email, org alias, and org name for the page
   @override
   void initState() {
     _email = TextEditingController();
@@ -22,7 +22,7 @@ class _CreateOrgPage extends State<CreateOrgPage> {
     super.initState();
   }
 
-  /// Dispose of the email and password when page closes.
+  /// Dispose of variables when page closes.
   @override
   void dispose() {
     _email.dispose();
@@ -31,7 +31,7 @@ class _CreateOrgPage extends State<CreateOrgPage> {
     super.dispose();
   }
 
-  /// Build the Login Page interface
+  /// Build the Create Org Page interface
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +40,6 @@ class _CreateOrgPage extends State<CreateOrgPage> {
           foregroundColor: Colors.white,
         ),
         body: SingleChildScrollView(
-          //padding: const EdgeInsets.all(8.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
@@ -87,7 +86,6 @@ class _CreateOrgPage extends State<CreateOrgPage> {
                     const SizedBox(
                       height: 50,
                     ),
-
                     // Create a TextField for the user to enter the org email
                     TextField(
                       controller: _email,
@@ -101,6 +99,7 @@ class _CreateOrgPage extends State<CreateOrgPage> {
                           border: OutlineInputBorder()),
                     ),
                     const SizedBox(height: 10),
+                    // Create a TextField for the user to enter the org name
                     TextField(
                       controller: _orgName,
                       autocorrect: false,
@@ -112,6 +111,7 @@ class _CreateOrgPage extends State<CreateOrgPage> {
                           border: OutlineInputBorder()),
                     ),
                     const SizedBox(height: 10),
+                    // Create a TextField for the user to enter the org alias
                     TextField(
                       controller: _orgCode,
                       autocorrect: false,
