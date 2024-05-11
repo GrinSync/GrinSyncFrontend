@@ -12,27 +12,27 @@ class ConnectOrgPage extends StatefulWidget {
 }
 
 class _ConnectOrgPage extends State<ConnectOrgPage> {
-  /// Initializes empty list of event
+  /// Initializes empty list of orgs
   late List<String> allOrgs = <String>[];
-  String? data = '';
+  String? data = ''; // String to hold connected orgs name
 
   Future<void> loadOrgs() async {
-    allOrgs = await getAllOrgs(); // function in get_events.dart
+    allOrgs = await getAllOrgs(); // function to get all created orgs
   }
 
-  /// Initialize variables to store email and password for the login page
+  /// Initialize Connect Org page
   @override
   void initState() {
     super.initState();
   }
 
-  /// Dispose of the email and password when page closes.
+
   @override
   void dispose() {
     super.dispose();
   }
 
-  /// Build the Login Page interface
+  /// Build the Connect Org Page interface
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +77,7 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
               );
               // if the connection is done, show the events
             } else {
-              // if there are no events, show a message
+              // if there are no orgs, show a message
               if (allOrgs.isEmpty) {
                 return const Center(
                   child: Text("No Student Orgs exist"),
@@ -108,12 +108,13 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                                             255, 218, 41, 28),
                                         foregroundColor: Colors.black),
                                     onPressed: () async {
-                                      // Authorize user with provided credentials
+                                      // Get id of selected student org
                                       int id = await getId(data);
+                                      // Connect Student Org
                                       var auth = await connectOrg(id);
-                                      if (auth == 'Success') {
+                                      if (auth == 'Success') { // If 'Success' is returned, Org was connected!
                                         Navigator.of(context).pop();
-                                      } else {}
+                                      }
                                     },
                                     child: const Text('Connect to Org')),
                               ))
@@ -125,66 +126,69 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
   }
 }
 
+/// Function that returns all student orgs
 Future<List<String>> getAllOrgs() async {
-  var token = BOX.get('token');
-  List<String> allOrgs = [];
+  var token = BOX.get('token'); // Get token from tokenbox
+  List<String> allOrgs = []; // Initialize list to store student orgs
   Map<String, String> headers;
-  if (token == null) {
+  if (token == null) { // If there is no token, do not pass one to the backend
     headers = {};
   } else {
+    // If token exists, store it in this header map to pass to backend
     headers = {'Authorization': 'Token $token'};
   }
 
-  var url = Uri.parse('https://grinsync.com/api/getAllOrgs');
+  var url = Uri.parse('https://grinsync.com/api/getAllOrgs'); // url to send info to
   var result = await http.get(url, headers: headers);
 
-  // parse the json response and create a string of all tags with commas in between
-  // result.body is a list of maps with tag names, ids, and selectDefault values (after jsonDecoding)
-  for (var jsonTag in jsonDecode(result.body)) {
-    allOrgs.add(jsonTag['name']);
+  // parse the json response and create a list of all orgs
+  for (var org in jsonDecode(result.body)) {
+    allOrgs.add(org['name']);
   }
-  return allOrgs;
+  return allOrgs; // return a list of all orgs
 }
 
+/// Function that takes in org's name and returns its id
 Future<int> getId(String? data) async {
-  var token = BOX.get('token');
+  var token = BOX.get('token'); // Get token from tokenbox
   Map<String, String> headers;
-  if (token == null) {
+  if (token == null) { // If there is no token, do not pass one to the backend
     headers = {};
   } else {
+    // If token exists, store it in this header map to pass to backend
     headers = {'Authorization': 'Token $token'};
   }
-  int id = 0;
+  int id = 0; // Variable to hold org id
   var url = Uri.parse('https://grinsync.com/api/getAllOrgs');
   var result = await http.get(url, headers: headers);
-  //print(result.body);
-  // parse the json response and create a string of all tags with commas in between
-  // result.body is a list of maps with tag names, ids, and selectDefault values (after jsonDecoding)
-  for (var jsonTag in jsonDecode(result.body)) {
-    if (jsonTag['name'] == data) {
-      id = jsonTag['id'];
+
+// parse the json response and create a list of all orgs
+  for (var org in jsonDecode(result.body)) {
+    if (org['name'] == data) {
+      id = org['id']; // Save org id
     }
   }
-  return id;
+  return id; // Return org id
 }
 
+/// Function that connects a user to the corresponding org given by the passed id
 Future<String> connectOrg(int id) async {
-  var token = BOX.get('token');
+  var token = BOX.get('token'); // Get token from tokenbox
   Map<String, String> headers;
-  if (token == null) {
+  if (token == null) { // If there is no token, do not pass one to the backend
     headers = {};
   } else {
+    // If token exists, store it in this header map to pass to backend
     headers = {'Authorization': 'Token $token'};
   }
-  String identity = id.toString();
+  String identity = id.toString(); // Save id as a string
   Map body = {
     'id': identity,
   };
-  var url = Uri.parse('https://grinsync.com/api/claimOrg');
+  var url = Uri.parse('https://grinsync.com/api/claimOrg'); // url to send info to
   var result = await http.post(url, headers: headers, body: body);
-  print(result.body);
-  if (result.statusCode == 200) {
+  if (result.statusCode == 200) { // If connection succeeded, return 'Success'
     return 'Success';
   }
-  return 'Error';
+  return 'Error'; // If connecting org failed, return 'Error'
 }
