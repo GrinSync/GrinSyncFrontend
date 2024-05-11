@@ -3,8 +3,7 @@ import 'package:flutter_test_app/constants.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as https;
 
-// Asyncrhonus operation to send event information to the Django backend
-// User input: userTitle, userLocation, userStartDate, userEndDate, userDescription, userRepeat, userEndRepeat, userStudentOnly, userTags, eventID, userURL
+/// Asynchronus operation to send event information to the Django backend for editing and creating event.
 Future eventInfo(
     String userTitle,
     String userLocation,
@@ -18,16 +17,16 @@ Future eventInfo(
     String? org,
     int eventId,
     String userUrl) async {
-  if (userStudentOnly == null) return; // Error check
+  if (userStudentOnly == null) return; // Error check.
   String studentOnly =
-      (userStudentOnly ? "True" : "False"); // Set boolean to a String
+      (userStudentOnly ? "True" : "False"); // Set boolean to a String.
 
-  // Set repeat customizations to numbers
+  // Set repeat customizations to numbers.
   // Daily -> repeatingDays = 1
   // Weekly -> repeatingDays = 7
   // Monthly -> repeatingMonths = 1
   // Otherwise, 0
-  // Send as Strings because that is how the backend will want it
+  // Send as Strings because that is how the backend will want it.
   String repeatingDays = "0";
   String repeatingMonths = "0";
   if (userRepeat != null) {
@@ -40,8 +39,8 @@ Future eventInfo(
     }
   }
 
-  // 'body' stores all the event info in a single map data structure
-  // Map backend API variables to user input
+  // 'body' stores all the event info in a single map data structure.
+  // We assign backend API variables to user input
   Map body = {
     'title': userTitle,
     'location': userLocation,
@@ -55,29 +54,27 @@ Future eventInfo(
     'tags': userTags,
   };
   // If the event ID is a valid ID, set the backend variable to the event ID
+  // If this function gets a valid event ID, then we are editing an event and need to send the event ID.
   if (eventId >= 0) {
     body['id'] = eventId.toString();
   }
+  // If the variable 'org' is not null, then the event is hosted by a student org and we need to send that info to the backend.
   if (org != null) {
     body['orgName'] = org;
   }
 
-  // TODO: Ask Bradley what this does
+  // Get authorization token for API requests.
   var box = await Hive.openBox(tokenBox);
   var token = box.get('token');
-  //box.close();
   Map<String, String> headers = {'Authorization': 'Token $token'};
 
-  // Send info to the URL the user provides
-  // This is either the edit event URL or the create event URL
+  // Send info to the URL the user provides.
+  // This is either the edit event URL or the create event URL.
   var url = Uri.parse(userUrl);
-  // URL to send event info
   var result = await https.post(url, body: body, headers: headers);
-  print(result.body);
 
   // If the edit/create event can be successful but something is wrong with user input, return the reason why
   var json = jsonDecode(result.body);
-
   if (json.containsKey('error')) {
     return json['error'];
   }

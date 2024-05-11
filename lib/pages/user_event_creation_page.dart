@@ -3,11 +3,9 @@ import 'package:flutter_test_app/api/new_event_info.dart';
 import 'package:flutter_test_app/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// TODO: NO SAVE DRAFT OPTION; IF USERS EXIT THE CREATE EVENT PAGE ALL THEIR INPUT IS LOST
-
 ///// ----- MULTI-SELECT CLASS FOR MULTI-SELECTING EVENT TAGS ----- /////
 
-// Define a stateful widget for multiselect option for event tags.
+/// Define a stateful widget for multiselect option for event tags.
 class MultiSelect extends StatefulWidget {
   final List<String> elements;
   const MultiSelect({super.key, required this.elements});
@@ -15,12 +13,12 @@ class MultiSelect extends StatefulWidget {
   State<MultiSelect> createState() => MultiSelectState();
 }
 
-// This is the state class to manage multiselect.
+/// This is the state class to manage multiselect.
 class MultiSelectState extends State<MultiSelect> {
   // Here is the list to hold selected items.
   final List<String> selectedItems = [];
 
-  // This function is called when item is selected or unselected.
+  /// This function is called when item is selected or unselected.
   void itemChange(String item, bool isSelected) {
     setState(() {
       if (isSelected) {
@@ -33,17 +31,17 @@ class MultiSelectState extends State<MultiSelect> {
     });
   }
 
-  // This function is called when the cancel button is hit.
+  /// This function is called when the cancel button is hit.
   void cancel() {
     Navigator.pop(context);
   }
 
-  // This function called when the submit button is hit.
+  /// This function called when the submit button is hit.
   void submit() {
     Navigator.pop(context, selectedItems);
   }
 
-  // A pop-up window will allow user to select event tags.
+  /// A pop-up window will allow user to select event tags.
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -71,14 +69,14 @@ class MultiSelectState extends State<MultiSelect> {
   }
 } // MultiSelectState
 
-// Define a stateful widget for event creation that is mutable and its corresponding state class.
+/// Define a stateful widget for event creation that is mutable and its corresponding state class.
 class UserEventCreationPage extends StatefulWidget {
   const UserEventCreationPage({super.key});
   @override
   State<UserEventCreationPage> createState() => UserEventCreationPageState();
 }
 
-// The state class to manage mutable state data and the widget's lifecycle for event creation page.
+/// The state class to manage mutable state data and the widget's lifecycle for event creation page.
 class UserEventCreationPageState extends State<UserEventCreationPage> {
   late String? _org;
   late final TextEditingController _title;
@@ -94,11 +92,11 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
   late final TextEditingController _repeatDate;
   late List<DropdownMenuItem<String>> _studentOrgs;
 
-  // initState function initializes all of the late final variables from above.
+  /// initState function initializes all of the late final variables from above.
   @override
   void initState() {
-    _org = null;
     super.initState();
+    _org = null;
     _title = TextEditingController();
     _location = TextEditingController();
     _startDate = TextEditingController();
@@ -120,7 +118,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     );
   } // initState
 
-  // dispose function does the cleanup tasks.
+  /// dispose function does the cleanup tasks once the app closes.
   @override
   void dispose() {
     _org = null;
@@ -134,6 +132,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _tags = [];
     _tagsString = "";
     _repeat = null;
+    _studentOrgs = [];
     super.dispose();
   } // dispose
 
@@ -183,11 +182,12 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     }
   } // selectDateTime
 
-  // showMultiSelect function allows users to multiselect event tags.
+  /// showMultiSelect function allows users to multiselect event tags.
   void showMultiSelect() async {
     // This is the list of event tags.
     final List<String> items = ALLTAGS;
 
+    // Allow users to choose tags.
     final List<String>? results = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -205,7 +205,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
     _tagsString = _tags.join(';');
   } // showMultiSelect
 
-// Build UI of widget.
+  /// Build UI of widget.
 // Everything is wrapped in a container with child content being scrollable.
   @override
   Widget build(BuildContext context) {
@@ -225,6 +225,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                     // Arrange children vertically.
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // STUDENT ORGANIZATION CHOOSE DROPDOWN DISPLAYS HERE.
                       Visibility(
                         visible: _studentOrgs.isNotEmpty,
                         child: DropdownButton<String>(
@@ -380,7 +381,7 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
 
                       const SizedBox(height: 10),
 
-                      // DISPLAY CHOSEN EVENT TAGS BELOW THE BUTTON.
+                      // DISPLAY CHOSENs EVENT TAGS BELOW THE BUTTON.
                       Wrap(
                         children: _tags
                             .map((e) => Chip(
@@ -452,7 +453,6 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
 
                                 // Otherwise, event info was successfully sent to backend.
                                 // Show success message.
-                                // TODO: Reload the page.
                                 else {
                                   Fluttertoast.showToast(
                                       msg: 'Event Created Successfully!',
@@ -463,52 +463,62 @@ class UserEventCreationPageState extends State<UserEventCreationPage> {
                                       textColor: Colors.black,
                                       fontSize: 16.0);
 
-                                      //clear all the text fields
-                                      setState(() {
-                                        _title.clear();
-                                        _location.clear();
-                                        _startDate.clear();
-                                        _endDate.clear();
-                                        _description.clear();
-                                        _repeatDate.clear();
-                                        _tags.clear();
-                                        _tagsString = "";
-                                        _org = null;
-                                        _studentsOnly = false;
-                                        _repeat = null;
-                                      });
+                                  // Clear all the text fields after successful event creation.
+                                  setState(() {
+                                    _org = null;
+                                    _title.clear();
+                                    _location.clear();
+                                    _startDate.clear();
+                                    _endDate.clear();
+                                    _description.clear();
+                                    _studentsOnly = false;
+                                    _tags.clear();
+                                    _tagsString = "";
+                                    _repeat = null;
+                                    _repeatDate.clear();
+                                    _studentOrgs = List.generate(
+                                      STUDENTORGS.length,
+                                      (index) => DropdownMenuItem(
+                                        value: STUDENTORGS[index],
+                                        child: Text(
+                                          STUDENTORGS[index],
+                                        ),
+                                      ),
+                                    );
+                                  });
                                 }
                               },
                               child: const Text('Create Event') // Button title
                               )),
-                              const SizedBox(height: 10),
-
-            ElevatedButton(
-          child: const Text("Reset All Fields"),
-          onPressed: () {
-           //Reset All Checkboxes
-            _org = null;
-            _title.clear();
-            _location.clear();
-            _startDate.clear();
-            _endDate.clear();
-            _description.clear();
-            _studentsOnly = false;
-            _tags.clear();
-            _repeat = null;
-            _repeatDate.clear();
-            _studentOrgs = List.generate(
-      STUDENTORGS.length,
-      (index) => DropdownMenuItem(
-        value: STUDENTORGS[index],
-        child: Text(
-          STUDENTORGS[index] ?? "No Org Name",
-        ),
-      ),
-    );
-            setState(() {});
-          },
-        )
+                      const SizedBox(height: 10),
+                      // Add a reset all fields button.
+                      ElevatedButton(
+                        child: const Text("Reset All Fields"),
+                        onPressed: () {
+                          // Reset all fields.
+                          _org = null;
+                          _title.clear();
+                          _location.clear();
+                          _startDate.clear();
+                          _endDate.clear();
+                          _description.clear();
+                          _studentsOnly = false;
+                          _tags.clear();
+                          _tagsString = "";
+                          _repeat = null;
+                          _repeatDate.clear();
+                          _studentOrgs = List.generate(
+                            STUDENTORGS.length,
+                            (index) => DropdownMenuItem(
+                              value: STUDENTORGS[index],
+                              child: Text(
+                                STUDENTORGS[index],
+                              ),
+                            ),
+                          );
+                          setState(() {});
+                        },
+                      )
                     ]))));
   } // build
 } // EventCreationPageState

@@ -5,11 +5,9 @@ import 'package:flutter_test_app/pages/user_event_creation_page.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// TODO: Refactor code so that select date time is in another file.
-
-// Define a stateful widget for event edit that is mutable and its corresponding state class.
+/// Define a stateful widget for event edit that is mutable and its corresponding state class.
 class EventEditPage extends StatefulWidget {
-  final Event event; // Event that we are editing
+  final Event event; // Event that we are editing.s
   final VoidCallback refreshParent;
   const EventEditPage(
       {super.key, required this.event, required this.refreshParent});
@@ -18,9 +16,8 @@ class EventEditPage extends StatefulWidget {
   EventEditPageState createState() => EventEditPageState();
 }
 
-// This is the state class to manage mutable state data and the widget's lifecycle for event edit page.
+/// This is the state class to manage mutable state data and the widget's lifecycle for event edit page.
 class EventEditPageState extends State<EventEditPage> {
-  // late final TextEditingController _orgId; TODO: Uncomment when we implement student orgs.
   late final TextEditingController _title;
   late final TextEditingController _location;
   late final TextEditingController _startDate;
@@ -32,113 +29,102 @@ class EventEditPageState extends State<EventEditPage> {
   late String? _repeat;
   late final TextEditingController _repeatDate;
   late final int _id;
-  late final Event event = widget.event;
+  late final Event _event;
 
-  // initState function initializes all of the late final variables from above.
+  /// initState function initializes all of the late final variables from above.
   // Initialize based on the event information that we got.
   @override
   void initState() {
-    // _orgId = TextEditingController(); TODO: Uncomment when we implement student orgs.
-    _title = TextEditingController(text: event.title);
-    _location = TextEditingController(text: event.location);
-    _startDate = TextEditingController(text: event.start);
-    _endDate = TextEditingController(text: event.end);
-    _description = TextEditingController(text: event.description);
-    _studentsOnly = event.studentsOnly;
-    _tagsList = event.tags;
+    _title = TextEditingController(text: _event.title);
+    _location = TextEditingController(text: _event.location);
+    _startDate = TextEditingController(text: _event.start);
+    _endDate = TextEditingController(text: _event.end);
+    _description = TextEditingController(text: _event.description);
+    _studentsOnly = _event.studentsOnly;
+    _tagsList = _event.tags;
     _tagsString = "";
-    _id = event.id;
+    _id = _event.id;
     _repeatDate = TextEditingController();
     _repeat = "";
+    _event = widget.event;
     super.initState();
   } // initState
 
-  // dispose function cleans up tasks.
+  /// dispose function cleans up tasks.
   @override
   void dispose() {
-    // _orgId.dispose(); TODO: Uncomment when we implement student orgs.
     _title.dispose();
     _location.dispose();
     _description.dispose();
     _startDate.dispose();
     _endDate.dispose();
     _repeatDate.dispose();
+    _repeat = null;
     _studentsOnly = null;
     _tagsList = [];
+    _tagsString = "";
     _repeat = "";
     super.dispose();
   } // dispose
 
-  // TODO: Refactor this.
-  // selectDateTime function to allow users to select date and time for their events
-  // in the built-in date and time widgets of Flutter
+  // selectDateTime function allows users to select date and time for their events
+  // in the built-in date and time widgets of Flutter.
   Future<void> selectDateTime(
       BuildContext context, TextEditingController control) async {
-    // Show date picker to user with limited range
+    // Show date picker to user with limited range.
     final DateTime? userDate = await showDatePicker(
         context: context,
-        firstDate: DateTime.now(), // Earliest allowed date is the current date
-        lastDate: DateTime(2500) // Latest allowed date is the year of 2500
+        firstDate: DateTime.now(), // Earliest allowed date is the current date.
+        lastDate: DateTime(2500) // Latest allowed date is the year of 2500.
         ); // userDate
 
     // If the user inputted a date, do this:
     if (userDate != null) {
-      // If this is for the repeat end date, we only want the date. So we have the date and we save date to the controller's text as a string
-      if (control == _repeatDate) {
-        final DateTime userRepeatDate =
-            DateTime(userDate.year, userDate.month, userDate.day);
+      // Get the time.
+      // Show time picker to user with limited range.
+      final TimeOfDay? userTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now() // Initial time will be the current time.
+          ); // userTime
+
+      // If the user inputted a time, do this:
+      if (userTime != null) {
+        // Create full date-time format.
+        final DateTime userDateTime = DateTime(userDate.year, userDate.month,
+            userDate.day, userTime.hour, userTime.minute); // userDateTime
+
+        // Save date-time to the controller's text as a string.
         setState(() {
-          control.text = userRepeatDate.toString();
+          control.text = userDateTime.toString();
         });
-      }
-
-      // Otherwise, get the time
-      else {
-        // Show time picker to user with limited range
-        final TimeOfDay? userTime = await showTimePicker(
-            context: context,
-            initialTime:
-                TimeOfDay.now() // Initial time will be the current time
-            ); // userTime
-
-        // If the user inputted a time, do this:
-        if (userTime != null) {
-          // Create full date-time format
-          final DateTime userDateTime = DateTime(userDate.year, userDate.month,
-              userDate.day, userTime.hour, userTime.minute); // userDateTime
-
-          // Save date-time to the controller's text as a string
-          setState(() {
-            control.text = userDateTime.toString();
-          });
-        }
       }
     }
   } // selectDateTime
 
-  // showMultiSelect function to allow users to multiselect event tags
+  /// showMultiSelect function allows users to multiselect event tags.
   void showMultiSelect() async {
-    // List of event tags
+    // This is the list of event tags.
     final List<String> items = ALLTAGS;
 
+    // Allow users to choose tags.
     final List<String>? results = await showDialog(
         context: context,
         builder: (BuildContext context) {
           return MultiSelect(elements: items);
         });
 
-    // Update UI
+    // Update UI.
     if (results != null) {
       setState(() {
         _tagsList = results;
       });
     }
 
-    // Update variable to send tags to backend; create a comma-separated string
+    // Update variable to send tags to backend; create a comma-separated string.
     _tagsString = _tagsList?.join(';');
   } // showMultiSelect
 
-// Build UI of widget.
+  /// Build UI of widget.
 // Everything is wrapped in a container with child content being scrollable.
   @override
   Widget build(BuildContext context) {
@@ -292,7 +278,7 @@ class EventEditPageState extends State<EventEditPage> {
                                     'https://grinsync.com/api/editEvent');
 
                                 if (create.runtimeType == String) {
-                                  // Show error messages from backend.
+                                  // Show error messages from the backend.
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -324,9 +310,7 @@ class EventEditPageState extends State<EventEditPage> {
 
                                 // Otherwise, event information was successfully sent to backend
                                 // Give success message.
-                                // TODO: Refresh the page.
                                 else {
-                                  // give success message
                                   Fluttertoast.showToast(
                                       msg: 'Event Edited Successfully!',
                                       toastLength: Toast.LENGTH_SHORT,
@@ -343,7 +327,7 @@ class EventEditPageState extends State<EventEditPage> {
                                   Navigator.of(context).pop();
                                 }
                               },
-                              child: const Text('Edit Event') // Button title
+                              child: const Text('Edit Event') // Button title.
                               ))
                     ]))));
   } // build

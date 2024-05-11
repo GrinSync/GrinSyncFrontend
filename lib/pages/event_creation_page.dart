@@ -15,7 +15,8 @@ class CreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // We are using ValueListenableBuilder here so the page rebuilds every time the variable USER changes.
-    // Variable USER is null when the user is not logged in. Otherwise, the user is logged in.
+    // Variable USER is null when the user is not logged in.
+    // Otherwise, the user is logged in.
     return ValueListenableBuilder<User?>(
         valueListenable: USER,
         builder: (context, user, _) {

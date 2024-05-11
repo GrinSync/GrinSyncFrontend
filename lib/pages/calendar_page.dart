@@ -28,7 +28,7 @@ class _AppointmentDataSource extends CalendarDataSource {
   }
 }
 
-/// Extending the CalendarDataSource abstract class to take in a list of events
+/// Extends the CalendarDataSource abstract class to take in a list of events
 /// and map the fields of each event to the fields of an object that can be read and displayed by calendars
 class EventDataSource extends CalendarDataSource {
   EventDataSource(List<Appointment> events) {
@@ -75,17 +75,12 @@ class CalendarPageState extends State<CalendarPage> {
   /// List of user's preferred tags if logged in
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
 
-  /// Boolean check for whether the user is a student
-  // bool studentsOnly = false;
-
-  /// Boolean check for whether the user wants to filter only events that match ALL of their preferred tags
-  // bool intersectionFilter = false;
-
   /// Future function call to load all events with the API call
   late Future<void> loadEventsFuture;
 
-  /// Future function to load all events
+  /// Loads all events based on the given filter option
   Future<void> loadEvents(filterOptions option) async {
+    // Do not load events if the user is not logged in
     if (!isLoggedIn()) return;
 
     // Reload calendar events depending on the filter option
@@ -106,6 +101,7 @@ class CalendarPageState extends State<CalendarPage> {
     loadEventsFuture = loadEvents(filterOptions.followed);
   }
 
+  /// Reloads the events based on the current filter everytime the users refresh
   refresh() {
     setState(() {
       loadEventsFuture = loadEvents(currentFilter);
@@ -145,19 +141,18 @@ class CalendarPageState extends State<CalendarPage> {
     List<Appointment> allAppointments = <Appointment>[];
 
     for (int index = 0; index < allEvents.length; index++) {
-      // Extract information from each event
+      // Extracts information from each event
       int eventID = allEvents[index].id;
       String title = allEvents[index].title ?? "";
       String description = allEvents[index].description ?? "";
       String startTime = allEvents[index].start ?? "";
       String endTime = allEvents[index].end ?? "";
       String location = allEvents[index].location ?? "";
-      // List<EventTags> tags = allEvents[index].tags;
 
-      // Map each extracted information to a field in the calendar appointment object
+      // Maps each extracted information to a field in the calendar appointment object
       Appointment apt = Appointment(
         id: eventID,
-        // parse a string time and convert into a DateTime object
+        // Parses a string time and convert into a DateTime object
         startTime: DateTime.parse(startTime),
         endTime: DateTime.parse(endTime),
         location: location,
@@ -176,6 +171,7 @@ class CalendarPageState extends State<CalendarPage> {
     return allAppointments;
   }
 
+  /// Builds the interface of the calendar page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,38 +182,39 @@ class CalendarPageState extends State<CalendarPage> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: !isLoggedIn()
-              ? []
-              : [
-                  // The label of the current filter
-                  Text(currentFilter.label),
-                  // A pop up menu button
-                  PopupMenuButton(
-                    icon: const Icon(Icons.filter_alt),
-                    itemBuilder: (BuildContext context) => [
-                      PopupMenuItem(
-                        value: filterOptions.preferences,
-                        child: Text(filterOptions.preferences.label),
-                      ),
-                      PopupMenuItem(
-                        value: filterOptions.created,
-                        child: Text(filterOptions.created.label),
-                      ),
-                      PopupMenuItem(
-                        value: filterOptions.followed,
-                        child: Text(filterOptions.followed.label),
+          actions:
+              !isLoggedIn() // Shows the menu button only if the users are logged in
+                  ? []
+                  : [
+                      // The label of the current filter
+                      Text(currentFilter.label),
+                      // A pop up menu button
+                      PopupMenuButton(
+                        icon: const Icon(Icons.filter_alt),
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem(
+                            value: filterOptions.preferences,
+                            child: Text(filterOptions.preferences.label),
+                          ),
+                          PopupMenuItem(
+                            value: filterOptions.created,
+                            child: Text(filterOptions.created.label),
+                          ),
+                          PopupMenuItem(
+                            value: filterOptions.followed,
+                            child: Text(filterOptions.followed.label),
+                          ),
+                        ],
+                        // Sets the state and reload the page (a stateful builder)
+                        // depending on the selected filter option
+                        onSelected: (filterOptions option) {
+                          setState(() {
+                            loadEventsFuture = loadEvents(option);
+                            currentFilter = option;
+                          });
+                        },
                       ),
                     ],
-                    // Set the state and reload the page (a stateful builder)
-                    // depending on the selected filter option
-                    onSelected: (filterOptions option) {
-                      setState(() {
-                        loadEventsFuture = loadEvents(option);
-                        currentFilter = option;
-                      });
-                    },
-                  ),
-                ],
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
         ),
@@ -313,7 +310,7 @@ class CalendarPageState extends State<CalendarPage> {
                       // If there are events, show the events
                     } else {
                       return Scaffold(
-                        // Return the actual calendar
+                        // Returns the actual calendar
                         body: SfCalendar(
                           controller: calendarController,
                           onViewChanged: calendarViewChanged,
@@ -352,7 +349,6 @@ class CalendarPageState extends State<CalendarPage> {
                             minimumAppointmentDuration: Duration(minutes: 15),
                             dateFormat: 'd',
                             dayFormat: 'EEE',
-                            // allDayPanelColor: Color.fromARGB(255, 162, 54, 70)
                           ),
                           showDatePickerButton: true,
                           showTodayButton: true,
