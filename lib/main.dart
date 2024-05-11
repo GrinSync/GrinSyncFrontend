@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/tags.dart';
 import 'package:flutter_test_app/api/token_box.dart';
@@ -38,6 +35,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
+  // Close token box when app is closed
   @override
   void dispose() {
     Hive.close();
@@ -49,27 +47,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'GrinSync App',
       theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // TRY THIS: Try running your application with "flutter run". You'll see
-          // the application has a purple toolbar. Then, without quitting the app,
-          // try changing the seedColor in the colorScheme below to Colors.green
-          // and then invoke "hot reload" (save your changes or press the "hot
-          // reload" button in a Flutter-supported IDE, or press "r" if you used
-          // the command line to start the app).
-          //
-          // Notice that the counter didn't reset back to zero; the application
-          // state is not lost during the reload. To reset the state, use hot
-          // restart instead.
-          //
-          // This works for code too, not just values: Most code changes can be
-          // tested with just a hot reload.
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
             height: MediaQuery.of(context).size.height * 0.07,
             iconTheme:
-                MaterialStateProperty.all(IconThemeData(color: Colors.black)),
+                MaterialStateProperty.all(const IconThemeData(color: Colors.black)),
             labelTextStyle: MaterialStateProperty.resolveWith((state) {
               if (state.contains(MaterialState.selected)) {
                 return const TextStyle(color: Colors.white);
@@ -79,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           ),
           colorScheme: ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
+              seedColor: const Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
           fontFamily:
               'Futura' // Futura as the default font, the font used on Grinnell College's website
@@ -91,18 +74,6 @@ class _MyAppState extends State<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  //final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -113,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Widget currentPage;
-    // this switch statement will determine which page to display based on the navigation bar item selected
+    // This switch statement will determine which page to display based on the navigation bar item selected
     // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
     switch (selectedIndexOnHomePage) {
       case 0: // this is the home page where where user can discover events
@@ -135,9 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
         throw UnimplementedError('no widget for $selectedIndexOnHomePage');
     }
 
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Expanded(
         child:
@@ -149,23 +117,23 @@ class _MyHomePageState extends State<MyHomePage> {
           indicatorColor: Colors.white,
           shadowColor: Colors.white,
           destinations: const [
-            NavigationDestination(
+            NavigationDestination( // Icon and Label for Home Page in Navigation Bar
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            NavigationDestination(
+            NavigationDestination( // Icon and Label for Search Page in Navigation Bar
               icon: Icon(Icons.search),
               label: 'Search',
             ),
-            NavigationDestination(
+            NavigationDestination( // Icon and Label for Create Event Page in Navigation Bar
               icon: Icon(Icons.add),
               label: 'Create',
             ),
-            NavigationDestination(
+            NavigationDestination( // Icon and Label for Calendar Page in Navigation Bar
               icon: Icon(Icons.calendar_month),
               label: 'Calendar',
             ),
-            NavigationDestination(
+            NavigationDestination( // Icon and Label for Profile Page in Navigation Bar
               icon: Icon(Icons.person),
               label: 'Profile',
             ),
