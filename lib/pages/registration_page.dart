@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-enum SingingCharacter { student, faculty, community }
+enum SingingCharacter { student, faculty, community } // Different account types
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -11,12 +11,15 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPage extends State<RegistrationPage> {
+  /// Variables to store registartion fields
   late final TextEditingController _firstName;
   late final TextEditingController _lastName;
   late final TextEditingController _email;
   late final TextEditingController _password;
   late final TextEditingController _confirmPassword;
   SingingCharacter? _character = SingingCharacter.student;
+
+  /// Initialize variables to store values from the registration page
   @override
   void initState() {
     _email = TextEditingController();
@@ -27,6 +30,7 @@ class _RegistrationPage extends State<RegistrationPage> {
     super.initState();
   }
 
+  /// Dispose of variables once the registration page closes
   @override
   void dispose() {
     _email.dispose();
@@ -50,6 +54,7 @@ class _RegistrationPage extends State<RegistrationPage> {
           padding: const EdgeInsets.all(8.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // First Name Field
             TextField(
               controller: _firstName,
               autocorrect: false,
@@ -62,6 +67,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // Last Name Field
             TextField(
               controller: _lastName,
               autocorrect: false,
@@ -74,6 +80,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // Email Field
             TextField(
               controller: _email,
               keyboardType: TextInputType.emailAddress,
@@ -86,6 +93,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                   border: OutlineInputBorder()),
             ),
             const SizedBox(height: 10),
+            // Password Field
             TextField(
               controller: _password,
               autocorrect: false,
@@ -99,6 +107,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // Confirm Password Field
             TextField(
               controller: _confirmPassword,
               autocorrect: false,
@@ -112,6 +121,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // Tiles to select account type
             ListTile(
               title: const Text('Student'),
               leading: Radio<SingingCharacter>(
@@ -150,6 +160,7 @@ class _RegistrationPage extends State<RegistrationPage> {
             ),
             SizedBox(
               width: double.infinity,
+              // Submit Button to create account
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 143, 28),
@@ -162,6 +173,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                         _password.text,
                         _confirmPassword.text,
                         _character);
+                    // If null was returned, account creation failed.
                     if (auth == null) {
                       showDialog(
                         context: context,
@@ -189,9 +201,9 @@ class _RegistrationPage extends State<RegistrationPage> {
                           );
                         },
                       );
+                      // If string was returned, registration succeeded!
                     } else if (auth.runtimeType == String) {
                       Navigator.pop(context);
-
                       Fluttertoast.showToast(
                         // show toast message that the verification email has been sent
                         msg:
