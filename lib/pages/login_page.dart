@@ -56,14 +56,14 @@ class _LoginPage extends State<LoginPage> {
                 child: Container(
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
-                  child: const Icon(
+                  child: const Icon( // Icon at top of page
                     Icons.person,
                     size: 50,
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Padding(
@@ -163,6 +163,7 @@ class _LoginPage extends State<LoginPage> {
                                 actions: <Widget>[
                                   TextButton(
                                     child: const Text('Okay'),
+                                    // Remove Dialog Box when 'Okay' is pressed
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
