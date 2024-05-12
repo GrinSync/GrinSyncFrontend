@@ -171,7 +171,6 @@ class CalendarPageState extends State<CalendarPage> {
     return allAppointments;
   }
 
-  /// Builds the interface of the calendar page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -24,7 +24,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
 
   /// Get user orgs
   Future<void> loadOrgs() async {
-    orgs = await getUserOrgs(); // function in get_orgs.dart
+    orgs = await getUserOrgs();
     await setStudentOrgs();
   }
 
@@ -34,6 +34,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
       _loadOrgsFuture = loadOrgs();
     });
   }
+
   /// Build orgs I lead page
   @override
   Widget build(BuildContext context) {
@@ -48,8 +49,10 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
               icon: const Icon(Icons.add),
               tooltip: 'Connect to a new student organization',
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const ConnectOrgPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ConnectOrgPage()));
               }),
         ],
       ),
@@ -66,7 +69,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
                 ],
               ),
             );
-          } else if (orgs.isEmpty) { // If there are no orgs, return message telling user
+          } else if (orgs.isEmpty) {
+            // If there are no orgs, return message telling user
             return const Center(
               child: Text('You are not a member of any organizations.'),
             );
@@ -76,7 +80,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
                 const Divider(color: Colors.grey, height: 0),
             itemCount: orgs.length,
             itemBuilder: (context, index) {
-              return OrgCard( // Return card for each org
+              return OrgCard(
+                // Return card for each org
                 org: orgs[index],
                 refreshParent: refresh,
               );
