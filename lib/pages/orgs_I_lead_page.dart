@@ -14,8 +14,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
   late List<Org> orgs = []; // Initialize list to store organizations
   late Future _loadOrgsFuture;
 
-  /// On page inititalization, set the LoadOrgs function to be ran
-  /// by the Future builder when the widget is created
+  // On page inititalization, set the LoadOrgs function to be ran
+  // by the Future builder when the widget is created
   @override
   initState() {
     super.initState();
@@ -35,7 +35,6 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
     });
   }
 
-  /// Build orgs I lead page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

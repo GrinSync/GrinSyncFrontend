@@ -5,23 +5,27 @@ import 'package:flutter_test_app/models/event_models.dart';
 import 'package:flutter_test_app/api/get_events.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class EventsIFollowPage extends StatefulWidget {
-  EventsIFollowPage({super.key});
+class EventsILikePage extends StatefulWidget {
+  EventsILikePage({super.key});
 
   @override
-  State<EventsIFollowPage> createState() => _EventsIFollowPageState();
+  State<EventsILikePage> createState() => _EventsILikePageState();
 }
 
-class _EventsIFollowPageState extends State<EventsIFollowPage> {
+class _EventsILikePageState extends State<EventsILikePage> {
+  /// List of all events liked by the current user
   List<Event> events = [];
   late Future _loadEventsFuture;
+
+  /// Whether notifications are enabled
   late bool notificationsEnabled;
 
-  // Get events followed by the user from the backend
+  // Get events followed by the user from the server
   Future<void> loadEvents() async {
-    events = await getLikedEvents(); // function in get_events.dart
+    events = await getLikedEvents();
   }
 
+  // On page initialization, load the list of events the current user likes
   @override
   void initState() {
     _loadEventsFuture = loadEvents();
@@ -29,6 +33,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
     super.initState();
   }
 
+  /// Reloads the list of events as the user refreshes the page
   refresh() {
     setState(() {
       _loadEventsFuture = loadEvents();
@@ -40,15 +45,17 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Events I Follow',
+          'Events I Like',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
+        // A switch button to enable notifications
         actions: [
           Switch(
               activeColor: Colors.white,
               value: notificationsEnabled,
+              // Update the notifications setting as the user switches mode
               onChanged: (value) async {
                 await setNotificationsSetting(value);
                 setState(() {
@@ -56,8 +63,8 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                 });
                 Fluttertoast.showToast(
                   msg: value
-                      ? 'Notifications for favorited events enabled'
-                      : 'Notifications for favorited events disabled',
+                      ? 'Notifications for liked events enabled'
+                      : 'Notifications for liked events disabled',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
                   timeInSecForIosWeb: 1,
@@ -72,21 +79,22 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
       body: FutureBuilder(
           future: _loadEventsFuture,
           builder: (context, snapshot) {
-            // if the connection is waiting, show a loading indicator
+            // If the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(),
-                    const Text(
+                    Text(
                       'Preparing events for you...',
                     ),
                   ],
                 ),
               );
-              // if there is an error, show an error message and a button to try again
-            } else if (snapshot.hasError) {
+            }
+            // If there is an error, show an error message and a button to try again
+            else if (snapshot.hasError) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -102,17 +110,20 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                   ],
                 ),
               );
-              // if the connection is done, show the events
-            } else {
-              // if there are no events, show a message
+            }
+            // If the connection is done, show the events
+            else {
+              // If there are no events, show a message
               if (events.isEmpty) {
                 return const Center(
-                  child: Text("You are not following any events yet."),
+                  child: Text("You have not liked any events yet."),
                 );
-                // if there are events, show the events
-              } else {
+              }
+              // Otherwise, show the events
+              else {
                 return Container(
-                  padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                   child: ListView.builder(
                     itemCount: events.length + 1,
                     itemBuilder: (context, index) {
@@ -120,7 +131,7 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                         return Column(
                           children: [
                             Divider(color: Colors.grey[400]),
-                            Text('--End of Your Saved Events--',
+                            Text('--End of Your Liked Events--',
                                 style: TextStyle(color: Colors.grey[600])),
                             Text('Event Count: ${events.length}',
                                 style: TextStyle(color: Colors.grey[600])),
@@ -129,35 +140,38 @@ class _EventsIFollowPageState extends State<EventsIFollowPage> {
                       } else {
                         return Slidable(
                           key: ValueKey(events[index].id),
-                          child: EventCardPlain(
-                            event: events[index],
-                            refreshParent: refresh,
-                          ),
                           endActionPane: ActionPane(
-                            motion: DrawerMotion(),
+                            motion: const DrawerMotion(),
                             dismissible: DismissiblePane(
+                              // Unlike an event and reset the state of the page
+                              // if user dismisses the pane after sliding the card to the left
                               onDismissed: () {
                                 unlikeEvent(events[index].id);
                                 setState(() {
                                   events.removeAt(index);
                                 });
-                                //refresh();
+                                // refresh();
                               },
                             ),
                             children: [
                               SlidableAction(
+                                // Unlike an event and reset the state of the page
+                                // if user slides the card all the way to the left
                                 onPressed: (context) {
-                                  // Remove the event from the user's liked events
                                   unlikeEvent(events[index].id);
                                   events.removeAt(index);
                                   refresh();
                                 },
-                                label: 'Unsave',
+                                label: 'Unlike',
                                 backgroundColor: Colors.red,
                               ),
                             ],
                           ),
-                        ); // EventCardFavoritable is a custom widget that displays an event with a favorite button
+                          child: EventCardPlain(
+                            event: events[index],
+                            refreshParent: refresh,
+                          ),
+                        );
                       }
                     },
                   ),
