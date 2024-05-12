@@ -137,9 +137,10 @@ class EventCardPlain extends StatelessWidget {
 
 /// Deletes an event by ID
 Future<String> deleteEvent(int eventId) async {
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
-
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -161,9 +162,10 @@ Future<String> deleteEvent(int eventId) async {
 /// Gets all event
 Future<List<Event>> getAllEvents() async {
   List<Event> allEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
-
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -188,9 +190,10 @@ Future<List<Event>> getAllEvents() async {
 Future<List<Event>> getAllEventsByPreferences(
     tagList, studentOnly, intersectionFilter) async {
   List<Event> allEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
-
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -231,9 +234,10 @@ Future<List<Event>> getAllEventsByPreferences(
 
 /// Gets an event by ID
 Future<Event?> getEventByID(eventID) async {
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
-
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -256,9 +260,10 @@ Future<Event?> getEventByID(eventID) async {
 /// Gets all events favorited by the current user (assuming the user is logged in)
 Future<List<Event>> getLikedEvents() async {
   List<Event> likedEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
-
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -281,9 +286,10 @@ Future<List<Event>> getLikedEvents() async {
 /// Gets all events created by the current user (assuming the user is logged in)
 Future<List<Event>> getMyEvents() async {
   List<Event> myEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
-
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -306,9 +312,10 @@ Future<List<Event>> getMyEvents() async {
 // Gets all events created by a certain student organization
 Future<List<Event>> getOrgEvents(orgID) async {
   List<Event> orgEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
-
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -333,9 +340,10 @@ Future<List<Event>> getOrgEvents(orgID) async {
 /// Gets all searched events by query keyword
 Future<List<Event>> getSearchedEvents(String keyword) async {
   List<Event> searchedEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
-
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -358,10 +366,11 @@ Future<List<Event>> getSearchedEvents(String keyword) async {
 /// Gets all upcoming events filtered by studentsOnly and selected tags
 Future<List<Event>> getUpcomingEvents(
     tagList, studentOnly, intersectionFilter) async {
-  List<Event> allEvents = [];
+  List<Event> upcomingEvents = [];
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
-
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -379,31 +388,33 @@ Future<List<Event>> getUpcomingEvents(
   // result.body is a list of maps with event information
   for (var jsonEvent in jsonDecode(result.body)) {
     Event newEvent = Event.fromJson(jsonEvent);
-    allEvents.add(newEvent);
+    upcomingEvents.add(newEvent);
   }
 
   // Only show studentOnly events if preferred by the user
   if (studentOnly) {
-    allEvents = allEvents
+    upcomingEvents = upcomingEvents
         .where((event) => event.studentsOnly == true)
         .toList(); // list.where returns a new list with only the elements that satisfy the condition
   }
 
   // Only show events that have all the selected tags
   if (intersectionFilter) {
-    allEvents = allEvents
+    upcomingEvents = upcomingEvents
         .where((event) => tagList.every((tag) => event.tags!.contains(tag)))
         .toList(); // list.every returns true if all elements satisfy the condition
   }
 
   // Returns after proper filtering
-  return allEvents;
+  return upcomingEvents;
 }
 
 /// Toggle liked event by ID
 Future<void> toggleLikeEvent(int eventId) async {
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
@@ -424,9 +435,10 @@ Future<void> toggleLikeEvent(int eventId) async {
 
 /// Unlike an event by ID
 Future<void> unlikeEvent(int eventId) async {
+  // Gets the authorization token for the current user
   var token = BOX.get('token');
   Map<String, String> headers;
-
+  // Populates the header of the HTTP call with the token
   if (token == null) {
     headers = {};
   } else {
