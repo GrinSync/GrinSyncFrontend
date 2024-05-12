@@ -9,9 +9,12 @@ class OrgsIFollowPage extends StatefulWidget {
 }
 
 class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
+  /// List of student organizations the current user follows
   List<Org> orgs = [];
+
   late Future _loadOrgsFuture;
 
+  // On page initialization, load the list of student organizations the current user follows
   @override
   initState() {
     super.initState();
@@ -19,9 +22,10 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
   }
 
   Future<void> loadOrgs() async {
-    orgs = await getFollowedOrgs(); // function in get_orgs.dart
+    orgs = await getFollowedOrgs();
   }
 
+  /// Reloads the list of student organizations as the user refreshes the page
   refresh() {
     setState(() {
       _loadOrgsFuture = loadOrgs();
@@ -32,16 +36,18 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organizations I Follow',
+        title: const Text('Organizations I Follow',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder(
         future: _loadOrgsFuture,
+        // The actual page
         builder: (context, snapshot) {
+          // If we're still loading student organizations from the server
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -50,38 +56,45 @@ class _OrgsIFollowPageState extends State<OrgsIFollowPage> {
                 ],
               ),
             );
-          } else if (orgs.isEmpty) {
-            return Center(
+          }
+          // If the list of student organizations the user follows is empty
+          else if (orgs.isEmpty) {
+            return const Center(
               child: Text('You are not following any organizations.'),
             );
           }
+          // Otherwise, return a list of student organizations the user follows
           return ListView.separated(
             separatorBuilder: (context, index) =>
-                Divider(color: Colors.grey, height: 0),
+                const Divider(color: Colors.grey, height: 0),
             itemCount: orgs.length,
             itemBuilder: (context, index) {
+              // A slidable widget for each organization
               return Slidable(
                 key: ValueKey(orgs[index].id),
                 endActionPane: ActionPane(
-                  motion: DrawerMotion(),
+                  motion: const DrawerMotion(),
                   dismissible: DismissiblePane(
+                    // Unfollow organization and reset the state of the page
+                    // if user dismisses the pane after sliding the card to the left
                     onDismissed: () {
                       unfollowOrg(orgs[index].id);
                       setState(() {
                         orgs.removeAt(index);
                       });
-                      //refresh();
+                      // refresh();
                     },
                   ),
                   children: [
                     SlidableAction(
+                      // Unfollow organization and reset the state of the page
+                      // if user slides the card all the way to the left
                       onPressed: (context) {
-                        // Remove the event from the user's liked events
                         unfollowOrg(orgs[index].id);
                         orgs.removeAt(index);
                         refresh();
                       },
-                      label: 'Unsave',
+                      label: 'Unfollow',
                       backgroundColor: Colors.red,
                     ),
                   ],

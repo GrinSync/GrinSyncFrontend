@@ -14,8 +14,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
   late List<Org> orgs = []; // Initialize list to store organizations
   late Future _loadOrgsFuture;
 
-  /// On page inititalization, set the LoadOrgs function to be ran
-  /// by the Future builder when the widget is created
+  // On page inititalization, set the LoadOrgs function to be ran
+  // by the Future builder when the widget is created
   @override
   initState() {
     super.initState();
@@ -24,7 +24,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
 
   /// Get user orgs
   Future<void> loadOrgs() async {
-    orgs = await getUserOrgs(); // function in get_orgs.dart
+    orgs = await getUserOrgs();
     await setStudentOrgs();
   }
 
@@ -34,7 +34,7 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
       _loadOrgsFuture = loadOrgs();
     });
   }
-  /// Build orgs I lead page
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +48,10 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
               icon: const Icon(Icons.add),
               tooltip: 'Connect to a new student organization',
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const ConnectOrgPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ConnectOrgPage()));
               }),
         ],
       ),
@@ -66,7 +68,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
                 ],
               ),
             );
-          } else if (orgs.isEmpty) { // If there are no orgs, return message telling user
+          } else if (orgs.isEmpty) {
+            // If there are no orgs, return message telling user
             return const Center(
               child: Text('You are not a member of any organizations.'),
             );
@@ -76,7 +79,8 @@ class _MyOrgsPageState extends State<MyOrgsPage> {
                 const Divider(color: Colors.grey, height: 0),
             itemCount: orgs.length,
             itemBuilder: (context, index) {
-              return OrgCard( // Return card for each org
+              return OrgCard(
+                // Return card for each org
                 org: orgs[index],
                 refreshParent: refresh,
               );

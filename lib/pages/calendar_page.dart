@@ -13,9 +13,9 @@ import 'package:flutter_test_app/api/tags.dart';
 
 /// Enum for the filter options for the calendar page
 enum filterOptions {
-  preferences("By tag preferences"),
-  created("By events you created"),
-  followed("By events you follow");
+  myPreferences("By user preferences"),
+  myEvents("By events you created"),
+  likedEvents("By events you like");
 
   // Have a label for each of the filter
   const filterOptions(this.label);
@@ -70,7 +70,7 @@ class CalendarPageState extends State<CalendarPage> {
 
   /// The label of the current filtering option
   filterOptions currentFilter =
-      filterOptions.followed; // defaulted to user's own agenda
+      filterOptions.likedEvents; // defaulted to user's own agenda
 
   /// List of user's preferred tags if logged in
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
@@ -85,11 +85,11 @@ class CalendarPageState extends State<CalendarPage> {
 
     // Reload calendar events depending on the filter option
     switch (option) {
-      case filterOptions.preferences:
+      case filterOptions.myPreferences:
         allEvents = await getAllEventsByPreferences(selectedTags, false, false);
-      case filterOptions.created:
+      case filterOptions.myEvents:
         allEvents = await getMyEvents();
-      case filterOptions.followed:
+      case filterOptions.likedEvents:
         allEvents = await getLikedEvents();
     }
   }
@@ -98,7 +98,7 @@ class CalendarPageState extends State<CalendarPage> {
   void initState() {
     super.initState();
     // defaulted to user's own agenda
-    loadEventsFuture = loadEvents(filterOptions.followed);
+    loadEventsFuture = loadEvents(filterOptions.likedEvents);
   }
 
   /// Reloads the events based on the current filter everytime the users refresh
@@ -171,7 +171,6 @@ class CalendarPageState extends State<CalendarPage> {
     return allAppointments;
   }
 
-  /// Builds the interface of the calendar page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,16 +192,16 @@ class CalendarPageState extends State<CalendarPage> {
                         icon: const Icon(Icons.filter_alt),
                         itemBuilder: (BuildContext context) => [
                           PopupMenuItem(
-                            value: filterOptions.preferences,
-                            child: Text(filterOptions.preferences.label),
+                            value: filterOptions.myPreferences,
+                            child: Text(filterOptions.myPreferences.label),
                           ),
                           PopupMenuItem(
-                            value: filterOptions.created,
-                            child: Text(filterOptions.created.label),
+                            value: filterOptions.myEvents,
+                            child: Text(filterOptions.myEvents.label),
                           ),
                           PopupMenuItem(
-                            value: filterOptions.followed,
-                            child: Text(filterOptions.followed.label),
+                            value: filterOptions.likedEvents,
+                            child: Text(filterOptions.likedEvents.label),
                           ),
                         ],
                         // Sets the state and reload the page (a stateful builder)
@@ -219,15 +218,14 @@ class CalendarPageState extends State<CalendarPage> {
           foregroundColor: Colors.white,
         ),
         body: !isLoggedIn()
-            ? Center(
+            ? const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const Text('Welcome to GrinSync!',
+                    Text('Welcome to GrinSync!',
                         style: TextStyle(fontSize: 20)),
-                    const SizedBox(height: 20),
-                    const Text(
-                        'Please log in or register to view the calendar.'),
+                    SizedBox(height: 20),
+                    Text('Please log in or register to view the calendar.'),
                   ],
                 ),
               )
@@ -256,7 +254,7 @@ class CalendarPageState extends State<CalendarPage> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              loadEvents(filterOptions.followed);
+                              loadEvents(filterOptions.likedEvents);
                             });
                           },
                           child: const Text('Try again'),

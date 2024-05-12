@@ -7,7 +7,7 @@ import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/pages/create_org_page.dart';
 import 'package:flutter_test_app/pages/events_I_created_page.dart';
 import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/pages/events_I_follow_page.dart';
+import 'package:flutter_test_app/pages/events_I_like_page.dart';
 import 'package:flutter_test_app/pages/orgs_I_follow_page.dart';
 import 'package:flutter_test_app/pages/orgs_I_lead_page.dart';
 import 'package:flutter_test_app/pages/tag_preference_page.dart';
@@ -93,7 +93,7 @@ class UserProfilePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => EventsIFollowPage()));
+                          builder: (context) => EventsILikePage()));
                 },
               ),
 
