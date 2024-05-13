@@ -143,11 +143,11 @@ class CalendarPageState extends State<CalendarPage> {
     for (int index = 0; index < allEvents.length; index++) {
       // Extracts information from each event
       int eventID = allEvents[index].id;
-      String title = allEvents[index].title ?? "";
-      String description = allEvents[index].description ?? "";
+      String title = allEvents[index].title;
+      String description = allEvents[index].description;
       String startTime = allEvents[index].start ?? "";
       String endTime = allEvents[index].end ?? "";
-      String location = allEvents[index].location ?? "";
+      String location = allEvents[index].location;
 
       // Maps each extracted information to a field in the calendar appointment object
       Appointment apt = Appointment(

@@ -56,8 +56,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     bool navigationAvailable = event.latitude != null &&
         event.longitude !=
             null; // Check if the event has a location to navigate to
-    bool isCreatedByOrg = event.parentOrg !=
-        null; // Check if the event is created by an organization (rather than an individual user)
 
     /// Function to confirm deletion of the event. It delets the event if confirmed.
     Future<void> confirmDeletion() async {

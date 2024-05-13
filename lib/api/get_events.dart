@@ -37,7 +37,7 @@ class EventCardFavoritable extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.0),
               ),
               tileColor: value ? null : Colors.white,
-              title: Text(event.title ?? 'Null title',
+              title: Text(event.title,
                   style: const TextStyle(
                       fontSize: 24, fontWeight: FontWeight.w800)),
               subtitle: Text(
@@ -115,7 +115,7 @@ class EventCardPlain extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
         ),
         tileColor: Colors.white,
-        title: Text(event.title ?? 'Null title',
+        title: Text(event.title,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
         subtitle: Text(
             'Location: ${event.location}\nStarts at: ${timeFormat(event.start)}',

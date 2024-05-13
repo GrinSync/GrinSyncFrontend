@@ -58,7 +58,7 @@ Future<void> updatePrefferedTags(selectedTags) async {
   }
 
   var url = Uri.parse('https://grinsync.com/api/updateInterestedTags');
-  var result = await http.post(url,
+  await http.post(url,
       headers: headers,
       body: {'tags': selectedTags.isEmpty ? '' : selectedTags.join(';')});
 }
