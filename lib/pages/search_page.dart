@@ -6,6 +6,8 @@ import 'package:flutter_test_app/models/org_models.dart';
 import 'package:flutter_test_app/models/user_models.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
@@ -144,7 +146,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // Display search results
             Expanded(
               child: _query.text.isEmpty

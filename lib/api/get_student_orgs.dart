@@ -22,7 +22,7 @@ class OrgCard extends StatelessWidget {
               fontSize: 20,
               fontFamily: 'Helvetica',
               fontWeight: FontWeight.bold)),
-      subtitle: Text(org.email, style: TextStyle(fontSize: 15)),
+      subtitle: Text(org.email, style: const TextStyle(fontSize: 15)),
       // Navigates to the Org Details page when the user taps on the card
       onTap: () {
         Navigator.push(
@@ -138,10 +138,12 @@ Future<void> setStudentOrgs() async {
 
   // parse the json response and sets the list of student organizations via the global variables
   // result.body is a list of maps with org information (after jsonDecoding)
-  for (var jsonOrg in jsonDecode(result.body)) {
-    Org newOrg = Org.fromJson(jsonOrg);
-    STUDENTORGS.add(newOrg.name);
-    ORGIDS.add(newOrg.id);
+  if (jsonDecode(result.body) is Iterable){
+    for (var jsonOrg in jsonDecode(result.body)) {
+      Org newOrg = Org.fromJson(jsonOrg);
+      STUDENTORGS.add(newOrg.name);
+      ORGIDS.add(newOrg.id);
+    }
   }
 }
 

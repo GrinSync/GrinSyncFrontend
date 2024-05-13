@@ -257,7 +257,7 @@ class EventEditPageState extends State<EventEditPage> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      Color.fromARGB(255, 255, 143, 28),
+                                      const Color.fromARGB(255, 255, 143, 28),
                                   foregroundColor: Colors.black),
                               // When the button is pressed, do this:
                               onPressed: () async {

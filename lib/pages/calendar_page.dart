@@ -162,7 +162,7 @@ class CalendarPageState extends State<CalendarPage> {
             'UTC', // Need these so that it interprets the given datetimes as offsets from UTC, which they are
         endTimeZone:
             'UTC', // The calendar widget will automatically update the time in the user's timezone
-        color: Color.fromARGB(255, 156, 25, 15),
+        color: const Color.fromARGB(255, 156, 25, 15),
       );
 
       allAppointments.add(apt);
@@ -353,7 +353,7 @@ class CalendarPageState extends State<CalendarPage> {
                           blackoutDates: <DateTime>[], // list of blackout dates when no events are allowed to happen
                           dataSource: EventDataSource(
                               getAllAppointmentData()), // get the event data
-                          appointmentTextStyle: TextStyle(
+                          appointmentTextStyle: const TextStyle(
                             color: Color(0xFFFFFFFF),
                           ),
                         ),

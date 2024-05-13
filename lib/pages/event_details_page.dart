@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 class EventDetailsPage extends StatefulWidget {
   final Event event; // Event to show details of as a field of the class
   final VoidCallback refreshParent; // Function to refresh the parent page
-  EventDetailsPage({required this.event, required this.refreshParent});
+  const EventDetailsPage({super.key, required this.event, required this.refreshParent});
 
   @override
   State<EventDetailsPage> createState() => _EventDetailsPageState();
@@ -67,9 +67,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Confirm Deletion'),
-            content: SingleChildScrollView(
+            content: const SingleChildScrollView(
               child: ListBody(
-                children: const <Widget>[
+                children: <Widget>[
                   Text('Are you sure you want to delete this event?'),
                 ],
               ),
@@ -128,7 +128,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     valueListenable: favorited,
                     builder: (context, value, child) {
                       return value
-                          ? Icon(Icons.favorite, color: Colors.white)
+                          ? const Icon(Icons.favorite, color: Colors.white)
                           : Icon(Icons.favorite_border,
                               color: Theme.of(context).colorScheme.primary); // Since the app bar is of the same color, show the heart icon in primary color makes it invisible
                     }),
@@ -142,9 +142,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text('Event Details Page'),
-                      content: SingleChildScrollView(
+                      content: const SingleChildScrollView(
                         child: ListBody(
-                          children: const <Widget>[
+                          children: <Widget>[
                             Text(
                                 'This page shows the detailed information of an event.\n'),
                             Text('Information',
@@ -179,7 +179,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             ),
           ]),
       body: Container(
-        decoration: BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
+        decoration: const BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
         alignment: Alignment.topLeft,
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -235,12 +235,13 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   } else if (event.parentOrg != null) {
                     // If the host is an organization, open the organization details page
                     Org? org = await getOrgById(event.parentOrg!);
-                    if (org != null)
+                    if (org != null) {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
                               builder: (context) => OrgDetailsPage(
-                                  org: org!, refreshParent: () {})));
+                                  org: org, refreshParent: () {})));
+                    }
                   }
                 },
               ),
@@ -256,13 +257,14 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               color: Colors.black,
                               decoration: TextDecoration.underline)),
                       onTap: () async {
-                        if (navigationAvailable)
+                        if (navigationAvailable) {
                           await MapUtils.launchGoogleMaps(
                               double.parse(event.latitude!),
                               double.parse(event.longitude!));
-                        else
+                        } else {
                           await urlLauncher(Uri.parse(
                               'https://map.concept3d.com/?id=1232#!ct/68846,74074?sbc/'));
+                        }
                       }),
                       if (navigationAvailable)
                         const Icon(Icons.location_on, color: Colors.blue),
@@ -328,7 +330,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                 value ? Icons.favorite : Icons.favorite_border,
                                 size: 20,
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Text(value
                                   ? 'Unfavorite Event'
                                   : 'Favorite Event'),
@@ -361,7 +363,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               // Add to calendar button
               WideButton(
-                  content: Row(
+                  content: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -381,7 +383,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               // Contact button
               WideButton(
-                  content: Row(
+                  content: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -414,7 +416,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               // Share button
               WideButton(
-                  content: Row(
+                  content: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -440,7 +442,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               // Edit button
               if (isCreatedByThisUser)
                 WideButton(
-                    content: Row(
+                    content: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
@@ -467,7 +469,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               // Delete button
               if (isCreatedByThisUser)
                 WideButton(
-                    content: Row(
+                    content: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
@@ -534,7 +536,7 @@ class WideButton extends StatelessWidget {
   final Color foregroundColor;
   final Function onPressedFunc;
 
-  WideButton({
+  const WideButton({
     super.key,
     required this.content,
     this.backgroundColor = const Color.fromARGB(255, 255, 172, 28),

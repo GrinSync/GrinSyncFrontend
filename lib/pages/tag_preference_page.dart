@@ -6,7 +6,7 @@ class TagPreferencePage extends StatefulWidget {
   @override
   _TagPreferencePageState createState() => _TagPreferencePageState();
 
-  TagPreferencePage({Key? key}) : super(key: key);
+  const TagPreferencePage({super.key});
 }
 
 class _TagPreferencePageState extends State<TagPreferencePage> {
@@ -28,13 +28,13 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
         foregroundColor: Colors.white,
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
         child: ListView.builder(
           itemCount: availableTags.length + additionalItemNumber,
           itemBuilder: (context, index) {
             if (index == 0) {
               // Title
-              return Text('Select tags for homepage feed:',
+              return const Text('Select tags for homepage feed:',
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -42,10 +42,10 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
             } else if (index == 1) {
               // Select all
               return ListTile(
-                title: Text('Select all',
+                title: const Text('Select all',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: IconButton(
-                  icon: Icon(Icons.check),
+                  icon: const Icon(Icons.check),
                   onPressed: () {
                     setState(() {
                       selectedTags = List<String>.from(availableTags);
@@ -58,10 +58,10 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
             } else if (index == 2) {
               // Deselect all
               return ListTile(
-                title: Text('Deselect all',
+                title: const Text('Deselect all',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     setState(() {
                       selectedTags = [];

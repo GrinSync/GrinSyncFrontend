@@ -1,7 +1,6 @@
 // aliases are used because both packages contain a class named "Event"
 import 'package:add_2_calendar/add_2_calendar.dart' as a2c;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart' as gs;
 import 'package:permission_handler/permission_handler.dart';
 

@@ -163,7 +163,7 @@ class _RegistrationPage extends State<RegistrationPage> {
               // Submit Button to create account
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 143, 28),
+                      backgroundColor: const Color.fromARGB(255, 255, 143, 28),
                       foregroundColor: Colors.black),
                   onPressed: () async {
                     var auth = await registerUser(

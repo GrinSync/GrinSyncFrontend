@@ -4,6 +4,8 @@ import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
 class OrgsIFollowPage extends StatefulWidget {
+  const OrgsIFollowPage({super.key});
+
   @override
   _OrgsIFollowPageState createState() => _OrgsIFollowPageState();
 }

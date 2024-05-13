@@ -16,7 +16,7 @@ class UserProfilePage extends StatelessWidget {
   final User? user = USER
       .value; // Get the User object from the USER ValueNotifier in global.dart to display the user's information
 
-  UserProfilePage({Key? key}) : super(key: key);
+  UserProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class UserProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                        builder: (context) => TagPreferencePage()),
+                        builder: (context) => const TagPreferencePage()),
                   );
                 },
               ),
@@ -82,7 +82,7 @@ class UserProfilePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => EventsICreatedPage()));
+                          builder: (context) => const EventsICreatedPage()));
                 },
               ),
               // Events I Follow button
@@ -93,7 +93,7 @@ class UserProfilePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => EventsILikePage()));
+                          builder: (context) => const EventsILikePage()));
                 },
               ),
 
@@ -111,7 +111,7 @@ class UserProfilePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => OrgsIFollowPage()));
+                          builder: (context) => const OrgsIFollowPage()));
                 },
               ),
               // Settings button
@@ -128,7 +128,7 @@ class UserProfilePage extends StatelessWidget {
                       style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => MyOrgsPage()));
+                        CupertinoPageRoute(builder: (context) => const MyOrgsPage()));
                   }),
 
                   // Create a Student Org button
@@ -181,10 +181,9 @@ class UserProfilePage extends StatelessWidget {
               //   },
               // ),
               
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               // Logout button
               ElevatedButton(
-                child: const Text('Logout', style: TextStyle(fontSize: 20)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.white,
@@ -195,6 +194,7 @@ class UserProfilePage extends StatelessWidget {
                 onPressed: () async {
                   await logout(); // Call the logout function from user_authorization.dart
                 },
+                child: const Text('Logout', style: TextStyle(fontSize: 20)),
               ),
             ]),
       ),

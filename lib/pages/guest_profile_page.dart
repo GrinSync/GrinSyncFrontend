@@ -6,6 +6,8 @@ import 'package:flutter_test_app/pages/login_page.dart';
 import 'package:flutter_test_app/pages/registration_page.dart';
 
 class GuestProfilePage extends StatelessWidget {
+  const GuestProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

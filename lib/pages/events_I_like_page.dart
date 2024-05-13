@@ -6,7 +6,7 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class EventsILikePage extends StatefulWidget {
-  EventsILikePage({super.key});
+  const EventsILikePage({super.key});
 
   @override
   State<EventsILikePage> createState() => _EventsILikePageState();

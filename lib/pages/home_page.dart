@@ -11,6 +11,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 // HomePage shows user a list of upcoming events
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -57,13 +59,13 @@ class _HomePageState extends State<HomePage> {
           actions: [
             // filter menu
             IconButton(
-              icon: Icon(Icons.filter_list),
+              icon: const Icon(Icons.filter_list),
               onPressed: () => showModalBottomSheet(
                   context: context,
                   builder: (context) => StatefulBuilder(
                       builder: (context, setState) => SafeArea(
                             child: Container(
-                                padding: EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: SingleChildScrollView(
                                   // make the filter menu scrollable
                                   child: Column(
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                           USER.value?.type == "STU")
                                         CheckboxListTile(
                                           title:
-                                              Text('Show students only events'),
+                                              const Text('Show students only events'),
                                           value: stduentOnly,
                                           onChanged: (value) {
                                             setState(() {
@@ -112,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       // show the intersection filter
                                       CheckboxListTile(
-                                        title: Text(
+                                        title: const Text(
                                             'Only show events with all tags selected'),
                                         value: intersectionFilter,
                                         onChanged: (value) {
@@ -132,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                                               backgroundColor: Colors.white,
                                             ),
                                             child:
-                                                Text('Revert to default tags'),
+                                                const Text('Revert to default tags'),
                                             onPressed: () {
                                               if (isLoggedIn()) {
                                                 setState(() {
@@ -148,10 +150,9 @@ class _HomePageState extends State<HomePage> {
                                               }
                                             },
                                           ),
-                                          SizedBox(width: 10.0),
+                                          const SizedBox(width: 10.0),
                                           // button to deselect all tags
                                           ElevatedButton(
-                                            child: Text('Deselect all tags'),
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.white,
                                             ),
@@ -161,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                                                 selectedTags = [];
                                               });
                                             },
+                                            child: const Text('Deselect all tags'),
                                           ),
                                         ],
                                       ),
@@ -171,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                                 .colorScheme
                                                 .primary,
                                             foregroundColor: Colors.white),
-                                        child: Text('Apply Filters'),
+                                        child: const Text('Apply Filters'),
                                         // close the filter menu and apply the filters
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -191,12 +193,12 @@ class _HomePageState extends State<HomePage> {
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(),
-                    const Text('Preparing events for you...'),
+                    Text('Preparing events for you...'),
                   ],
                 ),
               );
@@ -219,7 +221,7 @@ class _HomePageState extends State<HomePage> {
             } else {
               // if the connection is done, show the events
               return Container(
-                padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
                 child: RefreshIndicator(
                   onRefresh: () async {
                     refresh();
@@ -250,9 +252,8 @@ class _HomePageState extends State<HomePage> {
                                     refreshParent: () => {});
                         return Slidable(
                           // make the event card slidable
-                          child: eventCard,
                           endActionPane: ActionPane(
-                            motion: DrawerMotion(),
+                            motion: const DrawerMotion(),
                             children: [
                               // slidable action to contact the host
                               SlidableAction(
@@ -275,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                                   }
                                 },
                                 backgroundColor:
-                                    Color.fromARGB(255, 255, 172, 28),
+                                    const Color.fromARGB(255, 255, 172, 28),
                                 foregroundColor: Colors.black,
                                 icon: Icons.email_outlined,
                                 label: 'Contact',
@@ -293,6 +294,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
+                          // make the event card slidable
+                          child: eventCard,
                         );
                       }
                     },

@@ -93,19 +93,19 @@ class _MyHomePageState extends State<MyHomePage> {
     // Once the pages are implemented, the Placeholder() widget will be replaced with the actual page widget
     switch (selectedIndexOnHomePage) {
       case 0: // this is the home page where where user can discover events
-        currentPage = HomePage();
+        currentPage = const HomePage();
         break;
       case 1: // this is the search page where user can search for events/users/organizations
-        currentPage = SearchPage();
+        currentPage = const SearchPage();
         break;
       case 2: // this is the event creation page where user can create their own events
-        currentPage = CreatePage();
+        currentPage = const CreatePage();
         break;
       case 3: // this is the user's agenda (calendar view: month view, week view, day view)
-        currentPage = CalendarPage();
+        currentPage = const CalendarPage();
         break;
       case 4: // this is user's profile page
-        currentPage = ProfilePage();
+        currentPage = const ProfilePage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndexOnHomePage');

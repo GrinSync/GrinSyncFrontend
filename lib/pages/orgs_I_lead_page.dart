@@ -4,7 +4,7 @@ import 'package:flutter_test_app/pages/connect_org_page.dart';
 import 'package:flutter_test_app/models/org_models.dart';
 
 class MyOrgsPage extends StatefulWidget {
-  MyOrgsPage({Key? key}) : super(key: key);
+  const MyOrgsPage({super.key});
 
   @override
   State<MyOrgsPage> createState() => _MyOrgsPageState();

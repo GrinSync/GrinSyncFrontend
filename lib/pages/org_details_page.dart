@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test_app/api/get_student_orgs.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
@@ -18,8 +17,7 @@ class OrgDetailsPage extends StatefulWidget {
   _OrgDetailsPageState createState() => _OrgDetailsPageState();
 
   // constructor
-  OrgDetailsPage({Key? key, required this.org, required this.refreshParent})
-      : super(key: key);
+  const OrgDetailsPage({super.key, required this.org, required this.refreshParent});
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
@@ -75,7 +73,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Organization Details',
+        title: const Text('Organization Details',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
@@ -89,7 +87,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
               // Org Title
               Text(
                 widget.org.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Helvetica',
@@ -105,10 +103,10 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                 ),
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Student Leaders
-              Text(
+              const Text(
                 'Leaders',
                 style: TextStyle(
                   fontSize: 20,
@@ -120,9 +118,9 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                   future: _leadersFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (leaders.isEmpty) {
-                      return Text('No student leaders found');
+                      return const Text('No student leaders found');
                     }
                     return SizedBox(
                       height: 100,
@@ -136,9 +134,9 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                     );
                   }),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Description
-              Text(
+              const Text(
                 'Description',
                 style: TextStyle(
                   fontSize: 20,
@@ -151,7 +149,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                 child: SingleChildScrollView(
                   child: Text(
                     widget.org.description,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
@@ -159,19 +157,19 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
               ),
 
               // Events Section
-              Divider(
+              const Divider(
                 height: 20,
                 color: Colors.black,
               ),
               Text(
                 'Events Created by ${widget.org.name}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
 
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
 
               // Event Card list
               Expanded(
@@ -179,9 +177,9 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                     future: _eventsFuture,
                     builder: (context, Snapshot) {
                       if (Snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (events.isEmpty) {
-                        return Center(child: Text('No events are created by this organization yet'));
+                        return const Center(child: Text('No events are created by this organization yet'));
                       }
                       return ListView.builder(
                         itemCount: events.length,
@@ -197,7 +195,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                     }),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Follow/Unfollow Button
               if (isLoggedIn())
@@ -205,7 +203,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 172, 28),
+                        backgroundColor: const Color.fromARGB(255, 255, 172, 28),
                         foregroundColor: Colors.black),
                     onPressed: () async {
                       // Send a request to the server to toggle the follow status
@@ -263,7 +261,7 @@ class OrgLeaderCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.account_box, size: 50),
+                  const Icon(Icons.account_box, size: 50),
                   Text(leader.firstName),
                   Text(leader.lastName),
                 ],

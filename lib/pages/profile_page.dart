@@ -5,7 +5,7 @@ import 'package:flutter_test_app/pages/user_profile_page.dart';
 import 'package:flutter_test_app/global.dart';
 
 class ProfilePage extends StatelessWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
       builder: (context, user, _) {
         if (user == null) {
           // If the user is not logged in, show the GuestProfilePage, show the UserProfilePage otherwise
-          return GuestProfilePage();
+          return const GuestProfilePage();
         } else {
           return UserProfilePage();
         }

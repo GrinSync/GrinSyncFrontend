@@ -6,7 +6,7 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/pages/edit_event_page.dart';
 
 class EventsICreatedPage extends StatefulWidget {
-  EventsICreatedPage({super.key});
+  const EventsICreatedPage({super.key});
 
   @override
   State<EventsICreatedPage> createState() => _EventsICreatedPageState();
@@ -53,7 +53,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
               // if there is an error, show an error message and a button to try again
@@ -83,7 +83,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                 // if there are events, show the events
               } else {
                 return Container(
-                  padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                   child: ListView.builder(
                     itemCount: events.length + 1,
                     itemBuilder: (context, index) {
@@ -101,7 +101,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                         return Slidable(
                           key: ValueKey(events[index].id), // key for the slidable to enable dismiss
                           endActionPane: ActionPane(
-                            motion: DrawerMotion(),
+                            motion: const DrawerMotion(),
                             dismissible: DismissiblePane(
                               onDismissed: () async {
                                 //delete the event and get the message
@@ -111,7 +111,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(deleteMsg),
-                                    duration: Duration(seconds: 2),
+                                    duration: const Duration(seconds: 2),
                                   ),
                                 );
                                 // remove the event from the local list
@@ -143,7 +143,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(deleteMsg),
-                                      duration: Duration(seconds: 2),
+                                      duration: const Duration(seconds: 2),
                                     ),
                                   );
                                   setState(() {

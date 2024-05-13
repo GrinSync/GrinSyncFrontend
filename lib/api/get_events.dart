@@ -111,12 +111,12 @@ class EventCardPlain extends StatelessWidget {
     return Card(
       child: ListTile(
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.black, width: 1),
+          side: const BorderSide(color: Colors.black, width: 1),
           borderRadius: BorderRadius.circular(12.0),
         ),
         tileColor: Colors.white,
         title: Text(event.title ?? 'Null title',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
         subtitle: Text(
             'Location: ${event.location}\nStarts at: ${timeFormat(event.start)}',
             style: TextStyle(fontSize: 15, color: Colors.grey[600])),
@@ -522,5 +522,5 @@ String timeFormat(String? timeString) {
   // If extract from the DateTime object, it will look like: "6:0"
   String time = timeString.substring(11, 16);
 
-  return '${time} ${month} ${day}, ${year}';
+  return '$time $month $day, $year';
 }
