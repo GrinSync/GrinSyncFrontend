@@ -427,9 +427,9 @@ Future<void> toggleLikeEvent(int eventId) async {
       await http.post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
-    print('Event liked/unliked');
+    // print('Event liked/unliked');
   } else {
-    print(response.body);
+    // print(response.body);
   }
 }
 
@@ -451,9 +451,9 @@ Future<void> unlikeEvent(int eventId) async {
       await http.post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
-    print('Event unliked');
+    // print('Event unliked');
   } else {
-    print(response.body);
+    // print(response.body);
   }
 }
 

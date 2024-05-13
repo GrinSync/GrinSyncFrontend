@@ -10,9 +10,9 @@ class TagPreferencePage extends StatefulWidget {
 }
 
 class _TagPreferencePageState extends State<TagPreferencePage> {
-  List<String> availableTags = List<String>.from(ALLTAGS);
-  List<String> selectedTags = List<String>.from(PREFERREDTAGS);
-  int additionalItemNumber = 3;
+  List<String> availableTags = List<String>.from(ALLTAGS); // List of all available tags
+  List<String> selectedTags = List<String>.from(PREFERREDTAGS); // List of selected tags
+  int additionalItemNumber = 3; // Number of additional items in the listviewbuilder (title, select all, deselect all)
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,14 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
           itemCount: availableTags.length + additionalItemNumber,
           itemBuilder: (context, index) {
             if (index == 0) {
+              // Title
               return Text('Select tags for homepage feed:',
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Helvetica'));
             } else if (index == 1) {
+              // Select all
               return ListTile(
                 title: Text('Select all',
                     style: TextStyle(fontWeight: FontWeight.bold)),
@@ -54,6 +56,7 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                 ),
               );
             } else if (index == 2) {
+              // Deselect all
               return ListTile(
                 title: Text('Deselect all',
                     style: TextStyle(fontWeight: FontWeight.bold)),
@@ -69,23 +72,24 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                 ),
               );
             } else {
-              final tag = availableTags[index - additionalItemNumber];
-              final isSelected = selectedTags.contains(tag);
+              // Tags
+              final tag = availableTags[index - additionalItemNumber]; // Get the tag
+              final isSelected = selectedTags.contains(tag); // Check if the tag is selected
 
               return ListTile(
                 title: Text(tag),
                 trailing: Checkbox(
                   value: isSelected,
                   onChanged: (selected) {
+                    // Update the selected tags
                     setState(() {
                       if (selected!) {
                         selectedTags.add(tag);
                       } else {
                         selectedTags.remove(tag);
                       }
-                      updatePrefferedTags(selectedTags);
-                      PREFERREDTAGS = List<String>.from(selectedTags);
-                      print(PREFERREDTAGS);
+                      updatePrefferedTags(selectedTags); // Update the preferred tags to the server
+                      PREFERREDTAGS = List<String>.from(selectedTags); // Update the preferred tags locally
                     });
                   },
                 ),

@@ -1,3 +1,4 @@
+/// Org model
 class Org {
   int id;
   List<int> orgEvents = const [];
@@ -11,6 +12,7 @@ class Org {
   bool isFollowed;
   List<int> studentLeaders;
 
+// Constructor
   Org({
     this.id = -1,
     this.orgEvents = const [],
@@ -25,6 +27,7 @@ class Org {
     this.studentLeaders = const [],
   });
 
+// Convert JSON to Org object
   factory Org.fromJson(json) {
     return Org(
       id: json['id'],

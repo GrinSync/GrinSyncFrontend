@@ -1,3 +1,4 @@
+/// Class of Event object
 class Event {
   int id;
   String title;
@@ -18,6 +19,7 @@ class Event {
   String? latitude;
   String? longitude;
 
+  // Constructor
   Event({
     this.id = -1,
     this.title = '',
@@ -38,6 +40,7 @@ class Event {
     this.longitude,
   });
 
+  /// Convert JSON to Event object
   factory Event.fromJson(json) {
     return Event(
       id: json['id'],

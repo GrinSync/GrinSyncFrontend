@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_app/models/event_models.dart' as gs;
 import 'package:permission_handler/permission_handler.dart';
 
+/// This function saves an event to the user's calendar and prepopulates the fields with event info.
 Future<void> saveEventToCalendar(context, gs.Event gsEvent) async {
+  // create an a2c event object
   final a2c.Event event = a2c.Event(
     title: gsEvent.title,
-    description: gsEvent.description,
+    description: gsEvent.description, // To be solved: description contains html stuff
     location: gsEvent.location,
     startDate: DateTime.parse(gsEvent.start.toString()),
     endDate: DateTime.parse(gsEvent.end.toString()),
@@ -24,16 +26,18 @@ Future<void> saveEventToCalendar(context, gs.Event gsEvent) async {
   try {
     await a2c.Add2Calendar.addEvent2Cal(event);
   } catch (e) {
+    // check if the user has denied calendar access
     var status = await Permission.calendarWriteOnly.status;
     if (status.isDenied) {
-      print('Calendar access denied');
+      // print('Calendar access denied');
       showAlertDialog(context, 'Calendar');
     } else {
-      print('Error adding event to calendar: $e');
+      // print('Error adding event to calendar: $e');
     }
   }
 }
 
+/// This function shows an alert dialog to the user if they have denied permission to access the calendar and provides them the choice to change permission in settings.
 showAlertDialog(context, String permissionItem) {
   return showCupertinoDialog<void>(
     context: context,
@@ -43,7 +47,7 @@ showAlertDialog(context, String permissionItem) {
       content: Text("Allow access to $permissionItem in settings"),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
-          child: const Text('Cancele'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         // CupertinoDialogAction

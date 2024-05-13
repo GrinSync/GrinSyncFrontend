@@ -12,11 +12,13 @@ class EventsICreatedPage extends StatefulWidget {
   State<EventsICreatedPage> createState() => _EventsICreatedPageState();
 }
 
-class _EventsICreatedPageState extends State<EventsICreatedPage> {
-  List<Event> events = [];
-  late Future _loadEventsFuture;
 
-  // Get events created by the user from the backend
+
+class _EventsICreatedPageState extends State<EventsICreatedPage> {
+  List<Event> events = []; // list of events created by the user
+  late Future _loadEventsFuture; // future for loading events
+
+  /// Get events created by the user from the backend
   Future<void> loadEvents() async {
     events = await getMyEvents(); // function in get_events.dart
   }
@@ -27,6 +29,7 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
     super.initState();
   }
 
+  /// Function to refresh the page by loading the events again
   refresh() {
     setState(() {
       _loadEventsFuture = loadEvents();
@@ -96,25 +99,29 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                         );
                       } else {
                         return Slidable(
-                          key: ValueKey(events[index].id),
+                          key: ValueKey(events[index].id), // key for the slidable to enable dismiss
                           endActionPane: ActionPane(
                             motion: DrawerMotion(),
                             dismissible: DismissiblePane(
                               onDismissed: () async {
-                                String deleteMsg =
-                                    await deleteEvent(events[index].id);
+                                //delete the event and get the message
+                                String deleteMsg = await deleteEvent(events[index].id);
+
+                                // show a snackbar with the message sent from the backend
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(deleteMsg),
                                     duration: Duration(seconds: 2),
                                   ),
                                 );
+                                // remove the event from the local list
                                 setState(() {
                                   events.removeAt(index);
                                 });
                               },
                             ),
                             children: [
+                              // Edit and Delete actions for the slidable
                               SlidableAction(
                                 onPressed: (context) {
                                   Navigator.push(

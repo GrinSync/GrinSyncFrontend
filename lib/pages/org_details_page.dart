@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class OrgDetailsPage extends StatefulWidget {
   final Org org; // Organization to display details of
-  final VoidCallback refreshParent;
+  final VoidCallback refreshParent; // Callback function to refresh the parent page
 
   @override
   _OrgDetailsPageState createState() => _OrgDetailsPageState();
@@ -23,11 +23,11 @@ class OrgDetailsPage extends StatefulWidget {
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
-  late bool _isFollowing;
+  late bool _isFollowing; // Local variable to store the org follow status
   List<User> leaders = []; // List of student leaders in the organization
   List<Event> events = []; // List of events created by the organization
-  late Future _leadersFuture;
-  late Future _eventsFuture;
+  late Future _leadersFuture; // Future for loading student leaders
+  late Future _eventsFuture; // Future for loading events
 
   @override
   void initState() {
@@ -37,6 +37,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
     _eventsFuture = initializeEvents();
   }
 
+  /// Function to initialize the student leaders in the organization
   initializeLeaders() async {
     for (int id in widget.org.studentLeaders) {
       User? leader = await getUserByID(id);
@@ -49,6 +50,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
     }
   }
 
+  /// Function to initialize the events created by the organization
   initializeEvents() async {
     for (int id in widget.org.orgEvents) {
       Event? event = await getEventByID(id);
@@ -59,6 +61,14 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
         });
       }
     }
+  }
+
+  /// Function to refresh the events list by 
+  refreshEvents() {
+    setState(() {
+      events.clear();
+      _eventsFuture = initializeEvents();
+    });
   }
 
   @override
@@ -164,8 +174,6 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
               SizedBox(height: 5),
 
               // Event Card list
-              // TODO: implement a scrollable list of event cards here using FutureBuilder?
-              // Say no events are created yet if there are no events
               Expanded(
                 child: FutureBuilder(
                     future: _eventsFuture,
@@ -173,17 +181,17 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                       if (Snapshot.connectionState != ConnectionState.done) {
                         return Center(child: CircularProgressIndicator());
                       } else if (events.isEmpty) {
-                        return Center(child: Text('No events created yet'));
+                        return Center(child: Text('No events are created by this organization yet'));
                       }
                       return ListView.builder(
                         itemCount: events.length,
                         itemBuilder: (context, index) {
                           return isLoggedIn() // return different event cards based on user's login status
                               ? EventCardFavoritable(
-                                  event: events[index], refreshParent: () => {})
+                                  event: events[index], refreshParent: refreshEvents)
                               : EventCardPlain(
                                   event: events[index],
-                                  refreshParent: () => {});
+                                  refreshParent: refreshEvents);
                         },
                       );
                     }),
@@ -235,6 +243,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
   }
 }
 
+/// Stateless widget for displaying student leader names
 class OrgLeaderCard extends StatelessWidget {
   final User leader;
   const OrgLeaderCard({

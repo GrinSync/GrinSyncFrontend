@@ -121,6 +121,7 @@ class UserProfilePage extends StatelessWidget {
               //     // TODO: implement setting page and functionality
               //   },
               // ),
+
               // My affiliated Student Orgs button
               TextButton(
                   child: const Text('Student Organizations I Lead',
@@ -129,8 +130,10 @@ class UserProfilePage extends StatelessWidget {
                     Navigator.push(context,
                         CupertinoPageRoute(builder: (context) => MyOrgsPage()));
                   }),
+
+                  // Create a Student Org button
               TextButton(
-                  child: const Text('Create a Student Org',
+                  child: const Text('Create a Student Organization',
                       style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     Navigator.push(
@@ -138,8 +141,10 @@ class UserProfilePage extends StatelessWidget {
                         CupertinoPageRoute(
                             builder: (context) => const CreateOrgPage()));
                   }),
+
+                  // Connect to a Student Org button
               TextButton(
-                  child: const Text('Connect to a Student Org',
+                  child: const Text('Connect to a Student Organization',
                       style: TextStyle(fontSize: 20)),
                   onPressed: () {
                     Navigator.push(
@@ -175,6 +180,7 @@ class UserProfilePage extends StatelessWidget {
               //     );
               //   },
               // ),
+              
               Expanded(child: SizedBox()),
               // Logout button
               ElevatedButton(

@@ -1,3 +1,4 @@
+/// User model class
 class User {
   String? token;
   int? id;
@@ -10,6 +11,7 @@ class User {
       interestedTags; // commented out because it is not used as of now. Also, it should only be used for other users (current user's interested tags are stored in PREFERREDTAGS in global.dart)
   List<int>? childOrgs;
 
+ // Constructor
   User(
       {this.token,
       this.id,
@@ -20,6 +22,7 @@ class User {
       this.interestedTags,
       this.childOrgs});
 
+  // Convert JSON to User object
   factory User.fromJson(json) {
     return User(
         id: json['id'],

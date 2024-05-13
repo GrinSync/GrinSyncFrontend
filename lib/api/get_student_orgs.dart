@@ -163,9 +163,9 @@ Future<void> toggleFollowedOrg(int id) async {
       await http.post(url, headers: headers, body: {'id': id.toString()});
 
   if (result.statusCode == 200) {
-    print('Org followed/unfollowed');
+    // print('Org followed/unfollowed');
   } else {
-    print(result.body);
+    // print(result.body);
   }
 }
 
@@ -187,8 +187,8 @@ Future<void> unfollowOrg(int id) async {
       await http.post(url, headers: headers, body: {'id': id.toString()});
 
   if (result.statusCode == 200) {
-    print('Org unfollowed');
+    // print('Org unfollowed');
   } else {
-    print(result.body);
+    // print(result.body);
   }
 }
