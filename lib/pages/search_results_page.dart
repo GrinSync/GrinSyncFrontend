@@ -3,10 +3,9 @@ import 'package:flutter_test_app/api/get_events.dart';
 import 'package:flutter_test_app/api/user_authorization.dart';
 import 'package:flutter_test_app/models/event_models.dart';
 
-// HomePage shows user a list of events
+/// Class to store search keyword, which is passed from the search results page
 class Todo {
   final String keyword;
-
   const Todo(this.keyword);
 }
 
@@ -19,18 +18,22 @@ class SearchResultsPage extends StatefulWidget {
 
 class _SearchResultsPageState extends State<SearchResultsPage> {
   ValueNotifier allEvents = ValueNotifier<List<Event>?>(null);
-  String k = '';
+  String k = ''; // String to hold passed keyword
   late List<Event> events;
+
+  /// Function to get events that match the search string criteria
   Future<void> loadEvents() async {
     allEvents.value = await getSearchedEvents(k);
   }
 
+  /// Initialize page state and keyword
   @override
   void initState() {
-    k = widget.todo;
+    k = widget.todo; // Set string to hold keyword from search page
     super.initState();
   }
 
+  /// Build the page widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,17 +46,17 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         foregroundColor: Colors.white,
       ),
       body: FutureBuilder(
-          future: loadEvents(),
+          future: loadEvents(), // Get events that match the specified keyword
           builder: (context, snapshot) {
             // if the connection is waiting, show a loading indicator
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(),
-                    const Text(
-                      'Preparing events for you...',
+                    Text(
+                      'Preparing search results for you...',
                     ),
                   ],
                 ),
@@ -77,14 +80,15 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               );
               // if the connection is done, show the events
             } else {
-              return ValueListenableBuilder(
+              // Display list of all events
+              return ValueListenableBuilder( 
                   valueListenable: allEvents,
                   builder: (context, eventList, child) {
                     return Scaffold(
                       body: Container(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: RefreshIndicator(
-                          onRefresh: loadEvents,
+                          onRefresh: loadEvents, // Reload events when page refreshes
                           child: ListView.builder(
                             itemCount: eventList!.length + 1,
                             itemBuilder: (context, index) {
@@ -102,9 +106,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                                 );
                               } else {
                                 return isLoggedIn()
+                                    // If the user is logged in they can like events
                                     ? EventCardFavoritable(
                                         event: eventList[index],
                                         refreshParent: () => {})
+                                    // If the user is not logged in they cannot like events
                                     : EventCardPlain(
                                         event: eventList[index],
                                         refreshParent: () => {},
