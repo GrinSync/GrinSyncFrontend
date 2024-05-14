@@ -43,7 +43,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         event = newEvent;
       }
     });
-    widget.refreshParent(); // if this refreshes, the parent page should refresh too
+    widget
+        .refreshParent(); // if this refreshes, the parent page should refresh too
   }
 
   @override
