@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/launch_url.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/models/user_models.dart';
+import 'package:grinsync/api/launch_url.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/models/user_models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {

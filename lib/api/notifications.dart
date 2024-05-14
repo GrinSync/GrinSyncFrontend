@@ -1,5 +1,5 @@
-import 'package:flutter_test_app/constants.dart';
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/constants.dart';
+import 'package:grinsync/global.dart';
 
 /// get notifications setting from the box
 bool getNotificationsSetting() {

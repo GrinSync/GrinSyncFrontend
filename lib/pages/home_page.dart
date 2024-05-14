@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/api/launch_url.dart';
-import 'package:flutter_test_app/api/save_event_to_calendar.dart';
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/api/tags.dart';
+import 'package:grinsync/api/get_events.dart';
+import 'package:grinsync/api/launch_url.dart';
+import 'package:grinsync/api/save_event_to_calendar.dart';
+import 'package:grinsync/models/event_models.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/api/tags.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

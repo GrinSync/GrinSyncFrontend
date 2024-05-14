@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/org.dart';
+import 'package:grinsync/api/org.dart';
 
 class CreateOrgPage extends StatefulWidget {
   const CreateOrgPage({super.key});

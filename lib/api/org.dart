@@ -1,4 +1,4 @@
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/global.dart';
 import 'package:http/http.dart' as http;
 
 /// Function to create pass information to backend to create a student org

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:grinsync/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 enum SingingCharacter { student, faculty, community } // Different account types

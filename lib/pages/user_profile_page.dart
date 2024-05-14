@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_test_app/api/launch_url.dart';
-import 'package:flutter_test_app/models/user_models.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/pages/connect_org_page.dart';
-import 'package:flutter_test_app/pages/create_org_page.dart';
-import 'package:flutter_test_app/pages/events_I_created_page.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/pages/events_I_like_page.dart';
-import 'package:flutter_test_app/pages/orgs_I_follow_page.dart';
-import 'package:flutter_test_app/pages/orgs_I_lead_page.dart';
-import 'package:flutter_test_app/pages/tag_preference_page.dart';
+import 'package:grinsync/api/launch_url.dart';
+import 'package:grinsync/models/user_models.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/pages/connect_org_page.dart';
+import 'package:grinsync/pages/create_org_page.dart';
+import 'package:grinsync/pages/events_I_created_page.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/pages/events_I_like_page.dart';
+import 'package:grinsync/pages/orgs_I_follow_page.dart';
+import 'package:grinsync/pages/orgs_I_lead_page.dart';
+import 'package:grinsync/pages/tag_preference_page.dart';
 
 class UserProfilePage extends StatelessWidget {
   final User? user = USER

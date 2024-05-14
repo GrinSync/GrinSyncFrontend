@@ -2,8 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/pages/login_page.dart';
-import 'package:flutter_test_app/pages/registration_page.dart';
+import 'package:grinsync/pages/login_page.dart';
+import 'package:grinsync/pages/registration_page.dart';
 
 class GuestProfilePage extends StatelessWidget {
   const GuestProfilePage({super.key});

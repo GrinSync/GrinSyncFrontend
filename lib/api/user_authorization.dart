@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:flutter_test_app/api/get_student_orgs.dart';
-import 'package:flutter_test_app/api/tags.dart';
-import 'package:flutter_test_app/models/user_models.dart';
-import 'package:flutter_test_app/pages/registration_page.dart';
+import 'package:grinsync/api/get_student_orgs.dart';
+import 'package:grinsync/api/tags.dart';
+import 'package:grinsync/models/user_models.dart';
+import 'package:grinsync/pages/registration_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/global.dart';
 
 Future<dynamic> userAuthentication(String username, String password) async {
   // body stores the username and password in a single map data structure

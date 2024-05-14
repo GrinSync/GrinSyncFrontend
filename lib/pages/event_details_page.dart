@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/get_student_orgs.dart';
-import 'package:flutter_test_app/api/save_event_to_calendar.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/models/org_models.dart';
-import 'package:flutter_test_app/pages/edit_event_page.dart';
-import 'package:flutter_test_app/pages/org_details_page.dart';
+import 'package:grinsync/api/get_student_orgs.dart';
+import 'package:grinsync/api/save_event_to_calendar.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/models/event_models.dart';
+import 'package:grinsync/api/get_events.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/models/org_models.dart';
+import 'package:grinsync/pages/edit_event_page.dart';
+import 'package:grinsync/pages/org_details_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:flutter_test_app/api/launch_url.dart';
+import 'package:grinsync/api/launch_url.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EventDetailsPage extends StatefulWidget {

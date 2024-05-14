@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/pages/user_event_creation_page.dart';
-import 'package:flutter_test_app/models/event_models.dart';
+import 'package:grinsync/api/new_event_info.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/pages/user_event_creation_page.dart';
+import 'package:grinsync/models/event_models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// Define a stateful widget for event edit that is mutable and its corresponding state class.

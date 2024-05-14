@@ -1,7 +1,7 @@
 // aliases are used because both packages contain a class named "Event"
 import 'package:add_2_calendar/add_2_calendar.dart' as a2c;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_test_app/models/event_models.dart' as gs;
+import 'package:grinsync/models/event_models.dart' as gs;
 import 'package:permission_handler/permission_handler.dart';
 
 /// This function saves an event to the user's calendar and prepopulates the fields with event info.

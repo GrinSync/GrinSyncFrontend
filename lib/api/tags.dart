@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/global.dart';
 
 /// Sets the list of all tags by modifying the global variable
 Future<void> setAllTags() async {

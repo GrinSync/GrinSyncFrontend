@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/get_student_orgs.dart';
-import 'package:flutter_test_app/pages/connect_org_page.dart';
-import 'package:flutter_test_app/models/org_models.dart';
+import 'package:grinsync/api/get_student_orgs.dart';
+import 'package:grinsync/pages/connect_org_page.dart';
+import 'package:grinsync/models/org_models.dart';
 
 class MyOrgsPage extends StatefulWidget {
   const MyOrgsPage({super.key});

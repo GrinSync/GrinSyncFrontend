@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/tags.dart';
-import 'package:flutter_test_app/api/token_box.dart';
-import 'package:flutter_test_app/pages/profile_page.dart';
-import 'package:flutter_test_app/pages/event_creation_page.dart';
-import 'package:flutter_test_app/pages/home_page.dart';
-import 'package:flutter_test_app/pages/calendar_page.dart';
+import 'package:grinsync/api/tags.dart';
+import 'package:grinsync/api/token_box.dart';
+import 'package:grinsync/pages/profile_page.dart';
+import 'package:grinsync/pages/event_creation_page.dart';
+import 'package:grinsync/pages/home_page.dart';
+import 'package:grinsync/pages/calendar_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_test_app/pages/search_page.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/api/get_student_orgs.dart';
+import 'package:grinsync/pages/search_page.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/api/get_student_orgs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

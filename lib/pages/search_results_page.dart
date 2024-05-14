@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/models/event_models.dart';
+import 'package:grinsync/api/get_events.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/models/event_models.dart';
 
 /// Class to store search keyword, which is passed from the search results page
 class Todo {

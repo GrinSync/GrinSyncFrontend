@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/pages/event_details_page.dart';
+import 'package:grinsync/models/event_models.dart';
+import 'package:grinsync/pages/event_details_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
+import 'package:grinsync/api/user_authorization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/global.dart';
 
 /// This event card allows user to favorite the event if they are logged in.
 /// Use the other card 'EventCardPlain' when the user doesn't need to

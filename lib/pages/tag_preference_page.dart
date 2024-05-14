@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/api/tags.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/api/tags.dart';
 
 class TagPreferencePage extends StatefulWidget {
   @override

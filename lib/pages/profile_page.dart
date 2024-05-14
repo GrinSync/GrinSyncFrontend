@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/models/user_models.dart';
-import 'package:flutter_test_app/pages/guest_profile_page.dart';
-import 'package:flutter_test_app/pages/user_profile_page.dart';
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/models/user_models.dart';
+import 'package:grinsync/pages/guest_profile_page.dart';
+import 'package:grinsync/pages/user_profile_page.dart';
+import 'package:grinsync/global.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

@@ -4,12 +4,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/pages/event_details_page.dart';
+import 'package:grinsync/api/get_events.dart';
+import 'package:grinsync/models/event_models.dart';
+import 'package:grinsync/pages/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter_test_app/api/user_authorization.dart';
-import 'package:flutter_test_app/api/tags.dart';
+import 'package:grinsync/api/user_authorization.dart';
+import 'package:grinsync/api/tags.dart';
 
 /// Enum for the filter options for the calendar page
 enum filterOptions {

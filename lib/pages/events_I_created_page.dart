@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_test_app/models/event_models.dart';
-import 'package:flutter_test_app/api/get_events.dart';
-import 'package:flutter_test_app/pages/edit_event_page.dart';
+import 'package:grinsync/models/event_models.dart';
+import 'package:grinsync/api/get_events.dart';
+import 'package:grinsync/pages/edit_event_page.dart';
 
 class EventsICreatedPage extends StatefulWidget {
   const EventsICreatedPage({super.key});

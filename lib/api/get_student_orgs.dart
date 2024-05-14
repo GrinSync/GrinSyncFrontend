@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/pages/org_details_page.dart';
+import 'package:grinsync/pages/org_details_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_test_app/global.dart';
-import 'package:flutter_test_app/models/org_models.dart';
+import 'package:grinsync/global.dart';
+import 'package:grinsync/models/org_models.dart';
 
 class OrgCard extends StatelessWidget {
   const OrgCard({

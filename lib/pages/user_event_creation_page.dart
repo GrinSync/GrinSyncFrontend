@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/api/new_event_info.dart';
-import 'package:flutter_test_app/global.dart';
+import 'package:grinsync/api/new_event_info.dart';
+import 'package:grinsync/global.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 ///// ----- MULTI-SELECT CLASS FOR MULTI-SELECTING EVENT TAGS ----- /////
