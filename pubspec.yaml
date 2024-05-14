@@ -55,7 +55,7 @@ dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/GrinSyncAltAppIcon.png"
+  image_path: "assets/images/favicon-32x32.png"
   min_sdk_android: 21
 dev_dependencies:
   flutter_test:
