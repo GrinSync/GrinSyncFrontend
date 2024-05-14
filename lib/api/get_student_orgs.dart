@@ -138,7 +138,7 @@ Future<void> setStudentOrgs() async {
 
   // parse the json response and sets the list of student organizations via the global variables
   // result.body is a list of maps with org information (after jsonDecoding)
-  if (jsonDecode(result.body) is Iterable){
+  if (jsonDecode(result.body) is Iterable) {
     for (var jsonOrg in jsonDecode(result.body)) {
       Org newOrg = Org.fromJson(jsonOrg);
       STUDENTORGS.add(newOrg.name);

@@ -21,7 +21,8 @@ Future<dynamic> userAuthentication(String username, String password) async {
     Map json = jsonDecode(result.body);
     String token = json['token'];
     BOX.put('token', token); // save token in box
-    User? user = await getUser(token); // Get the user now that we have logged in
+    User? user =
+        await getUser(token); // Get the user now that we have logged in
 
     // initialize the preferred tags and student orgs
     await setPrefferedTags();
@@ -37,7 +38,8 @@ Future<dynamic> userAuthentication(String username, String password) async {
 Future<User?> getUser(String token) async {
   var url = Uri.parse('https://grinsync.com/api/getUser'); // url to send info
   var res = await http.get(url, headers: {'Authorization': 'Token $token'});
-  if (res.statusCode == 200) { // If getting user succeeded
+  if (res.statusCode == 200) {
+    // If getting user succeeded
     var json = jsonDecode(res.body);
     User user = User.fromJson(json); // Save user
     user.token = token;
@@ -47,14 +49,16 @@ Future<User?> getUser(String token) async {
   }
 }
 
-/// Set login status based on if the user is logged in, if the user is logged in, 
+/// Set login status based on if the user is logged in, if the user is logged in,
 /// set USER to the current user, if the user is not logged in, set USER to null
 Future<void> setLoginStatus() async {
   var token = BOX.get('token'); // Get the token
-  if (token == null) { // If there is no token, the user is not logged in, so do not get a user
+  if (token == null) {
+    // If there is no token, the user is not logged in, so do not get a user
     USER.value = null;
-  } else { // If a token exists, get the user
-    USER.value = await getUser(token); 
+  } else {
+    // If a token exists, get the user
+    USER.value = await getUser(token);
   }
 }
 
@@ -67,7 +71,8 @@ bool isLoggedIn() {
 Future<dynamic> registerUser(String firstName, String lastName, String email,
     String password, String confirmPassword, SingingCharacter? accType) async {
   String account;
-  switch (accType) { // Check the account type of the user
+  switch (accType) {
+    // Check the account type of the user
     case SingingCharacter.student:
       account = 'STU';
     case SingingCharacter.faculty:
@@ -77,6 +82,7 @@ Future<dynamic> registerUser(String firstName, String lastName, String email,
     case null:
       account = 'COM';
   }
+
   /// Store the user data in a map to pass to the backend
   Map<String, String> data = {
     'first_name': firstName,
@@ -120,17 +126,21 @@ Future<User?> getUserByID(int id) async {
   var token = BOX.get('token'); // Get the user token
   // Map to hold token to pass to backend
   Map<String, String> headers;
-  if (token == null) { // If token is null, do not pass it to the backend
+  if (token == null) {
+    // If token is null, do not pass it to the backend
     headers = {};
-  } else { // If there is a token, store it in this map
+  } else {
+    // If there is a token, store it in this map
     headers = {'Authorization': 'Token $token'};
   }
 
   var url = Uri.parse('https://grinsync.com/api/getUser?id=$id');
   var result = await http.get(url, headers: headers);
-  if (result.statusCode == 200) { // Getting user succeeded, store user
+  if (result.statusCode == 200) {
+    // Getting user succeeded, store user
     return User.fromJson(jsonDecode(result.body));
-  } else { // If getting user failed, return null;
+  } else {
+    // If getting user failed, return null;
     return null;
   }
 }

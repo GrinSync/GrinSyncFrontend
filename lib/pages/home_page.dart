@@ -103,8 +103,8 @@ class _HomePageState extends State<HomePage> {
                                       if (isLoggedIn() &&
                                           USER.value?.type == "STU")
                                         CheckboxListTile(
-                                          title:
-                                              const Text('Show students only events'),
+                                          title: const Text(
+                                              'Show students only events'),
                                           value: stduentOnly,
                                           onChanged: (value) {
                                             setState(() {
@@ -133,8 +133,8 @@ class _HomePageState extends State<HomePage> {
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.white,
                                             ),
-                                            child:
-                                                const Text('Revert to default tags'),
+                                            child: const Text(
+                                                'Revert to default tags'),
                                             onPressed: () {
                                               if (isLoggedIn()) {
                                                 setState(() {
@@ -162,7 +162,8 @@ class _HomePageState extends State<HomePage> {
                                                 selectedTags = [];
                                               });
                                             },
-                                            child: const Text('Deselect all tags'),
+                                            child:
+                                                const Text('Deselect all tags'),
                                           ),
                                         ],
                                       ),

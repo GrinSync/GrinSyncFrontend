@@ -13,7 +13,8 @@ setTokenBox() async {
   final encryptionKeyString = await secureStorage.read(key: 'key');
   if (encryptionKeyString == null) {
     final key = Hive.generateSecureKey(); // Generate key
-    await secureStorage.write( // Save Key
+    await secureStorage.write(
+      // Save Key
       key: 'key',
       value: base64UrlEncode(key),
     );

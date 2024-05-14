@@ -26,7 +26,6 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -112,7 +111,8 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                                       int id = await getId(data);
                                       // Connect Student Org
                                       var auth = await connectOrg(id);
-                                      if (auth == 'Success') { // If 'Success' is returned, Org was connected!
+                                      if (auth == 'Success') {
+                                        // If 'Success' is returned, Org was connected!
                                         Navigator.of(context).pop();
                                       }
                                     },
@@ -131,14 +131,16 @@ Future<List<String>> getAllOrgs() async {
   var token = BOX.get('token'); // Get token from tokenbox
   List<String> allOrgs = []; // Initialize list to store student orgs
   Map<String, String> headers;
-  if (token == null) { // If there is no token, do not pass one to the backend
+  if (token == null) {
+    // If there is no token, do not pass one to the backend
     headers = {};
   } else {
     // If token exists, store it in this header map to pass to backend
     headers = {'Authorization': 'Token $token'};
   }
 
-  var url = Uri.parse('https://grinsync.com/api/getAllOrgs'); // url to send info to
+  var url =
+      Uri.parse('https://grinsync.com/api/getAllOrgs'); // url to send info to
   var result = await http.get(url, headers: headers);
 
   // parse the json response and create a list of all orgs
@@ -152,7 +154,8 @@ Future<List<String>> getAllOrgs() async {
 Future<int> getId(String? data) async {
   var token = BOX.get('token'); // Get token from tokenbox
   Map<String, String> headers;
-  if (token == null) { // If there is no token, do not pass one to the backend
+  if (token == null) {
+    // If there is no token, do not pass one to the backend
     headers = {};
   } else {
     // If token exists, store it in this header map to pass to backend
@@ -175,7 +178,8 @@ Future<int> getId(String? data) async {
 Future<String> connectOrg(int id) async {
   var token = BOX.get('token'); // Get token from tokenbox
   Map<String, String> headers;
-  if (token == null) { // If there is no token, do not pass one to the backend
+  if (token == null) {
+    // If there is no token, do not pass one to the backend
     headers = {};
   } else {
     // If token exists, store it in this header map to pass to backend
@@ -185,9 +189,11 @@ Future<String> connectOrg(int id) async {
   Map body = {
     'id': identity,
   };
-  var url = Uri.parse('https://grinsync.com/api/claimOrg'); // url to send info to
+  var url =
+      Uri.parse('https://grinsync.com/api/claimOrg'); // url to send info to
   var result = await http.post(url, headers: headers, body: body);
-  if (result.statusCode == 200) { // If connection succeeded, return 'Success'
+  if (result.statusCode == 200) {
+    // If connection succeeded, return 'Success'
     return 'Success';
   }
   return 'Error'; // If connecting org failed, return 'Error'

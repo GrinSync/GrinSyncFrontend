@@ -11,13 +11,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class OrgDetailsPage extends StatefulWidget {
   final Org org; // Organization to display details of
-  final VoidCallback refreshParent; // Callback function to refresh the parent page
+  final VoidCallback
+      refreshParent; // Callback function to refresh the parent page
 
   @override
   _OrgDetailsPageState createState() => _OrgDetailsPageState();
 
   // constructor
-  const OrgDetailsPage({super.key, required this.org, required this.refreshParent});
+  const OrgDetailsPage(
+      {super.key, required this.org, required this.refreshParent});
 }
 
 class _OrgDetailsPageState extends State<OrgDetailsPage> {
@@ -61,7 +63,7 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
     }
   }
 
-  /// Function to refresh the events list by 
+  /// Function to refresh the events list by
   refreshEvents() {
     setState(() {
       events.clear();
@@ -179,14 +181,17 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                       if (Snapshot.connectionState != ConnectionState.done) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (events.isEmpty) {
-                        return const Center(child: Text('No events are created by this organization yet'));
+                        return const Center(
+                            child: Text(
+                                'No events are created by this organization yet'));
                       }
                       return ListView.builder(
                         itemCount: events.length,
                         itemBuilder: (context, index) {
                           return isLoggedIn() // return different event cards based on user's login status
                               ? EventCardFavoritable(
-                                  event: events[index], refreshParent: refreshEvents)
+                                  event: events[index],
+                                  refreshParent: refreshEvents)
                               : EventCardPlain(
                                   event: events[index],
                                   refreshParent: refreshEvents);
@@ -203,7 +208,8 @@ class _OrgDetailsPageState extends State<OrgDetailsPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 255, 172, 28),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 172, 28),
                         foregroundColor: Colors.black),
                     onPressed: () async {
                       // Send a request to the server to toggle the follow status
