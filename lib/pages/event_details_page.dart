@@ -44,6 +44,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         event = newEvent;
       }
     });
+    widget.refreshParent(); // if this refreshes, the parent page should refresh too
   }
 
   @override
@@ -458,8 +459,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                           CupertinoPageRoute(
                               builder: (context) => EventEditPage(
                                   event: event, refreshParent: refresh)));
-                      // notify the parent page to refresh
-                      widget.refreshParent();
                     }),
 
               if (isCreatedByThisUser) const SizedBox(height: 10),
