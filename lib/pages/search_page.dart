@@ -193,7 +193,7 @@ class _SearchPageState extends State<SearchPage> {
                                             TextStyle(color: Colors.grey[600])),
                                   ],
                                 );
-                              } else { 
+                              } else {
                                 // Display the search results based on the search mode
                                 return isLoggedIn()
                                     ? EventCardFavoritable(

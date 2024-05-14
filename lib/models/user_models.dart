@@ -11,7 +11,7 @@ class User {
       interestedTags; // commented out because it is not used as of now. Also, it should only be used for other users (current user's interested tags are stored in PREFERREDTAGS in global.dart)
   List<int>? childOrgs;
 
- // Constructor
+  // Constructor
   User(
       {this.token,
       this.id,

@@ -56,7 +56,8 @@ class _LoginPage extends State<LoginPage> {
                 child: Container(
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
-                  child: const Icon( // Icon at top of page
+                  child: const Icon(
+                    // Icon at top of page
                     Icons.person,
                     size: 50,
                   ),

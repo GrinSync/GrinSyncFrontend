@@ -7,6 +7,7 @@ class GuestEventCreationPage extends StatelessWidget {
   const GuestEventCreationPage({super.key}); // This is the default constructor.
 
   @override
+
   /// Build the widget.
   Widget build(BuildContext context) {
     return Scaffold(

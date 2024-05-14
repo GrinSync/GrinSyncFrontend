@@ -12,8 +12,6 @@ class EventsICreatedPage extends StatefulWidget {
   State<EventsICreatedPage> createState() => _EventsICreatedPageState();
 }
 
-
-
 class _EventsICreatedPageState extends State<EventsICreatedPage> {
   List<Event> events = []; // list of events created by the user
   late Future _loadEventsFuture; // future for loading events
@@ -83,7 +81,8 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                 // if there are events, show the events
               } else {
                 return Container(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
                   child: ListView.builder(
                     itemCount: events.length + 1,
                     itemBuilder: (context, index) {
@@ -99,13 +98,15 @@ class _EventsICreatedPageState extends State<EventsICreatedPage> {
                         );
                       } else {
                         return Slidable(
-                          key: ValueKey(events[index].id), // key for the slidable to enable dismiss
+                          key: ValueKey(events[index]
+                              .id), // key for the slidable to enable dismiss
                           endActionPane: ActionPane(
                             motion: const DrawerMotion(),
                             dismissible: DismissiblePane(
                               onDismissed: () async {
                                 //delete the event and get the message
-                                String deleteMsg = await deleteEvent(events[index].id);
+                                String deleteMsg =
+                                    await deleteEvent(events[index].id);
 
                                 // show a snackbar with the message sent from the backend
                                 ScaffoldMessenger.of(context).showSnackBar(

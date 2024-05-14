@@ -18,13 +18,12 @@ import 'package:url_launcher/url_launcher.dart';
 class EventDetailsPage extends StatefulWidget {
   final Event event; // Event to show details of as a field of the class
   final VoidCallback refreshParent; // Function to refresh the parent page
-  const EventDetailsPage({super.key, required this.event, required this.refreshParent});
+  const EventDetailsPage(
+      {super.key, required this.event, required this.refreshParent});
 
   @override
   State<EventDetailsPage> createState() => _EventDetailsPageState();
 }
-
-
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
   late Event event; // Event field to store the event to show details of
@@ -73,7 +72,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               ),
             ),
             actions: <Widget>[
-
               // Cancel button
               TextButton(
                 child: const Text('Cancel'),
@@ -86,9 +84,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () async {
-                  String deleteMsg =
-                      await deleteEvent(event.id); // Call deleteEvent to delete the event from the backend
-                      // Show a toast message to confirm deletion
+                  String deleteMsg = await deleteEvent(event
+                      .id); // Call deleteEvent to delete the event from the backend
+                  // Show a toast message to confirm deletion
                   Fluttertoast.showToast(
                       msg: deleteMsg,
                       toastLength: Toast.LENGTH_SHORT,
@@ -128,7 +126,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                       return value
                           ? const Icon(Icons.favorite, color: Colors.white)
                           : Icon(Icons.favorite_border,
-                              color: Theme.of(context).colorScheme.primary); // Since the app bar is of the same color, show the heart icon in primary color makes it invisible
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary); // Since the app bar is of the same color, show the heart icon in primary color makes it invisible
                     }),
               ),
             // information button to pop up a dialog with information about the page
@@ -177,7 +177,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             ),
           ]),
       body: Container(
-        decoration: const BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
+        decoration:
+            const BoxDecoration(color: Color.fromARGB(255, 235, 230, 229)),
         alignment: Alignment.topLeft,
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -186,10 +187,9 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(children: [
-                
                 // Show the event title
                 Flexible(
-                    child: Text(event.title, 
+                    child: Text(event.title,
                         style: const TextStyle(
                             fontFamily: 'Helvetica',
                             fontSize: 35,
@@ -218,7 +218,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               // Show information about the event: Host, Location, Starts at, Ends at, Description, Tags
               const Text('Host',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-              InkWell( // Show the host name as a clickable link
+              InkWell(
+                // Show the host name as a clickable link
                 child: Text(
                   event.hostName.toString(),
                   style: const TextStyle(
@@ -247,7 +248,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               Wrap(
                 children: [
-                  InkWell( // Show the location as a clickable link
+                  InkWell(
+                      // Show the location as a clickable link
                       child: Text(event.location,
                           style: const TextStyle(
                               fontSize: 20,
@@ -264,8 +266,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               'https://map.concept3d.com/?id=1232#!ct/68846,74074?sbc/'));
                         }
                       }),
-                      if (navigationAvailable)
-                        const Icon(Icons.location_on, color: Colors.blue),
+                  if (navigationAvailable)
+                    const Icon(Icons.location_on, color: Colors.blue),
                 ],
               ),
               // Show the start and end time of the event
@@ -312,7 +314,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               // some space
               const SizedBox(height: 50),
 
-
               /******* Buttons from here on *******/
 
               // Like button
@@ -338,9 +339,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     backgroundColor: const Color.fromRGBO(236, 64, 122, 1),
                     foregroundColor: Colors.white,
                     onPressedFunc: () async {
-                      await toggleLikeEvent(event.id); // Call toggleLikeEvent to like/unlike the event
-                      event.isFavorited = !event.isFavorited; // Update the local Event object's favorited status
-                      favorited.value = !favorited.value; // Update the ValueNotifier to update the heart icon
+                      await toggleLikeEvent(event
+                          .id); // Call toggleLikeEvent to like/unlike the event
+                      event.isFavorited = !event
+                          .isFavorited; // Update the local Event object's favorited status
+                      favorited.value = !favorited
+                          .value; // Update the ValueNotifier to update the heart icon
                       // Show a toast message to confirm the like/unlike action
                       Fluttertoast.showToast(
                           msg: event.isFavorited
@@ -431,9 +435,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         'Check out this event: ${event.title} at ${event.location} on ${timeFormat(event.start)}');
                   }),
 
-
               /******* Buttons only visible to users who's authorized to edit/delete the event *******/
-
 
               if (isCreatedByThisUser) const SizedBox(height: 30),
 
@@ -527,7 +529,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
   }
 }
 
-/// A helper class of a wide rounded elevated button button 
+/// A helper class of a wide rounded elevated button button
 class WideButton extends StatelessWidget {
   final Widget content;
   final Color backgroundColor;

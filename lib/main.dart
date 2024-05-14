@@ -13,7 +13,7 @@ import 'package:flutter_test_app/api/get_student_orgs.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // initializations 
+  // initializations
   await Hive.initFlutter(); // initialize Hive
   await setTokenBox(); // this function will set the BOX global variable to the encrypted token box
   await setLoginStatus(); // this function will set the USER global variable to current user if logged in, else null
@@ -37,7 +37,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    Hive.close(); /// Close token box when app is closed
+    Hive.close();
+
+    /// Close token box when app is closed
     super.dispose();
   }
 
@@ -52,8 +54,8 @@ class _MyAppState extends State<MyApp> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
             height: MediaQuery.of(context).size.height * 0.07,
-            iconTheme:
-                MaterialStateProperty.all(const IconThemeData(color: Colors.black)),
+            iconTheme: MaterialStateProperty.all(
+                const IconThemeData(color: Colors.black)),
             labelTextStyle: MaterialStateProperty.resolveWith((state) {
               if (state.contains(MaterialState.selected)) {
                 return const TextStyle(color: Colors.white);
@@ -64,7 +66,8 @@ class _MyAppState extends State<MyApp> {
           ),
           // The color scheme of the app, which comes from: https://www.grinnell.edu/about/leadership/offices-services/communications/our-brand/visuals
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
+              seedColor:
+                  const Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
           useMaterial3: true,
           fontFamily:
               'Futura' // Futura as the default font, the font used on Grinnell College's website
@@ -122,23 +125,28 @@ class _MyHomePageState extends State<MyHomePage> {
           indicatorColor: Colors.white,
           shadowColor: Colors.white,
           destinations: const [
-            NavigationDestination( // Icon and Label for Home Page in Navigation Bar
+            NavigationDestination(
+              // Icon and Label for Home Page in Navigation Bar
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            NavigationDestination( // Icon and Label for Search Page in Navigation Bar
+            NavigationDestination(
+              // Icon and Label for Search Page in Navigation Bar
               icon: Icon(Icons.search),
               label: 'Search',
             ),
-            NavigationDestination( // Icon and Label for Create Event Page in Navigation Bar
+            NavigationDestination(
+              // Icon and Label for Create Event Page in Navigation Bar
               icon: Icon(Icons.add),
               label: 'Create',
             ),
-            NavigationDestination( // Icon and Label for Calendar Page in Navigation Bar
+            NavigationDestination(
+              // Icon and Label for Calendar Page in Navigation Bar
               icon: Icon(Icons.calendar_month),
               label: 'Calendar',
             ),
-            NavigationDestination( // Icon and Label for Profile Page in Navigation Bar
+            NavigationDestination(
+              // Icon and Label for Profile Page in Navigation Bar
               icon: Icon(Icons.person),
               label: 'Profile',
             ),

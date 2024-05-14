@@ -10,9 +10,12 @@ class TagPreferencePage extends StatefulWidget {
 }
 
 class _TagPreferencePageState extends State<TagPreferencePage> {
-  List<String> availableTags = List<String>.from(ALLTAGS); // List of all available tags
-  List<String> selectedTags = List<String>.from(PREFERREDTAGS); // List of selected tags
-  int additionalItemNumber = 3; // Number of additional items in the listviewbuilder (title, select all, deselect all)
+  List<String> availableTags =
+      List<String>.from(ALLTAGS); // List of all available tags
+  List<String> selectedTags =
+      List<String>.from(PREFERREDTAGS); // List of selected tags
+  int additionalItemNumber =
+      3; // Number of additional items in the listviewbuilder (title, select all, deselect all)
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +76,10 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
               );
             } else {
               // Tags
-              final tag = availableTags[index - additionalItemNumber]; // Get the tag
-              final isSelected = selectedTags.contains(tag); // Check if the tag is selected
+              final tag =
+                  availableTags[index - additionalItemNumber]; // Get the tag
+              final isSelected =
+                  selectedTags.contains(tag); // Check if the tag is selected
 
               return ListTile(
                 title: Text(tag),
@@ -88,8 +93,10 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                       } else {
                         selectedTags.remove(tag);
                       }
-                      updatePrefferedTags(selectedTags); // Update the preferred tags to the server
-                      PREFERREDTAGS = List<String>.from(selectedTags); // Update the preferred tags locally
+                      updatePrefferedTags(
+                          selectedTags); // Update the preferred tags to the server
+                      PREFERREDTAGS = List<String>.from(
+                          selectedTags); // Update the preferred tags locally
                     });
                   },
                 ),

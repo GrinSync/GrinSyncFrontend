@@ -9,7 +9,8 @@ Future<void> saveEventToCalendar(context, gs.Event gsEvent) async {
   // create an a2c event object
   final a2c.Event event = a2c.Event(
     title: gsEvent.title,
-    description: gsEvent.description, // To be solved: description contains html stuff
+    description:
+        gsEvent.description, // To be solved: description contains html stuff
     location: gsEvent.location,
     startDate: DateTime.parse(gsEvent.start.toString()),
     endDate: DateTime.parse(gsEvent.end.toString()),

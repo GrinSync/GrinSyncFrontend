@@ -81,14 +81,15 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               // if the connection is done, show the events
             } else {
               // Display list of all events
-              return ValueListenableBuilder( 
+              return ValueListenableBuilder(
                   valueListenable: allEvents,
                   builder: (context, eventList, child) {
                     return Scaffold(
                       body: Container(
                         padding: const EdgeInsets.all(8.0),
                         child: RefreshIndicator(
-                          onRefresh: loadEvents, // Reload events when page refreshes
+                          onRefresh:
+                              loadEvents, // Reload events when page refreshes
                           child: ListView.builder(
                             itemCount: eventList!.length + 1,
                             itemBuilder: (context, index) {
