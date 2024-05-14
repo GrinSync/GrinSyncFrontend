@@ -4,7 +4,9 @@ This the repository for the front-end of the GrinSync app
 ## Repository Layout
 - *test*: The folder where the test files for our frontend testing are. 
 - *lib > pages*: The folder where all the files for the pages of our app are. 
-- *lib > api*: The folder where all the files that handle API calls to the backend are. 
+- *lib > api*: The folder where all the files that handle API calls to the backend are.
+- *lib > models*: The folder where all the files that handle our models can be found.
+- *images > assets*: The folder where all image assets (icons, logos, etc.) can be found. 
 
 ## How to build and run our project
 
