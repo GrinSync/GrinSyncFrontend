@@ -53,11 +53,11 @@ class _MyAppState extends State<MyApp> {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: Theme.of(context).colorScheme.primary,
             indicatorColor: Colors.white,
-            height: MediaQuery.of(context).size.height * 0.07,
-            iconTheme: MaterialStateProperty.all(
+            height: MediaQuery.of(context).size.height * 0.05,
+            iconTheme: WidgetStateProperty.all(
                 const IconThemeData(color: Colors.black)),
-            labelTextStyle: MaterialStateProperty.resolveWith((state) {
-              if (state.contains(MaterialState.selected)) {
+            labelTextStyle: WidgetStateProperty.resolveWith((state) {
+              if (state.contains(WidgetState.selected)) {
                 return const TextStyle(color: Colors.white);
               }
               return const TextStyle(color: Colors.black);
@@ -67,7 +67,10 @@ class _MyAppState extends State<MyApp> {
           // The color scheme of the app, which comes from: https://www.grinnell.edu/about/leadership/offices-services/communications/our-brand/visuals
           colorScheme: ColorScheme.fromSeed(
               seedColor:
-                  const Color.fromARGB(255, 218, 41, 28)), // Grinnell Red
+                  const Color.fromARGB(255, 218, 41, 28)).copyWith(
+              primary: const Color.fromARGB(255, 190, 35, 24), // Explicitly set the primary color to red
+              // secondary: Color.fromARGB(255, 0, 0, 0),
+          ), // Grinnell Red
           useMaterial3: true,
           fontFamily:
               'Futura' // Futura as the default font, the font used on Grinnell College's website
