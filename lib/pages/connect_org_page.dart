@@ -74,14 +74,14 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                   ],
                 ),
               );
-              // if the connection is done, show the events
+              // if the connection is done, show the orgs
             } else {
               // if there are no orgs, show a message
               if (allOrgs.isEmpty) {
                 return const Center(
-                  child: Text("No Student Orgs exist"),
+                  child: Text("Unable to load student orgs"),
                 );
-                // if there are events, show the events
+                // if there are allOrgs, show the events
               } else {
                 return Container(
                     padding: const EdgeInsets.all(8.0),
@@ -90,7 +90,7 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DropdownSearch<String>(
-                            items: allOrgs,
+                            items: (String filter, LoadProps? something) async {return allOrgs;},
                             onChanged: (String? stuff) {
                               data = stuff;
                             },
