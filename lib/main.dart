@@ -71,6 +71,7 @@ class _MyAppState extends State<MyApp> {
               primary: const Color.fromARGB(255, 190, 35, 24), // Explicitly set the primary color to red
               // secondary: Color.fromARGB(255, 0, 0, 0),
           ), // Grinnell Red
+          scaffoldBackgroundColor: Colors.white, // White background
           useMaterial3: true,
           fontFamily:
               'Futura' // Futura as the default font, the font used on Grinnell College's website

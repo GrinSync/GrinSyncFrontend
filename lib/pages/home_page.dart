@@ -222,7 +222,8 @@ class _HomePageState extends State<HomePage> {
             } else {
               // if the connection is done, show the events
               return Container(
-                padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                color: Color.fromRGBO(255, 247, 247, 1),
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: RefreshIndicator(
                   onRefresh: () async {
                     refresh();

@@ -90,17 +90,18 @@ class _ConnectOrgPage extends State<ConnectOrgPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DropdownSearch<String>(
-                            items: (String filter, LoadProps? something) async {return allOrgs;},
+                            items: (String filter, LoadProps? _) async {return allOrgs;},
                             onChanged: (String? stuff) {
                               data = stuff;
                             },
                           ),
+                          SizedBox(height: 20),
                           Align(
                               alignment: Alignment.center,
                               child: SizedBox(
                                 width: 200,
                                 height: 50,
-                                // Create Org Creation Button
+                                // Create Org connection Button
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: const Color.fromARGB(
