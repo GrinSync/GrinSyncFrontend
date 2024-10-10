@@ -49,7 +49,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isCreatedByThisUser = (event.host == USER.value?.id) ||
+    bool isCreatedByThisUser = (event.hostID == USER.value?.id) ||
         (ORGIDS.contains(event
             .parentOrg)); // Check if the event is created by the current user or an organization the user is a part of
     var favorited = ValueNotifier(event
@@ -57,6 +57,56 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     bool navigationAvailable = event.latitude != null &&
         event.longitude !=
             null; // Check if the event has a location to navigate to
+
+
+    /// Function to confirm claiming an event. It sents a verification email to the host email if confirmed.
+    Future<void> confirmClaim() async {
+      return showCupertinoDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Claim this event'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('This event is scheduled by ${event.contactEmail}. Please only claim this event if you are the host. A verification email will be sent to the email address. Please follow the instructions in the email to claim this event.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              // Cancel button
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+              ),
+
+              // Yes button
+              TextButton(
+                child: const Text('Send vefification email'),
+                onPressed: () async {
+                  String msg = await claimEvent(event
+                      .id); // Call deleteEvent to delete the event from the backend
+                  // Show a toast message to confirm deletion
+                  Fluttertoast.showToast(
+                      msg: msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey[800],
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     /// Function to confirm deletion of the event. It delets the event if confirmed.
     Future<void> confirmDeletion() async {
@@ -159,6 +209,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                 'You can save the event to your calendar, contact the host, and share the event with your friends.'),
                             Text(
                                 'If you are logged in: You can also favorite the event.'),
+                            Text(
+                                'If this event is from the college calendar: You can claim the event as yours to make edits (edits will not be reflected on the calendar or 25 Live).'),
                             Text(
                                 'If you are the host of the event: You can edit the event or delete it.'),
                           ],
@@ -439,7 +491,20 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               /******* Buttons only visible to users who's authorized to edit/delete the event *******/
 
-              if (isCreatedByThisUser) const SizedBox(height: 30),
+              // Space between the buttons (only if the event is from the college calendar (for claiming the event) or created by the current user (for editing the event))
+              if (event.hostName == "Grinnell Calendar" || isCreatedByThisUser)
+                const SizedBox(height: 30),
+
+              // Claim Event button
+              if (!isCreatedByThisUser && event.hostName == "Grinnell Calendar") // only show if the event is from the college calendar
+                WideButton(
+                  content: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.how_to_reg_outlined, size: 20),
+                      SizedBox(width: 5.0),
+                      Text('Claim Event'),
+                  ],), onPressedFunc: confirmClaim),
 
               // Edit button
               if (isCreatedByThisUser)

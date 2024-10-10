@@ -2,7 +2,7 @@
 class Event {
   int id;
   String title;
-  int host;
+  int hostID;
   String? hostName;
   int? org;
   String location;
@@ -23,7 +23,7 @@ class Event {
   Event({
     this.id = -1,
     this.title = '',
-    this.host = -1,
+    this.hostID = -1,
     this.hostName,
     this.org,
     this.location = '',
@@ -45,7 +45,7 @@ class Event {
     return Event(
       id: json['id'],
       title: json['title'],
-      host: json['host'],
+      hostID: json['host'],
       hostName: json['hostName'],
       org: json['parentOrg'],
       location: json['location'],
