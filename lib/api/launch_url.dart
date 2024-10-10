@@ -48,7 +48,7 @@ class MailUtils {
   static Future<void> contactHost(hostEmail, eventTitle) async {
     // All spaces are replaced with %20 to avoid "+"
     String subject = 'Regarding $eventTitle'.replaceAll(' ', '%20');
-    String body = 'Hello,\n I am interested in your event $eventTitle.'
+    String body = 'Hello,\n I am interested in learning more about your event $eventTitle.'
         .replaceAll(' ', '%20');
 
     Uri url = Uri(

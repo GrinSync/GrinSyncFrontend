@@ -70,7 +70,7 @@ class CalendarPageState extends State<CalendarPage> {
 
   /// The label of the current filtering option
   filterOptions currentFilter =
-      filterOptions.likedEvents; // defaulted to user's own agenda
+      filterOptions.myPreferences; // defaulted to user's own agenda
 
   /// List of user's preferred tags if logged in
   List<String> selectedTags = isLoggedIn() ? getPreferredTags() : getAllTags();
@@ -98,7 +98,7 @@ class CalendarPageState extends State<CalendarPage> {
   void initState() {
     super.initState();
     // defaulted to user's own agenda
-    loadEventsFuture = loadEvents(filterOptions.likedEvents);
+    loadEventsFuture = loadEvents(filterOptions.myPreferences);
   }
 
   /// Reloads the events based on the current filter everytime the users refresh
