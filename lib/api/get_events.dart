@@ -159,7 +159,7 @@ Future<String> deleteEvent(int eventId) async {
   }
 }
 
-/// Deletes an event by ID
+/// Claim an event by ID
 Future<String> claimEvent(int eventId) async {
   // Gets the authorization token for the current user
   var token = BOX.get('token');
@@ -174,7 +174,7 @@ Future<String> claimEvent(int eventId) async {
   // Deletes the event whose ID matches the argument
   var url = Uri.parse('https://grinsync.com/api/claimEvent');
   var response = await http
-      .delete(url, headers: headers, body: {'id': eventId.toString()});
+      .post(url, headers: headers, body: {'id': eventId.toString()});
 
   if (response.statusCode == 200) {
     return 'Email sent successfully';
