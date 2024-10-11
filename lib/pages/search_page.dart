@@ -63,6 +63,30 @@ class _SearchPageState extends State<SearchPage> {
     eventSearchResults = await getSearchedEvents(_query.text);
   }
 
+  // This functionexecutes the search based on the search mode and _query.text
+  void search(String _) {
+    if (_query.text.isNotEmpty) {
+      if (currentMode == searchMode.events) {
+        setState(() {
+          _searchFuture = searchEvents();
+          // clear the other search results
+          userSearchResults = [];
+          orgSearchResults = [];
+        });
+      } else if (currentMode == searchMode.users) {
+        // implement this after we have the user search functionality
+        // clear the other search results
+        eventSearchResults = [];
+        orgSearchResults = [];
+      } else if (currentMode == searchMode.orgs) {
+        // implement this after we have the organization search functionality
+        // clear the other search results
+        eventSearchResults = [];
+        userSearchResults = [];
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,49 +126,22 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _query,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      // implement this after we have the user search functionality
-                      prefixIcon: Icon(currentMode.icon),
-                      labelText: currentMode.label,
-                      hintText: 'Enter a keyword',
-                      border: const OutlineInputBorder(),
-                      // suffixIcon: IconButton(), // implement this when we remove the search button outside the text field and added textInputButtonaction
-                    ),
-                  ),
+            SizedBox(
+              width: double.infinity,
+              child: TextField(
+                controller: _query,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  // implement this after we have the user search functionality
+                  prefixIcon: Icon(currentMode.icon),
+                  labelText: currentMode.label,
+                  hintText: 'Enter a keyword',
+                  border: const OutlineInputBorder(),
+                  // suffixIcon: IconButton(), // implement this when we remove the search button outside the text field and added textInputButtonaction
                 ),
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  // Different actions based on the search mode
-                  onPressed: () {
-                    if (_query.text.isNotEmpty) {
-                      if (currentMode == searchMode.events) {
-                        setState(() {
-                          _searchFuture = searchEvents();
-                          // clear the other search results
-                          userSearchResults = [];
-                          orgSearchResults = [];
-                        });
-                      } else if (currentMode == searchMode.users) {
-                        // implement this after we have the user search functionality
-                        // clear the other search results
-                        eventSearchResults = [];
-                        orgSearchResults = [];
-                      } else if (currentMode == searchMode.orgs) {
-                        // implement this after we have the organization search functionality
-                        // clear the other search results
-                        eventSearchResults = [];
-                        userSearchResults = [];
-                      }
-                    }
-                  },
-                ),
-              ],
+                onSubmitted: search,
+                textInputAction: TextInputAction.search,
+              ),
             ),
             const SizedBox(height: 10),
             // Display search results
