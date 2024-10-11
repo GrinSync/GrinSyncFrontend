@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grinsync/global.dart';
 import 'package:grinsync/api/tags.dart';
 
@@ -20,6 +21,24 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
   @override
   Widget build(BuildContext context) {
     availableTags.sort(); // Sort the tags alphabetically
+
+    Future<void> saveTags() async {
+      // Save the selected tags to the server
+      await updatePrefferedTags(selectedTags);
+
+      // Update the selected tags locally
+      PREFERREDTAGS = List<String>.from(selectedTags);
+
+      // Show a flutter toast message
+      Fluttertoast.showToast(
+          msg: 'Changes saved',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -50,11 +69,9 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                 trailing: IconButton(
                   icon: const Icon(Icons.check),
                   onPressed: () {
-                    setState(() {
-                      selectedTags = List<String>.from(availableTags);
-                      updatePrefferedTags(selectedTags);
-                      PREFERREDTAGS = List<String>.from(selectedTags);
-                    });
+                    selectedTags = List<String>.from(availableTags);
+                    saveTags();
+                    setState(() {});
                   },
                 ),
               );
@@ -66,11 +83,9 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                 trailing: IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
-                    setState(() {
-                      selectedTags = [];
-                      updatePrefferedTags(selectedTags);
-                      PREFERREDTAGS = List<String>.from(selectedTags);
-                    });
+                    selectedTags = [];
+                    saveTags();
+                    setState(() {});
                   },
                 ),
               );
@@ -87,17 +102,13 @@ class _TagPreferencePageState extends State<TagPreferencePage> {
                   value: isSelected,
                   onChanged: (selected) {
                     // Update the selected tags
-                    setState(() {
-                      if (selected!) {
+                    if (selected!) {
                         selectedTags.add(tag);
                       } else {
                         selectedTags.remove(tag);
                       }
-                      updatePrefferedTags(
-                          selectedTags); // Update the preferred tags to the server
-                      PREFERREDTAGS = List<String>.from(
-                          selectedTags); // Update the preferred tags locally
-                    });
+                      saveTags();
+                    setState(() {});
                   },
                 ),
               );
