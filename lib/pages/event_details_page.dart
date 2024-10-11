@@ -417,7 +417,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
               const SizedBox(height: 10),
 
-              // Add to calendar button
+              // Save to calendar button
               WideButton(
                   content: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -427,7 +427,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         size: 20,
                       ),
                       SizedBox(width: 5.0),
-                      Text('Add to Calendar'),
+                      Text('Save to Calendar'),
                     ],
                   ),
                   onPressedFunc: () async {
@@ -492,11 +492,11 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               /******* Buttons only visible to users who's authorized to edit/delete the event *******/
 
               // Space between the buttons (only if the event is from the college calendar (for claiming the event) or created by the current user (for editing the event))
-              if (event.hostName == "Grinnell Calendar" || isCreatedByThisUser)
+              if (isLoggedIn() && (event.hostName == "Grinnell Calendar" || isCreatedByThisUser))
                 const SizedBox(height: 30),
 
               // Claim Event button
-              if (!isCreatedByThisUser && event.hostName == "Grinnell Calendar") // only show if the event is from the college calendar
+              if (isLoggedIn() && !isCreatedByThisUser && event.hostName == "Grinnell Calendar") // only show if the event is from the college calendar
                 WideButton(
                   content: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
