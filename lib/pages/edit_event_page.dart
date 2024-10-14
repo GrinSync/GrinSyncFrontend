@@ -35,7 +35,6 @@ class EventEditPageState extends State<EventEditPage> {
   // Initialize based on the event information that we got.
   @override
   void initState() {
-    _event = widget.event;
     _title = TextEditingController(text: _event.title);
     _location = TextEditingController(text: _event.location);
     _startDate = TextEditingController(text: _event.start);
@@ -47,6 +46,7 @@ class EventEditPageState extends State<EventEditPage> {
     _id = _event.id;
     _repeatDate = TextEditingController();
     _repeat = "";
+    _event = widget.event;
     super.initState();
   } // initState
 
