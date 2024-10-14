@@ -61,23 +61,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
     /// Function to confirm claiming an event. It sents a verification email to the host email if confirmed.
     Future<void> confirmClaim() async {
-      // if the user's email is the same as the host email, call claimEvent without confirmation
-      if (USER.value!.email == event.contactEmail) {
-        String msg = await claimEvent(event.id);
-        // Show a toast message to confirm deletion
-        Fluttertoast.showToast(
-            msg: msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey[800],
-            textColor: Colors.white,
-            fontSize: 16.0);
-
-        Navigator.of(context).pop(); // Dismiss the dialog
-        return;
-      }
-      // Show a dialog to confirm claiming the event
       return showCupertinoDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -87,7 +70,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('This event is not scheduled by you. The host of the event is ${event.contactEmail}. Please only claim this event if you are part of the organizers. A verification email will be sent to the email address above. Please follow the instructions in the email to claim this event.'),
+                  Text('This event is scheduled by ${event.contactEmail}. Please only claim this event if you are the host. A verification email will be sent to the email address. Please follow the instructions in the email to claim this event.'),
                 ],
               ),
             ),
@@ -105,7 +88,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 child: const Text('Send vefification email'),
                 onPressed: () async {
                   String msg = await claimEvent(event
-                      .id);
+                      .id); // Call deleteEvent to delete the event from the backend
                   // Show a toast message to confirm deletion
                   Fluttertoast.showToast(
                       msg: msg,
