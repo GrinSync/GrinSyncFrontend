@@ -546,5 +546,19 @@ String timeFormat(String? timeString) {
   // If extract from the DateTime object, it will look like: "6:0"
   String time = timeString.substring(11, 16);
 
+  // Convert time from 24hr to 12hr format (smallest unit is 15min)
+  int hour = int.parse(time.substring(0, 2));
+  String ampm;
+  if (hour >= 12) {
+    ampm = 'PM';
+    hour -= 12;
+  } else {
+    ampm = 'AM';
+  }
+
+  // Convert hour and minute back to string
+  String hourString = hour.toString();
+  time = '$hourString${time.substring(2)} $ampm';
+
   return '$time $month $day, $year';
 }
