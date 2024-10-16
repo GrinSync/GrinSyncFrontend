@@ -51,29 +51,29 @@ class _EventsILikePageState extends State<EventsILikePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         // A switch button to enable notifications
-        actions: [
-          Switch(
-              activeColor: Colors.white,
-              value: notificationsEnabled,
-              // Update the notifications setting as the user switches mode
-              onChanged: (value) async {
-                await setNotificationsSetting(value);
-                setState(() {
-                  notificationsEnabled = value;
-                });
-                Fluttertoast.showToast(
-                  msg: value
-                      ? 'Notifications for liked events enabled'
-                      : 'Notifications for liked events disabled',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.grey[800],
-                  textColor: Colors.white,
-                  fontSize: 16.0,
-                );
-              }),
-        ],
+        // actions: [
+        //   Switch(
+        //       activeColor: Colors.white,
+        //       value: notificationsEnabled,
+        //       // Update the notifications setting as the user switches mode
+        //       onChanged: (value) async {
+        //         await setNotificationsSetting(value);
+        //         setState(() {
+        //           notificationsEnabled = value;
+        //         });
+        //         Fluttertoast.showToast(
+        //           msg: value
+        //               ? 'Notifications for liked events enabled'
+        //               : 'Notifications for liked events disabled',
+        //           toastLength: Toast.LENGTH_SHORT,
+        //           gravity: ToastGravity.CENTER,
+        //           timeInSecForIosWeb: 1,
+        //           backgroundColor: Colors.grey[800],
+        //           textColor: Colors.white,
+        //           fontSize: 16.0,
+        //         );
+        //       }),
+        // ],
       ),
       // Use a FutureBuilder to wait for the events to load
       body: FutureBuilder(
